@@ -1,0 +1,59 @@
+import java.io.InputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
+class InvalidPfmFileFormat(message: String) : Exception("prova exception")
+
+/**
+ * Return a Floating-point number from an array of 4 bytes for a given Endianness
+ */
+fun readFloat(stream: InputStream, order: ByteOrder): Float {
+
+    val buffer = ByteArray(4)
+    stream.read(buffer)
+    val traduttore = ByteBuffer.wrap(buffer)
+
+    try{
+        traduttore.order(order)
+    }catch (e: InvalidPfmFileFormat){
+        println("Error:")
+    }
+
+    return traduttore.float
+}
+
+/**
+ *  Get width and height of an HdrImage from a PFM file
+ */
+fun parseImageSize(line: String): Array<Int> {
+    val elements = line.split(" ")
+    val dimensions = arrayOf(0,0)
+    if (elements.size != 2)run {
+        throw (InvalidPfmFileFormat("invalid image size specification"))
+    }
+
+    dimensions[0] = elements[0].toInt()
+    dimensions[1] = elements[1].toInt()
+
+    if ((dimensions[0] < 0) || (dimensions[1] < 0)){
+            throw (InvalidPfmFileFormat("invalid width/height"))
+    }
+
+    return dimensions
+}
+
+/*
+fun parseEndianness(line: String){
+    //var value = 0F
+    try {
+        var value = line.toFloat()
+    }catch (e: InvalidPfmFileFormat){
+        println("Missing endianness specification")
+    }
+
+    if (value>0)
+
+}
+
+*/
+

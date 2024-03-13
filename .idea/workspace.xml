@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d44bc654-ceb7-458a-827e-f944a12d9b79" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Read_Hdr_functions.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +46,7 @@
         <option value="Kotlin Class" />
         <option value="JUnit4 Test Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -263,7 +265,7 @@
       <workItem from="1710170071318" duration="20000" />
       <workItem from="1710171840762" duration="3000" />
       <workItem from="1710172091149" duration="261000" />
-      <workItem from="1710322450210" duration="322000" />
+      <workItem from="1710322450210" duration="7363000" />
     </task>
     <servers />
   </component>
