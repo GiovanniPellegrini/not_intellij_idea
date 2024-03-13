@@ -6,6 +6,6 @@ fun main() {
     println(image.getPixel(1,1))
 }
 
-fun are_close(x: Double, y: Double, epsilon: Double = 1e-5): Boolean {
+fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
     return (abs(x-y)<epsilon)
 }
