@@ -11,15 +11,15 @@ fun readFloat(stream: InputStream, order: ByteOrder): Float {
 
     val buffer = ByteArray(4)
     stream.read(buffer)
-    val traduttore = ByteBuffer.wrap(buffer)
+    val translator = ByteBuffer.wrap(buffer)
 
     try{
-        traduttore.order(order)
+        translator.order(order)
     }catch (e: InvalidPfmFileFormat){
         println("Error:")
     }
 
-    return traduttore.float
+    return translator.float
 }
 
 /**
@@ -42,18 +42,27 @@ fun parseImageSize(line: String): Array<Int> {
     return dimensions
 }
 
-/*
-fun parseEndianness(line: String){
-    //var value = 0F
+/**
+ * decoding the endianness of a PFM file
+ */
+fun parseEndianness(line: String): ByteOrder? {
+    var value = 0F
     try {
-        var value = line.toFloat()
+        value = line.toFloat()
     }catch (e: InvalidPfmFileFormat){
         println("Missing endianness specification")
     }
 
-    if (value>0)
+    if (value>0){
+        return ByteOrder.BIG_ENDIAN
+    }
+    if (value<0){
+        return ByteOrder.LITTLE_ENDIAN
+    }
+    else{
+        throw (InvalidPfmFileFormat("invalid endianness specification, it cannot be zero"))
+    }
 
 }
 
-*/
 
