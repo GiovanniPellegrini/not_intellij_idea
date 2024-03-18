@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -21,6 +22,20 @@ fun readFloat(stream: InputStream, order: ByteOrder): Float {
 
     return translator.float
 }
+/**
+Read a lines of file until /n and return that as string
+**/
+fun readline(stream:InputStream):String{
+    val result= ByteArrayOutputStream()
+    while (true) {
+        var curbyte=stream.read()
+        if (curbyte==-1 || curbyte== '\n'.code)
+            break
+        result.write(curbyte)
+    }
+    return result.toString("Ascii")
+}
+
 
 /**
  *  Get width and height of an HdrImage from a PFM file
