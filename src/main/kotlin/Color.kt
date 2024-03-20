@@ -22,4 +22,11 @@ class Color(var r:Float, var g:Float, var b:Float) {
                 are_close(b,other.b))
     }
 
+    /**
+     * Evaluate luminosity of a color with Shirley & Morley formula
+     */
+    fun luminosity(): Float {
+        return (maxOf(maxOf(r,g),b) + minOf(minOf(r,g),b))/2
+    }
+
 }

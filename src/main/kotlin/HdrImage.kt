@@ -46,16 +46,15 @@ class HdrImage (var width: Int,var height: Int) {
      * write a PFM file from a pixel array
      */
 
-    fun writePFM(image: HdrImage, stream: OutputStream, order: ByteOrder){
-        val endiannessStr = if (order == ByteOrder.LITTLE_ENDIAN) "-1.0" else "1.0"
-        val header = "PF\n $image.width $image.height\n$endiannessStr\n"  //per convertirla in binario .toByteArray()
+    fun writePFM(stream: FileOutputStream, order: ByteOrder){
+        val endiannessStr = if (order == ByteOrder.LITTLE_ENDIAN) "-1.0" else "+1.0"
+        val header = "PF\n $width $height\n$endiannessStr\n"
 
-        val fos = FileOutputStream("out.pfm")
-        fos.use {
+        stream.use {
             outStream -> outStream.write(header.toByteArray())
-            for (y in image.height downTo 0){
-                for (x in 0..image.width){
-                    var color = image.getPixel(x,y)
+            for (y in height-1 downTo 0){
+                for (x in 0..<width){
+                    var color = getPixel(x,y)
                     writeFloat(stream, color.r, order)
                     writeFloat(stream, color.g, order)
                     writeFloat(stream, color.b, order)

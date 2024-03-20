@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d44bc654-ceb7-458a-827e-f944a12d9b79" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/ReadHdrfunctionsKtTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Color.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Read_Hdr_functions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Read_Hdr_functions.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/Read_Hdr_functionsKtTest.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +75,7 @@
     "Gradle.HdrImageTest.getPixels.executor": "Run",
     "Gradle.HdrImageTest.provaTest.executor": "Run",
     "Gradle.HdrImageTest.setPixel.executor": "Run",
+    "Gradle.HdrImageTest.writePFM.executor": "Run",
     "Gradle.Read_Hdr_functionsKtTest.executor": "Run",
     "Gradle.Read_Hdr_functionsKtTest.readFloat.executor": "Run",
     "JUnit.HdrImageTest.test.executor": "Run",
@@ -114,7 +114,31 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Read_Hdr_functionsKtTest">
+  <component name="RunManager" selected="Gradle.ColorTest.luminosity">
+    <configuration name="ColorTest.luminosity" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ColorTest.luminosity&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="HdrImageTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -139,7 +163,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HdrImageTest.getPixel" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="HdrImageTest.writePFM" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -152,31 +176,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;HdrImageTest.getPixel&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="HdrImageTest.setPixel" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;HdrImageTest.setPixel&quot;" />
+            <option value="&quot;HdrImageTest.writePFM&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -237,11 +237,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ColorTest.luminosity" />
+        <item itemvalue="Gradle.HdrImageTest.writePFM" />
         <item itemvalue="Gradle.Read_Hdr_functionsKtTest" />
         <item itemvalue="Gradle.Read_Hdr_functionsKtTest.readFloat" />
         <item itemvalue="Gradle.HdrImageTest" />
-        <item itemvalue="Gradle.HdrImageTest.getPixel" />
-        <item itemvalue="Gradle.HdrImageTest.setPixel" />
       </list>
     </recent_temporary>
   </component>
@@ -272,6 +272,7 @@
       <workItem from="1710322450210" duration="7781000" />
       <workItem from="1710522388219" duration="1130000" />
       <workItem from="1710692100812" duration="3799000" />
+      <workItem from="1710925022573" duration="4566000" />
     </task>
     <servers />
   </component>
