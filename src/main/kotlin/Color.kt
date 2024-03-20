@@ -22,4 +22,18 @@ class Color(var r:Float, var g:Float, var b:Float) {
                 are_close(b,other.b))
     }
 
-}
+    /**
+     * Product each component with a scalar
+     */
+    fun scalarProduct(scalar:Float): Color{
+        return Color(r*scalar,g*scalar,b*scalar)
+    }
+
+    /**
+     * Product with another color
+     */
+    fun colorProduct(other:Color):Color{
+        return Color(r*other.r,g*other.g,b*other.b)
+    }
+
+   }

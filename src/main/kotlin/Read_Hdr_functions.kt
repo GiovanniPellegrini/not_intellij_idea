@@ -3,6 +3,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import javax.swing.plaf.InputMapUIResource
 
 class InvalidPfmFileFormat(message: String) : Exception("prova exception")
 
@@ -29,7 +30,7 @@ Read a lines of file until /n and return that as string
 fun readline(stream:InputStream):String{
     val result= ByteArrayOutputStream()
     while (true) {
-        var curbyte=stream.read()
+        val curbyte=stream.read()
         if (curbyte==-1 || curbyte== '\n'.code)
             break
         result.write(curbyte)
@@ -61,7 +62,7 @@ fun parseImageSize(line: String): Array<Int> {
 /**
  * decoding the endianness of a PFM file
  */
-fun parseEndianness(line: String): ByteOrder? {
+fun parseEndianness(line: String): ByteOrder {
     var value = 0F
     try {
         value = line.toFloat()
@@ -81,4 +82,37 @@ fun parseEndianness(line: String): ByteOrder? {
 
 }
 
+/**
+ * Read an Pfm image
+ */
+fun readPfmImage(stream:InputStream): HdrImage{
+
+    // Check that Pfm file starts with "PF"
+    val magic=readline(stream)
+    if(magic!="PF") throw InvalidPfmFileFormat("Invalid magic in pfm file")
+
+    // Read width and length and save in dimensions
+    val imageSize=readline(stream)
+    val dimensions =parseImageSize(imageSize)
+
+    //read endianness line and save in endianness
+    val endiannessline= readline(stream)
+    val endianness=parseEndianness(endiannessline)
+
+
+    // Now read all the Color of each pixel in result
+    val result=HdrImage(dimensions[0],dimensions[1])
+    for(y in dimensions[1] downTo 0){
+        for (x in 0 until  dimensions[0]){
+           for (i in 0 until 3) {
+               val r = readFloat(stream, endianness)
+               val g= readFloat(stream,endianness)
+               val b= readFloat(stream,endianness)
+               result.setPixel(x,y,Color(r,g,b))
+           }
+
+        }
+    }
+    return result
+}
 
