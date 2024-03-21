@@ -7,7 +7,19 @@ fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
 }
 class ColorTest{
 
-    //qua ci vorrebbero test di sum e product
+    @Test
+    fun sum(){
+
+    }
+
+    @Test
+    fun areCloseColor(){}
+
+    @Test
+    fun scalarProduct(){}
+
+    @Test
+    fun colorProduct(){}
 
     @Test
     fun luminosity(){

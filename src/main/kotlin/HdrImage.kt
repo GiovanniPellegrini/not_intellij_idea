@@ -2,8 +2,17 @@ import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.Math.pow
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.math.log
+import kotlin.math.*
+
+
+fun clamp(x:Float):Float{
+    return x/(x+1)
+}
+
 
 /**
  * Class of HDR image
@@ -64,4 +73,39 @@ class HdrImage (var width: Int,var height: Int) {
     }
 
 
+    /**
+     * Calculate the average luminosity using the logarithmic average formula.
+     */
+    fun averageLuminosity(delta: Float =1e-10F):Float{
+        var sum:Float= 0.0F
+        for (i in 0 until  pixels.size ){
+            sum+= log10(delta+pixels[i].luminosity())
+        }
+        return 10.0.pow(sum / pixels.size.toDouble()).toFloat()
+    }
+
+    /**
+    normalize each color multiplyng with factor/luminosity.
+    If not specified, the luminosity is that of Shirley and Morley's formula
+    **/
+    fun normalizeImage(factor:Float,  luminosity: Float?=null){
+
+        val lum=luminosity ?: averageLuminosity()
+        for(i in 0 until  pixels.size){
+            pixels[i]=pixels[i].scalarProduct(factor/lum)
+        }
+    }
+
+    /**
+     * Each value of color is clamped from 0 to 1,  to treat luminous spots
+     */
+    fun clampImage(){
+        for(pixel in pixels){
+            pixel.r=clamp(pixel.r)
+            pixel.g=clamp(pixel.g)
+            pixel.b=clamp(pixel.b)
+        }
+    }
+
 }
+
