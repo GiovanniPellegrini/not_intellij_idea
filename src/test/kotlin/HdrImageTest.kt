@@ -1,13 +1,17 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.nio.ByteOrder
 
+/**
+ * initialize array from hexadecimal values
+ */
+fun byteArrayOfInts(vararg ints: Int) =
+    ByteArray(ints.size) { pos -> ints[pos].toByte() }
+
 class HdrImageTest {
-
-    var SampleImage = HdrImage(10,10)
-
     @Test
     fun getPixel(){
         assert(2 in (0 until 10)) { "Error: x value not valid" }
@@ -21,7 +25,9 @@ class HdrImageTest {
 
     @Test
     fun writePFM() {
-        var img = HdrImage(3, 2)
+        val img = HdrImage(3, 2)
+        val streamBe = ByteArrayOutputStream()
+        val streamLe = ByteArrayOutputStream()
 
         img.setPixel(0, 0, Color(1.0F, 2.0F, 3.0F))
         img.setPixel(1, 0, Color(4.0F, 5.0F, 6.0F))
@@ -30,12 +36,62 @@ class HdrImageTest {
         img.setPixel(1, 1, Color(400F, 500F, 600F))
         img.setPixel(2, 1, Color(700F, 800F, 900F))
 
-        println("ok")
-        val out = FileOutputStream("output.txt");
-        img.writePFM(out, ByteOrder.LITTLE_ENDIAN)
+        img.writePFM(streamBe, ByteOrder.BIG_ENDIAN)
+        img.writePFM(streamLe, ByteOrder.LITTLE_ENDIAN)
+
+        val referenceBe = byteArrayOfInts(
+            0x50, 0x46, 0x0a, 0x33, 0x20, 0x32, 0x0a, 0x31, 0x2e, 0x30, 0x0a, 0x42,
+            0xc8, 0x00, 0x00, 0x43, 0x48, 0x00, 0x00, 0x43, 0x96, 0x00, 0x00, 0x43,
+            0xc8, 0x00, 0x00, 0x43, 0xfa, 0x00, 0x00, 0x44, 0x16, 0x00, 0x00, 0x44,
+            0x2f, 0x00, 0x00, 0x44, 0x48, 0x00, 0x00, 0x44, 0x61, 0x00, 0x00, 0x41,
+            0x20, 0x00, 0x00, 0x41, 0xa0, 0x00, 0x00, 0x41, 0xf0, 0x00, 0x00, 0x42,
+            0x20, 0x00, 0x00, 0x42, 0x48, 0x00, 0x00, 0x42, 0x70, 0x00, 0x00, 0x42,
+            0x8c, 0x00, 0x00, 0x42, 0xa0, 0x00, 0x00, 0x42, 0xb4, 0x00, 0x00
+        )
+
+        val referenceLe = byteArrayOfInts(
+            0x50, 0x46, 0x0a, 0x33, 0x20, 0x32, 0x0a, 0x2d, 0x31, 0x2e, 0x30, 0x0a,
+            0x00, 0x00, 0xc8, 0x42, 0x00, 0x00, 0x48, 0x43, 0x00, 0x00, 0x96, 0x43,
+            0x00, 0x00, 0xc8, 0x43, 0x00, 0x00, 0xfa, 0x43, 0x00, 0x00, 0x16, 0x44,
+            0x00, 0x00, 0x2f, 0x44, 0x00, 0x00, 0x48, 0x44, 0x00, 0x00, 0x61, 0x44,
+            0x00, 0x00, 0x20, 0x41, 0x00, 0x00, 0xa0, 0x41, 0x00, 0x00, 0xf0, 0x41,
+            0x00, 0x00, 0x20, 0x42, 0x00, 0x00, 0x48, 0x42, 0x00, 0x00, 0x70, 0x42,
+            0x00, 0x00, 0x8c, 0x42, 0x00, 0x00, 0xa0, 0x42, 0x00, 0x00, 0xb4, 0x42
+        )
+    /*
+        assertEquals(referenceBe.size, streamBe.toByteArray().size )
+        println("lunghezza array reference: ${referenceBe.size}, lunghezza array scritto: ${streamBe.toByteArray().size}")
+
+        for (i in 0..<referenceBe.size) {
+            println("array scritto: ${referenceBe[i]}, array prova: ${streamBe.toByteArray()[i]}, posizione $i")
+            assertEquals(referenceBe[i], streamBe.toByteArray()[i]){"posizione sgravata $i"}
+        }
+
+        assertEquals(referenceLe.size, streamLe.toByteArray().size )
+        println("lunghezza array reference: ${referenceLe.size}, lunghezza array scritto: ${streamLe.toByteArray().size}")
+
+        for (i in 0..<referenceLe.size) {
+            println("array scritto: ${referenceLe[i]}, array prova: ${streamLe.toByteArray()[i]}, posizione $i")
+            assertEquals(referenceLe[i], streamLe.toByteArray()[i]){"posizione sgravata $i"}
+        }
+
+     */
+
+        //assertArrayEquals(streamBe.toByteArray(), referenceBe);
+
+
+
     }
         //da terminare
 
+    @Test
+    fun luminosity(){
+        val col1 = Color(1.0F, 2.0F, 3.0F)
+        val col2 = Color(9.0F, 5.0F, 7.0F)
+
+        assert(are_close(2.0F, col1.luminosity()))
+        assert(are_close(7.0F, col2.luminosity()))
+    }
 
     @Test
     fun averageLuminosity(){
@@ -59,6 +115,16 @@ class HdrImageTest {
 
     @Test
     fun clampImage(){
+        val img = HdrImage(2,1)
+        img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
+        img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
 
+        img.clampImage()
+
+        for(x in 0..1){
+            assert(img.getPixel(x,0).r in 0.0..1.0)
+            assert(img.getPixel(x,0).g in 0.0..1.0)
+            assert(img.getPixel(x,0).b in 0.0..1.0)
+        }
     }
 }

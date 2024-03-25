@@ -13,7 +13,6 @@ fun clamp(x:Float):Float{
     return x/(x+1)
 }
 
-
 /**
  * Class of HDR image
  */
@@ -55,15 +54,16 @@ class HdrImage (var width: Int,var height: Int) {
      * write a PFM file from a pixel array
      */
 
-    fun writePFM(stream: FileOutputStream, order: ByteOrder){
-        val endiannessStr = if (order == ByteOrder.LITTLE_ENDIAN) "-1.0" else "+1.0"
-        val header = "PF\n $width $height\n$endiannessStr\n"
+    fun writePFM(stream: OutputStream, order: ByteOrder){
+        val endiannessStr = if (order == ByteOrder.LITTLE_ENDIAN) "-1.0" else "1.0"
+        val header = "PF\n${this.width} ${this.height}\n$endiannessStr\n"
 
         stream.use {
             outStream -> outStream.write(header.toByteArray())
+            // pixel writing starts from bottom left
             for (y in height-1 downTo 0){
                 for (x in 0..<width){
-                    var color = getPixel(x,y)
+                    val color = getPixel(x,y)
                     writeFloat(stream, color.r, order)
                     writeFloat(stream, color.g, order)
                     writeFloat(stream, color.b, order)
@@ -85,11 +85,10 @@ class HdrImage (var width: Int,var height: Int) {
     }
 
     /**
-    normalize each color multiplyng with factor/luminosity.
+    normalize each color multiplying with factor/luminosity.
     If not specified, the luminosity is that of Shirley and Morley's formula
     **/
     fun normalizeImage(factor:Float,  luminosity: Float?=null){
-
         val lum=luminosity ?: averageLuminosity()
         for(i in 0 until  pixels.size){
             pixels[i]=pixels[i].scalarProduct(factor/lum)

@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.nio.ByteOrder
 
-class Read_Hdr_functionsKtTest{
+class Read_Hdr_functionsTest{
 
     @Test
     fun readFloat() {}
