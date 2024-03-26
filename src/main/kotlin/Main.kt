@@ -8,7 +8,7 @@ import kotlin.math.abs
     3. gamma value
     3. png file output name
  */
-fun main(args: Array<String>) {
+fun main(args: Array<String>){
     if (args.size != 4) {
         throw IOException(
             "Invalid input parameters, please enter the parameters in the following order : " +
