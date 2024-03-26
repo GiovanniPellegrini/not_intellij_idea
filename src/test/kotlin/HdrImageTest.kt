@@ -12,13 +12,17 @@ fun byteArrayOfInts(vararg ints: Int) =
     ByteArray(ints.size) { pos -> ints[pos].toByte() }
 
 class HdrImageTest {
+
+    var SampleImage = HdrImage(10, 10)
+
     @Test
-    fun getPixel(){
+    fun getPixel() {
         assert(2 in (0 until 10)) { "Error: x value not valid" }
         assert(3 in (0 until 10)) { "Error: y value not valid" }
     }
+
     @Test
-    fun setPixel(){
+    fun setPixel() {
         assert(5 in (0 until 10)) { "Error: x value not valid" }
         assert(4 in (0 until 10)) { "Error: y value not valid" }
     }
@@ -29,12 +33,12 @@ class HdrImageTest {
         val streamBe = ByteArrayOutputStream()
         val streamLe = ByteArrayOutputStream()
 
-        img.setPixel(0, 0, Color(1.0F, 2.0F, 3.0F))
-        img.setPixel(1, 0, Color(4.0F, 5.0F, 6.0F))
-        img.setPixel(2, 0, Color(7.0F, 8.0F, 9.0F))
-        img.setPixel(0, 1, Color(100F, 200F, 300F))
-        img.setPixel(1, 1, Color(400F, 500F, 600F))
-        img.setPixel(2, 1, Color(700F, 800F, 900F))
+        img.setPixel(0, 0, Color(1.0e1F, 2.0e1F, 3.0e1F))
+        img.setPixel(1, 0, Color(4.0e1F, 5.0e1F, 6.0e1F))
+        img.setPixel(2, 0, Color(7.0e1F, 8.0e1F, 9.0e1F))
+        img.setPixel(0, 1, Color(1.0e2F, 2.0e2F, 3.0e2F))
+        img.setPixel(1, 1, Color(4.0e2F, 5.0e2F, 6.0e2F))
+        img.setPixel(2, 1, Color(7.0e2F, 8.0e2F, 9.0e2F))
 
         img.writePFM(streamBe, ByteOrder.BIG_ENDIAN)
         img.writePFM(streamLe, ByteOrder.LITTLE_ENDIAN)
@@ -58,13 +62,13 @@ class HdrImageTest {
             0x00, 0x00, 0x20, 0x42, 0x00, 0x00, 0x48, 0x42, 0x00, 0x00, 0x70, 0x42,
             0x00, 0x00, 0x8c, 0x42, 0x00, 0x00, 0xa0, 0x42, 0x00, 0x00, 0xb4, 0x42
         )
-    /*
-        assertEquals(referenceBe.size, streamBe.toByteArray().size )
+
+        assertEquals(referenceBe.size, streamBe.toByteArray().size)
         println("lunghezza array reference: ${referenceBe.size}, lunghezza array scritto: ${streamBe.toByteArray().size}")
 
         for (i in 0..<referenceBe.size) {
             println("array scritto: ${referenceBe[i]}, array prova: ${streamBe.toByteArray()[i]}, posizione $i")
-            assertEquals(referenceBe[i], streamBe.toByteArray()[i]){"posizione sgravata $i"}
+            assertEquals(referenceBe[i], streamBe.toByteArray()[i]) { "posizione sgravata $i"}
         }
 
         assertEquals(referenceLe.size, streamLe.toByteArray().size )
@@ -75,56 +79,57 @@ class HdrImageTest {
             assertEquals(referenceLe[i], streamLe.toByteArray()[i]){"posizione sgravata $i"}
         }
 
-     */
-
-        //assertArrayEquals(streamBe.toByteArray(), referenceBe);
 
 
+        assertArrayEquals(streamBe.toByteArray(), referenceBe);
 
-    }
-        //da terminare
-
-    @Test
-    fun luminosity(){
-        val col1 = Color(1.0F, 2.0F, 3.0F)
-        val col2 = Color(9.0F, 5.0F, 7.0F)
-
-        assert(are_close(2.0F, col1.luminosity()))
-        assert(are_close(7.0F, col2.luminosity()))
-    }
-
-    @Test
-    fun averageLuminosity(){
-        val img=HdrImage(2,1)
-        img.setPixel(0,0, Color(5F,10F,15F)) //luminosity 10
-        img.setPixel(1,0,Color(500F,1000F,1500F)) //luminosity 1000
-
-        assert(are_close(100F,img.averageLuminosity(0.0F)))
 
     }
-    @Test
-    fun normalizeImage(){
-        val img=HdrImage(2,1)
-        img.setPixel(0,0, Color(5F,10F,15F)) //luminosity 10
-        img.setPixel(1,0,Color(500F,1000F,1500F)) //luminosity 1000
 
-        img.normalizeImage(1000F,100F)
-        assert(img.getPixel(0,0).areCloseColor(Color(0.5e2F, 1.0e2F, 1.5e2F)))
-        assert(img.getPixel(1,0).areCloseColor(Color(0.5e4F, 1.0e4F, 1.5e4F)))
-    }
+        @Test
+        fun luminosity() {
+            val col1 = Color(1.0F, 2.0F, 3.0F)
+            val col2 = Color(9.0F, 5.0F, 7.0F)
 
-    @Test
-    fun clampImage(){
-        val img = HdrImage(2,1)
-        img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
-        img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
-
-        img.clampImage()
-
-        for(x in 0..1){
-            assert(img.getPixel(x,0).r in 0.0..1.0)
-            assert(img.getPixel(x,0).g in 0.0..1.0)
-            assert(img.getPixel(x,0).b in 0.0..1.0)
+            assert(are_close(2.0F, col1.luminosity()))
+            assert(are_close(7.0F, col2.luminosity()))
         }
-    }
+
+        @Test
+        fun averageLuminosity() {
+            val img = HdrImage(2, 1)
+            img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
+            img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
+
+            assert(are_close(100F, img.averageLuminosity(0.0F)))
+
+        }
+
+        @Test
+        fun normalizeImage() {
+            val img = HdrImage(2, 1)
+            img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
+            img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
+
+            img.normalizeImage(1000F, 100F)
+            assert(img.getPixel(0, 0).areCloseColor(Color(0.5e2F, 1.0e2F, 1.5e2F)))
+            assert(img.getPixel(1, 0).areCloseColor(Color(0.5e4F, 1.0e4F, 1.5e4F)))
+        }
+
+        @Test
+        fun clampImage() {
+            val img = HdrImage(2, 1)
+            img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
+            img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
+            img.clampImage()
+
+            /*for (pixel in img.pixels) {
+                assert(pixel.r in 0.0..1.0)
+                assert(pixel.b in 0.0..1.0)
+                assert(pixel.g in 0.0..1.0)
+
+             */
+        }
 }
+
+

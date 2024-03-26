@@ -6,15 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Read_Hdr_functions.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ReadHdrfunctionsKtTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/Read_Hdr_functionsKtTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/Read_Hdr_functionsTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/Read_Hdr_functionsTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -24,6 +32,7 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2e2b3BAiC16KeTkdalCOuXxyVbk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -49,7 +58,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.HdrImageTest">
+  <component name="RunManager" selected="Gradle.HdrImageTest.writePFM">
     <configuration name="HdrImageTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -148,10 +157,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.HdrImageTest.writePFM" />
         <item itemvalue="Gradle.HdrImageTest" />
         <item itemvalue="Gradle.HdrImageTest.clampImage" />
         <item itemvalue="Gradle.HdrImageTest.luminosity" />
-        <item itemvalue="Gradle.HdrImageTest.writePFM" />
       </list>
     </recent_temporary>
   </component>
@@ -188,16 +197,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt</url>
-          <line>36</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
