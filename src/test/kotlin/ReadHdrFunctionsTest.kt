@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.nio.ByteOrder
 
+/**
+ * Test class for auxiliary functions of HDRimage
+ */
 class Read_Hdr_functionsTest{
 
     @Test
