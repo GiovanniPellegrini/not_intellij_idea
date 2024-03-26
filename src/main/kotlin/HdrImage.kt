@@ -1,10 +1,9 @@
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.awt.image.BufferedImage
+import java.io.*
 import java.lang.Math.pow
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import javax.imageio.ImageIO
 import kotlin.math.log
 import kotlin.math.*
 
@@ -104,6 +103,30 @@ class HdrImage (var width: Int,var height: Int) {
             pixel.g=clamp(pixel.g)
             pixel.b=clamp(pixel.b)
         }
+    }
+
+    fun writeLdrImage(format: String, gamma:Float, outputfilename: String){
+        val bufferedImage = BufferedImage(this.width,this.height,BufferedImage.TYPE_INT_RGB)
+        for(y in 0 until this.height){
+            for(x in 0 until this.width){
+                val curColor = this.getPixel(x,y)
+                val red = 255 * curColor.r.pow(1/gamma).toInt()
+                val green = 255 * curColor.g.pow(1/gamma).toInt()
+                val blue = 255 * curColor.b.pow(1/gamma).toInt()
+
+                val rgb = (red shl 16) or (green shl 8) or blue
+                bufferedImage.setRGB(x, y, rgb)
+            }
+        }
+
+        val outputFile = File(outputfilename)
+        try {
+            ImageIO.write(bufferedImage, format, outputFile)
+            println("image $outputfilename saved")
+        } catch (e: Exception) {
+            println("Error: image not saved")
+        }
+
     }
 
 }

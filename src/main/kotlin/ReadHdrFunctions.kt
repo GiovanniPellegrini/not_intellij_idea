@@ -83,7 +83,7 @@ fun parseEndianness(line: String): ByteOrder {
 }
 
 /**
- * Read an Pfm image
+ * Read a Pfm image
  */
 fun readPfmImage(stream:InputStream): HdrImage{
 
@@ -94,6 +94,7 @@ fun readPfmImage(stream:InputStream): HdrImage{
     // Read width and length and save in dimensions
     val imageSize=readline(stream)
     val dimensions =parseImageSize(imageSize)
+    println("dimensioni immagine: ${dimensions[0]} x ${dimensions[1]}")
 
     //read endianness line and save in endianness
     val endiannessline= readline(stream)
@@ -102,7 +103,8 @@ fun readPfmImage(stream:InputStream): HdrImage{
 
     // Now read all the Color of each pixel in result
     val result=HdrImage(dimensions[0],dimensions[1])
-    for(y in dimensions[1] downTo 0){
+    val range = 0 until dimensions[1]
+    for(y in range.reversed()){
         for (x in 0 until  dimensions[0]){
            for (i in 0 until 3) {
                val r = readFloat(stream, endianness)

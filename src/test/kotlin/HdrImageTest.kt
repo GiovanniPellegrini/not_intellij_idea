@@ -63,73 +63,58 @@ class HdrImageTest {
             0x00, 0x00, 0x8c, 0x42, 0x00, 0x00, 0xa0, 0x42, 0x00, 0x00, 0xb4, 0x42
         )
 
-        assertEquals(referenceBe.size, streamBe.toByteArray().size)
-        println("lunghezza array reference: ${referenceBe.size}, lunghezza array scritto: ${streamBe.toByteArray().size}")
+        assertEquals(referenceBe.size, streamBe.toByteArray().size){"Error: Bytearrays (Big Endian) have different size"}
+        assertArrayEquals(streamBe.toByteArray(), referenceBe){"Error: Bytearrays (Big Endian) have different elements"}
 
-        for (i in 0..<referenceBe.size) {
-            println("array scritto: ${referenceBe[i]}, array prova: ${streamBe.toByteArray()[i]}, posizione $i")
-            assertEquals(referenceBe[i], streamBe.toByteArray()[i]) { "posizione sgravata $i"}
-        }
-
-        assertEquals(referenceLe.size, streamLe.toByteArray().size )
-        println("lunghezza array reference: ${referenceLe.size}, lunghezza array scritto: ${streamLe.toByteArray().size}")
-
-        for (i in 0..<referenceLe.size) {
-            println("array scritto: ${referenceLe[i]}, array prova: ${streamLe.toByteArray()[i]}, posizione $i")
-            assertEquals(referenceLe[i], streamLe.toByteArray()[i]){"posizione sgravata $i"}
-        }
-
-
-
-        assertArrayEquals(streamBe.toByteArray(), referenceBe);
-
+        assertEquals(referenceLe.size, streamLe.toByteArray().size){"Error: Bytearrays (Little Endian) have different size"}
+        assertArrayEquals(streamLe.toByteArray(), referenceLe){"Error: Bytearrays (Little Endian) have different elements"}
 
     }
 
-        @Test
-        fun luminosity() {
-            val col1 = Color(1.0F, 2.0F, 3.0F)
-            val col2 = Color(9.0F, 5.0F, 7.0F)
+    @Test
+    fun luminosity() {
+        val col1 = Color(1.0F, 2.0F, 3.0F)
+        val col2 = Color(9.0F, 5.0F, 7.0F)
 
-            assert(are_close(2.0F, col1.luminosity()))
-            assert(are_close(7.0F, col2.luminosity()))
-        }
+        assert(are_close(2.0F, col1.luminosity()))
+        assert(are_close(7.0F, col2.luminosity()))
+    }
 
-        @Test
-        fun averageLuminosity() {
-            val img = HdrImage(2, 1)
-            img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
-            img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
+    @Test
+    fun averageLuminosity() {
+        val img = HdrImage(2, 1)
+        img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
+        img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
 
-            assert(are_close(100F, img.averageLuminosity(0.0F)))
+        assert(are_close(100F, img.averageLuminosity(0.0F)))
 
-        }
+    }
 
-        @Test
-        fun normalizeImage() {
-            val img = HdrImage(2, 1)
-            img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
-            img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
+    @Test
+    fun normalizeImage() {
+        val img = HdrImage(2, 1)
+        img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
+        img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
 
-            img.normalizeImage(1000F, 100F)
-            assert(img.getPixel(0, 0).areCloseColor(Color(0.5e2F, 1.0e2F, 1.5e2F)))
-            assert(img.getPixel(1, 0).areCloseColor(Color(0.5e4F, 1.0e4F, 1.5e4F)))
-        }
+        img.normalizeImage(1000F, 100F)
+        assert(img.getPixel(0, 0).areCloseColor(Color(0.5e2F, 1.0e2F, 1.5e2F)))
+        assert(img.getPixel(1, 0).areCloseColor(Color(0.5e4F, 1.0e4F, 1.5e4F)))
+    }
 
-        @Test
-        fun clampImage() {
-            val img = HdrImage(2, 1)
-            img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
-            img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
-            img.clampImage()
+    @Test
+    fun clampImage() {
+        val img = HdrImage(2, 1)
+        img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
+        img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
+        img.clampImage()
 
-            /*for (pixel in img.pixels) {
+        /*for (pixel in img.pixels) {
                 assert(pixel.r in 0.0..1.0)
                 assert(pixel.b in 0.0..1.0)
                 assert(pixel.g in 0.0..1.0)
 
-             */
-        }
+          */
+    }
 }
 
 
