@@ -7,6 +7,18 @@ import javax.swing.plaf.InputMapUIResource
 
 class InvalidPfmFileFormat(message: String) : Exception("prova exception")
 
+
+/**
+ *These functions are used to read a PFM file.
+ * The function readLine codified every line of the file in a string.
+ * parseImageFile returns the size of Hdr image
+ * parseendianness returns the endianness (if >0 BE, if <0 LE)
+ * Then readPfmImage codified all the information and return an HDR array of colors, thanks to the readFloat function
+ */
+
+
+
+
 /**
  * Return a Floating-point number from an array of 4 bytes for a given Endianness
  */
@@ -25,7 +37,7 @@ fun readFloat(stream: InputStream, order: ByteOrder): Float {
     return translator.float
 }
 /**
-Read a lines of file until /n and return that as string
+Read a lines of file until /n or the end of file and return that as string
 **/
 fun readline(stream:InputStream):String{
     val result= ByteArrayOutputStream()
@@ -103,15 +115,13 @@ fun readPfmImage(stream:InputStream): HdrImage{
 
     // Now read all the Color of each pixel in result
     val result=HdrImage(dimensions[0],dimensions[1])
-    val range = 0 until dimensions[1]
-    for(y in range.reversed()){
+    for(y in dimensions[1]-1 downTo 0){
         for (x in 0 until  dimensions[0]){
-           for (i in 0 until 3) {
                val r = readFloat(stream, endianness)
                val g= readFloat(stream,endianness)
                val b= readFloat(stream,endianness)
-               result.setPixel(x,y,Color(r,g,b))
-           }
+               result.setPixel(x,y, Color(r,g,b))
+
 
         }
     }

@@ -110,11 +110,11 @@ class HdrImage (var width: Int,var height: Int) {
         for(y in 0 until this.height){
             for(x in 0 until this.width){
                 val curColor = this.getPixel(x,y)
-                val red = 255 * curColor.r.pow(1/gamma).toInt()
-                val green = 255 * curColor.g.pow(1/gamma).toInt()
-                val blue = 255 * curColor.b.pow(1/gamma).toInt()
+                val red = (255 * curColor.r.pow(1/gamma)).toInt()
+                val green = (255 * curColor.g.pow(1/gamma)).toInt()
+                val blue = (255 * curColor.b.pow(1/gamma)).toInt()
 
-                val rgb = (red shl 16) or (green shl 8) or blue
+                val rgb = (red shl 16) + (green shl 8) + blue
                 bufferedImage.setRGB(x, y, rgb)
             }
         }
