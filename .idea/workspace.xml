@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/InvalidPfmFileFormat.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Color.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ReadHdrFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ReadHdrFunctions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +25,13 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -34,7 +40,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2e2b3BAiC16KeTkdalCOuXxyVbk" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />

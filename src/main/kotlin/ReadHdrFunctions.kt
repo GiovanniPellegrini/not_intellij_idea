@@ -1,23 +1,16 @@
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import javax.swing.plaf.InputMapUIResource
-
-class InvalidPfmFileFormat(message: String) : Exception("prova exception")
 
 
 /**
  *These functions are used to read a PFM file.
  * The function readLine codified every line of the file in a string.
  * parseImageFile returns the size of Hdr image
- * parseendianness returns the endianness (if >0 BE, if <0 LE)
+ * parseEndianness returns the endianness (if >0 BE, if <0 LE)
  * Then readPfmImage codified all the information and return an HDR array of colors, thanks to the readFloat function
  */
-
-
-
 
 /**
  * Return a Floating-point number from an array of 4 bytes for a given Endianness
@@ -42,10 +35,10 @@ Read a lines of file until /n or the end of file and return that as string
 fun readline(stream:InputStream):String{
     val result= ByteArrayOutputStream()
     while (true) {
-        val curbyte=stream.read()
-        if (curbyte==-1 || curbyte== '\n'.code)
+        val curByte=stream.read()
+        if (curByte==-1 || curByte== '\n'.code)
             break
-        result.write(curbyte)
+        result.write(curByte)
     }
     return result.toString("Ascii")
 }
@@ -95,7 +88,7 @@ fun parseEndianness(line: String): ByteOrder {
 }
 
 /**
- * Read a Pfm image
+ * Create an HdrImage from a PFM stream
  */
 fun readPfmImage(stream:InputStream): HdrImage{
 
@@ -106,11 +99,10 @@ fun readPfmImage(stream:InputStream): HdrImage{
     // Read width and length and save in dimensions
     val imageSize=readline(stream)
     val dimensions =parseImageSize(imageSize)
-    println("dimensioni immagine: ${dimensions[0]} x ${dimensions[1]}")
 
     //read endianness line and save in endianness
-    val endiannessline= readline(stream)
-    val endianness=parseEndianness(endiannessline)
+    val endiannessLine= readline(stream)
+    val endianness=parseEndianness(endiannessLine)
 
 
     // Now read all the Color of each pixel in result
@@ -121,8 +113,6 @@ fun readPfmImage(stream:InputStream): HdrImage{
                val g= readFloat(stream,endianness)
                val b= readFloat(stream,endianness)
                result.setPixel(x,y, Color(r,g,b))
-
-
         }
     }
     return result

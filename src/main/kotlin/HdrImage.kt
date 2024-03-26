@@ -1,10 +1,8 @@
 import java.awt.image.BufferedImage
 import java.io.*
-import java.lang.Math.pow
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.imageio.ImageIO
-import kotlin.math.log
 import kotlin.math.*
 
 
@@ -15,7 +13,7 @@ fun clamp(x:Float):Float{
 /**
  * Class of HDR image
  */
-class HdrImage (var width: Int,var height: Int) {
+class HdrImage (var width: Int, var height: Int) {
     /**
      * Initialize image with dimension width*height
      */
@@ -76,7 +74,7 @@ class HdrImage (var width: Int,var height: Int) {
      * Calculate the average luminosity using the logarithmic average formula.
      */
     fun averageLuminosity(delta: Float =1e-10F):Float{
-        var sum:Float= 0.0F
+        var sum= 0.0f
         for (i in 0 until  pixels.size ){
             sum+= log10(delta+pixels[i].luminosity())
         }
@@ -95,7 +93,7 @@ class HdrImage (var width: Int,var height: Int) {
     }
 
     /**
-     * Each value of color is clamped from 0 to 1,  to treat luminous spots
+     * Each value of color is clamped from 0 to 1, to treat luminous spots
      */
     fun clampImage(){
         for(pixel in pixels){
@@ -105,7 +103,10 @@ class HdrImage (var width: Int,var height: Int) {
         }
     }
 
-    fun writeLdrImage(format: String, gamma:Float, outputfilename: String){
+    /**
+     * convert from HDR to LDR and saves on disk the image
+     */
+    fun writeLdrImage(format: String, gamma:Float, outputFilename: String){
         val bufferedImage = BufferedImage(this.width,this.height,BufferedImage.TYPE_INT_RGB)
         for(y in 0 until this.height){
             for(x in 0 until this.width){
@@ -113,16 +114,15 @@ class HdrImage (var width: Int,var height: Int) {
                 val red = (255 * curColor.r.pow(1/gamma)).toInt()
                 val green = (255 * curColor.g.pow(1/gamma)).toInt()
                 val blue = (255 * curColor.b.pow(1/gamma)).toInt()
-
                 val rgb = (red shl 16) + (green shl 8) + blue
                 bufferedImage.setRGB(x, y, rgb)
             }
         }
 
-        val outputFile = File(outputfilename)
+        val outputFile = File(outputFilename)
         try {
             ImageIO.write(bufferedImage, format, outputFile)
-            println("image $outputfilename saved")
+            println("image $outputFilename saved")
         } catch (e: Exception) {
             println("Error: image not saved")
         }
