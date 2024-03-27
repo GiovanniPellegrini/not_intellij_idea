@@ -97,8 +97,8 @@ class HdrImageTest {
         img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
 
         img.normalizeImage(1000F, 100F)
-        assert(img.getPixel(0, 0).areCloseColor(Color(0.5e2F, 1.0e2F, 1.5e2F)))
-        assert(img.getPixel(1, 0).areCloseColor(Color(0.5e4F, 1.0e4F, 1.5e4F)))
+        assert(img.getPixel(0, 0).areClose(Color(0.5e2F, 1.0e2F, 1.5e2F)))
+        assert(img.getPixel(1, 0).areClose(Color(0.5e4F, 1.0e4F, 1.5e4F)))
     }
 
     @Test

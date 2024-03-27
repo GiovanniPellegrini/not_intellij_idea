@@ -28,7 +28,7 @@ class ColorTest{
         val delta=1e-6F
         val color1=Color(1F,2F,3F)
         val color2=Color(1F+delta,2F+delta,3F+delta)
-        assert(color1.areCloseColor(color2))
+        assert(color1.areClose(color2))
     }
 
     @Test
