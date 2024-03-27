@@ -90,5 +90,12 @@ data class Vector(var x: Float, var y: Float, var z: Float) {
         z /= norm()
     }
 
+    /**
+     * Method to convert to a normal
+     */
+    fun toNormal(){
+        //da implementare
+    }
+
 }
 

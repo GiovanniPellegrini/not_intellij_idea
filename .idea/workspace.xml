@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Point.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Color.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -57,6 +55,7 @@
     "Gradle.HdrImageTest.executor": "Run",
     "Gradle.HdrImageTest.luminosity.executor": "Run",
     "Gradle.HdrImageTest.writePFM.executor": "Run",
+    "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
     "Gradle.VectorTest.testVectors.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -83,7 +82,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.HdrImageTest">
+  <component name="RunManager" selected="Gradle.VectorTest.VectorsOperationsTest">
     <configuration name="ColorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -132,30 +131,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HdrImageTest.clampImage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;HdrImageTest.clampImage&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="HdrImageTest.writePFM" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -170,6 +145,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;HdrImageTest.writePFM&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="VectorTest.VectorsOperationsTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;VectorTest.VectorsOperationsTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -206,11 +205,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.VectorTest.VectorsOperationsTest" />
         <item itemvalue="Gradle.HdrImageTest" />
         <item itemvalue="Gradle.ColorTest" />
         <item itemvalue="Gradle.VectorTest.testVectors" />
         <item itemvalue="Gradle.HdrImageTest.writePFM" />
-        <item itemvalue="Gradle.HdrImageTest.clampImage" />
       </list>
     </recent_temporary>
   </component>
