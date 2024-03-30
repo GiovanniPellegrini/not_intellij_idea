@@ -22,15 +22,11 @@ data class Color(var r:Float, var g:Float, var b:Float) {
 
 
     /**
-     * Operator == for color class
+     * Operator == for Colors. It uses the are_close funciont
      */
     override fun equals(other: Any?): Boolean { //override operatore logico ==
-        /**
-         * override == function
-         */
-
         if (other is Color) {
-            return ((this.r == other.r) and (this.g == other.g) and (this.b == other.b))
+            return (are_close(r,other.r) and (are_close(this.g,other.g)) and (are_close(this.b ,other.b)))
 
         }
         return false

@@ -1,4 +1,6 @@
+import kotlin.math.abs
 import kotlin.math.sqrt
+
 
 /**
  * 3D vector with Float components
@@ -12,7 +14,7 @@ data class Vector(var x: Float, var y: Float, var z: Float) {
      * Print the vector components
      */
     fun print(){
-        println("vec(x=${this.x}, y=${this.y}, z=${this.z}")
+        println("vec(x=${this.x}, y=${this.y}, z=${this.z})")
     }
 
     /**
@@ -23,6 +25,16 @@ data class Vector(var x: Float, var y: Float, var z: Float) {
                 are_close(y,sampleVec.y) &&
                 are_close(z,sampleVec.z))
     }
+    /**
+     * Overloading ==operator for Points. It uses the are_close function
+     */
+    override fun equals(other: Any?): Boolean {
+        if (other is Vector) {
+            return isClose(other)
+        }
+        return false
+    }
+
 
     /**
      * Overloading +operator for the sum of two vectors
