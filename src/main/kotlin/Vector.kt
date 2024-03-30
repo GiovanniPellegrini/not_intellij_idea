@@ -38,7 +38,7 @@ data class Vector(var x: Float, var y: Float, var z: Float) {
     }
 
     /**
-     * Overloading *operator for the products between a scalar and a vector
+     * Overloading * operator for the products between a scalar and a vector
      */
     operator fun times(scalar: Float): Vector{
         return Vector(x*scalar,y*scalar,z*scalar)
@@ -93,8 +93,8 @@ data class Vector(var x: Float, var y: Float, var z: Float) {
     /**
      * Method to convert to a normal
      */
-    fun toNormal(){
-        //da implementare
+    fun toNormal(): Normal{
+        return Normal(x,y,z)
     }
 
 }
