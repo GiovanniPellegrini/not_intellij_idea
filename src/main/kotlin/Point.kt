@@ -1,3 +1,5 @@
+import kotlin.math.abs
+
 data class Point (var x:Float, var y:Float, var z:Float) {
     /**
      * Null constructor
@@ -25,8 +27,46 @@ data class Point (var x:Float, var y:Float, var z:Float) {
         return false
     }
 
+    /**
+     * sum operator overloading between a Point and a Vector (returns a Point)
+     */
     operator fun plus(vec: Vector): Point {
         return Point(x+vec.x,y+vec.y,z+vec.z)
+    }
+
+    /**
+     * minus operator overloading between two Points (returns a Vector)
+     */
+    operator fun minus(p: Point): Vector {
+        return Vector(abs(x-p.x),abs(y-p.y),abs(z-p.z))
+    }
+
+    /**
+     * minus operator overloading between a Point and a Vector (returns a Point)
+     */
+    operator fun minus(v: Vector): Point {
+        return Point(x-v.x,y-v.y,z-v.z)
+    }
+
+    /**
+     * Product operator overloading between a scalar and a point
+     */
+    operator fun times(a: Float): Point {
+        return Point(x*a,y*a,z*a)
+    }
+
+    /**
+     * Returns a copy of the Point but with components multiplied by -1
+     */
+    operator fun unaryMinus(): Point {
+        return Point(-x,-y,-z)
+    }
+
+    /**
+     * converts a Point to a Vector with same components
+     */
+    fun toVec(): Vector {
+        return Vector(x,y,z)
     }
 
 
