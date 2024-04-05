@@ -69,9 +69,6 @@ data class Point (var x:Float, var y:Float, var z:Float) {
         return Vector(x,y,z)
     }
 
-
-
-
 }
 
 
