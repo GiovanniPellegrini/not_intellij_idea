@@ -13,40 +13,40 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
     }
 
     operator fun times(other: Point): Point {
-        val newpoint = Point(
+        val newPoint = Point(
             m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z + m[0, 3],
             m[1, 0] * other.x + m[1, 1] * other.y + m[1, 2] * other.z + m[1, 3],
             m[2, 0] * other.x + m[2, 1] * other.y + m[2, 2] * other.z + m[2, 3]
         )
 
         val a = other.x * m[3, 0] + other.y * m[3, 1] + other.z * m[3, 2] + m[3, 3]
-        if (a == 1F) return newpoint
-        else return Point(newpoint.x / a, newpoint.y / a, newpoint.z / a)
+        if (a == 1F) return newPoint
+        else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
     }
 
 
     operator fun times(other: Vector): Vector {
-        val newvector = Vector(
+        val newVector = Vector(
             m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z + m[0, 3],
             m[1, 0] * other.x + m[1, 1] * other.y + m[1, 2] * other.z + m[1, 3],
             m[2, 0] * other.x + m[2, 1] * other.y + m[2, 2] * other.z + m[2, 3]
         )
 
-        return newvector
+        return newVector
     }
      operator fun times(other:Normal):Normal {
-         val newnormal = Normal(
+         val newNormal = Normal(
              invm[0, 0] * other.x + invm[0, 1] * other.y + invm[0, 2] * other.z + invm[0, 3],
              invm[1, 0] * other.x + invm[1, 1] * other.y + invm[1, 2] * other.z + invm[1, 3],
              invm[2, 0] * other.x + invm[2, 1] * other.y + invm[2, 2] * other.z + invm[2, 3]
          )
-         return newnormal
+         return newNormal
      }
 }
 
 
 
- class Traslation(): Transformation(HomMatrix(),HomMatrix()) {
+ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
      constructor(vec: Vector):this(){
          m[0,3]=vec.x
          m[1,3]=vec.y

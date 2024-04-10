@@ -6,6 +6,9 @@ data class HomMatrix(var elements: FloatArray) {
         require(elements.size == 16) { "A homogeneous matrix must be 4×4" }
     }
 
+    /**
+     * constructor of the identity matrix
+     */
     constructor() : this(
         floatArrayOf(
             1.0f, 0.0f, 0.0f, 0.0f,
@@ -15,12 +18,18 @@ data class HomMatrix(var elements: FloatArray) {
         )
     )
 
+    /**
+     * constructor of an array with all elements equal to the argument
+     */
     constructor(a:Float): this(){
         for(i in elements.indices){
             elements[i]=a
         }
     }
 
+    /**
+     * verify if two HomMatrix are equals
+     */
     fun isClose(other: HomMatrix): Boolean {
         for(i in 0 until 16){
             if(!are_close(this[i], other[i])) {
@@ -58,8 +67,11 @@ data class HomMatrix(var elements: FloatArray) {
         elements[y * 4 + x] = b
     }
 
+    /**
+     * row by column product between two HomMatrices
+     */
     operator fun times(m: HomMatrix): HomMatrix{
-        val result = HomMatrix(0F)
+        val result = HomMatrix(0f)
         for(i in 0 until 4) {
             for (j in 0 until 4) {
                 for (k in 0 until 4) {
