@@ -15,14 +15,11 @@ data class HomMatrix(var elements: FloatArray) {
         )
     )
 
-    constructor(a : Int): this(
-        floatArrayOf(
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f
-        )
-    )
+    constructor(a:Float): this(){
+        for(i in elements.indices){
+            elements[i]=a
+        }
+    }
 
     fun isClose(other: HomMatrix): Boolean {
         for(i in 0 until 16){
@@ -62,7 +59,7 @@ data class HomMatrix(var elements: FloatArray) {
     }
 
     operator fun times(m: HomMatrix): HomMatrix{
-        val result = HomMatrix(1)
+        val result = HomMatrix(0F)
         for(i in 0 until 4) {
             for (j in 0 until 4) {
                 for (k in 0 until 4) {
