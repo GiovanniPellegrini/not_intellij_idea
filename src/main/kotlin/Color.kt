@@ -22,9 +22,9 @@ data class Color(var r:Float, var g:Float, var b:Float) {
 
 
     /**
-     * Operator == for Colors. It uses the are_close funciont
+     * Operator == for Colors. It uses the are_close function
      */
-    override fun equals(other: Any?): Boolean { //override operatore logico ==
+    override fun equals(other: Any?): Boolean {
         if (other is Color) {
             return (are_close(r,other.r) and (are_close(this.g,other.g)) and (are_close(this.b ,other.b)))
 

@@ -30,9 +30,9 @@ data class HomMatrix(var elements: FloatArray) {
     /**
      * verify if two HomMatrix are equals
      */
-    fun isClose(other: HomMatrix): Boolean {
+    fun isClose(other: HomMatrix,epsilon: Float = 1.0E-5F): Boolean {
         for(i in 0 until 16){
-            if(!are_close(this[i], other[i])) {
+            if(!are_close(this[i], other[i],epsilon)) {
                 return false
             }
         }
@@ -66,16 +66,15 @@ data class HomMatrix(var elements: FloatArray) {
     operator fun set(x: Int,y: Int, b: Float){
         elements[y * 4 + x] = b
     }
-
     /**
      * row by column product between two HomMatrices
      */
-    operator fun times(m: HomMatrix): HomMatrix{
+    operator fun times(other: HomMatrix): HomMatrix{
         val result = HomMatrix(0f)
         for(i in 0 until 4) {
             for (j in 0 until 4) {
                 for (k in 0 until 4) {
-                    result[i,j] += this[i,k] * m[k,j]
+                    result[i,j] += this[i,k] * other[k,j]
                 }
             }
         }

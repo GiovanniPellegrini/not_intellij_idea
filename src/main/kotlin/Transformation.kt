@@ -1,11 +1,29 @@
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
-    fun isConsistent(): Boolean {
+    /**
+     * Check if the product between matrix and its inverse is the identity 4x4
+     */
+    fun isConsistent(eps:Float=1e-5f): Boolean {
         val prod = m * invm
-        return prod.isClose(HomMatrix())
+        return prod.isClose(HomMatrix(), epsilon = eps)
     }
-
+    /**
+     * return Transformation with the matrix and the inverse inverted
+     */
     fun inverse(): Transformation {
         return Transformation(invm, m)
+    }
+
+    /**
+     *verify is two transformation are equals
+     */
+     fun isClose(other: Transformation,epsilon: Float = 1.0E-5F):Boolean{
+        return m.isClose(other.m,epsilon) && invm.isClose(other.invm,epsilon)
+     }
+    override fun equals(other: Any?):Boolean{
+        if (other is Transformation) {
+            return this.isClose(other)
+        }
+        return false
     }
 
     operator fun times(other: Transformation): Transformation {
@@ -46,7 +64,7 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
 
 
- class Translation(): Transformation(HomMatrix(),HomMatrix()) {
+ class Traslation(): Transformation(HomMatrix(),HomMatrix()) {
      constructor(vec: Vector):this(){
          m[0,3]=vec.x
          m[1,3]=vec.y
