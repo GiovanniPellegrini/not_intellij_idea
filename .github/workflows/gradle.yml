@@ -29,3 +29,6 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    - name: make Test with Gradle
+      run: ./gradlew test
