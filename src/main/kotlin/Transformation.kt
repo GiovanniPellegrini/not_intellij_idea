@@ -1,4 +1,9 @@
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
+
+    override fun toString(): String {
+        return "Matrix:\n" + m.toString()  + "Inverse:\n" + invm.toString()
+    }
+
     /**
      * Check if the product between matrix and its inverse is the identity 4x4
      */
@@ -6,6 +11,7 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
         val prod = m * invm
         return prod.isClose(HomMatrix(), epsilon = eps)
     }
+
     /**
      * return Transformation with the matrix and the inverse inverted
      */
@@ -19,6 +25,10 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
      fun isClose(other: Transformation,epsilon: Float = 1.0E-5F):Boolean{
         return m.isClose(other.m,epsilon) && invm.isClose(other.invm,epsilon)
      }
+
+    /**
+     * override for == operator between two Transformations
+     */
     override fun equals(other: Any?):Boolean{
         if (other is Transformation) {
             return this.isClose(other)
@@ -26,10 +36,16 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
         return false
     }
 
+    /**
+     * override for * operator between two Transformations
+     */
     operator fun times(other: Transformation): Transformation {
         return Transformation(m * other.m, other.invm * invm)
     }
 
+    /**
+     * override for * operator between Transformation and Point
+     */
     operator fun times(other: Point): Point {
         val newPoint = Point(
             m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z + m[0, 3],
@@ -42,7 +58,9 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
         else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
     }
 
-
+    /**
+     * override for * operator between Transformation and Vector
+     */
     operator fun times(other: Vector): Vector {
         val newVector = Vector(
             m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z ,
@@ -52,6 +70,10 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
         return newVector
     }
+
+    /**
+     * override for * operator between Transformation and Normal
+     */
      operator fun times(other:Normal):Normal {
          val newNormal = Normal(
              invm[0, 0] * other.x + invm[0, 1] * other.y + invm[0, 2] * other.z ,
@@ -62,10 +84,15 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
      }
 }
 
+/**
+ * Translation class derived from Transformation
+ */
+class Translation(): Transformation(HomMatrix(),HomMatrix()) {
 
-
- class Traslation(): Transformation(HomMatrix(),HomMatrix()) {
-     constructor(vec: Vector):this(){
+    /**
+     * constructor of a translation from a translation vector
+      */
+    constructor(vec: Vector):this(){
          m[0,3]=vec.x
          m[1,3]=vec.y
          m[2,3]=vec.z

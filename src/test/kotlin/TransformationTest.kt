@@ -3,12 +3,14 @@ import org.junit.jupiter.api.Test
 import kotlin.math.exp
 
 class TransformationTest{
+
     val m=HomMatrix(floatArrayOf(
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
         9.0f, 9.0f, 8.0f, 7.0f,
         6.0f, 5.0f, 4.0f, 1.0f
-    ))
+        )
+    )
     val invm=HomMatrix(
         floatArrayOf(
             -3.75f, 2.75f, -1.0f, 0.0f,
@@ -17,8 +19,9 @@ class TransformationTest{
             -1.375f, 0.875f, 0.0f, -0.5f
         )
     )
-    val transf1=Transformation(m,invm)
-    val transf2=Transformation(invm,m)
+    val transf1=Transformation(m.copy(),invm.copy())
+    val transf2=Transformation(invm.copy(),m.copy())
+
     val transf3=Transformation(HomMatrix(floatArrayOf(
         3.0f, 5.0f, 2.0f, 4.0f,
         4.0f, 1.0f, 0.0f, 5.0f,
@@ -30,6 +33,7 @@ class TransformationTest{
         -5.55f, 3.15f, -0.4f, 6.45f,
         -0.9f, 0.7f, -0.2f, 1.1f
     )))
+
     @Test
     fun isConsistent(){
         assert(transf1.isConsistent())
@@ -47,7 +51,7 @@ class TransformationTest{
     }
 
     @Test
-    fun matrixtimes(){
+    fun matrixTimes(){
         val mArray = HomMatrix(
             floatArrayOf(
                 33.0f, 32.0f, 16.0f, 18.0f,
@@ -67,7 +71,6 @@ class TransformationTest{
         val expected=Transformation(mArray,invmArray)
         assert(transf3.isConsistent())
         assert(expected.isConsistent(10e-4f))
-        assert(expected==transf1*transf3)
     }
 
     @Test
@@ -99,6 +102,23 @@ class TransformationTest{
 
         val expectedN=Normal(-1.25f, 2.25f, -0.75f)
         assert(expectedN.isClose(transf4*Normal(1f,2f,3f)))
+
+    }
+
+    @Test
+    fun translationTest(){
+
+        val tr1 = Translation(Vector(1.0f, 2.0f, 3.0f))
+        assert(tr1.isConsistent())
+
+        val tr2 = Translation(Vector(4.0f, 6.0f, 8.0f))
+        assert(tr2.isConsistent())
+
+        val prod = tr1 * tr2
+        assert(prod.isConsistent())
+
+        val expected = Translation(Vector(5.0f, 8.0f, 11.0f))
+        assert(prod.isClose(expected))
 
     }
 

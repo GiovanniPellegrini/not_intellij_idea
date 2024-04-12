@@ -28,6 +28,19 @@ data class HomMatrix(var elements: FloatArray) {
     }
 
     /**
+     * returns a string with matrix element
+     */
+    override fun toString(): String {
+
+        val mat = "${this[0, 0]} ${this[0, 1]} ${this[0, 2]} ${this[0, 3]}\n" +
+                "${this[1, 0]} ${this[1, 1]} ${this[1, 2]} ${this[1, 3]}\n" +
+                "${this[2, 0]} ${this[2, 1]} ${this[2, 2]} ${this[2, 3]}\n" +
+                "${this[3, 0]} ${this[3,1]} ${this[3, 2]} ${this[3, 3]}\n"
+
+        return mat
+    }
+
+    /**
      * verify if two HomMatrix are equals
      */
     fun isClose(other: HomMatrix,epsilon: Float = 1.0E-5F): Boolean {
@@ -50,7 +63,7 @@ data class HomMatrix(var elements: FloatArray) {
      * get operator overloading with two indexes
      */
     operator fun get(x: Int, y: Int): Float {
-        return elements[x* 4 + y]
+        return elements[x * 4 + y]
     }
 
     /**
