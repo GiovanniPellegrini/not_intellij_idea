@@ -45,18 +45,18 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
     operator fun times(other: Vector): Vector {
         val newVector = Vector(
-            m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z + m[0, 3],
-            m[1, 0] * other.x + m[1, 1] * other.y + m[1, 2] * other.z + m[1, 3],
-            m[2, 0] * other.x + m[2, 1] * other.y + m[2, 2] * other.z + m[2, 3]
+            m[0, 0] * other.x + m[0, 1] * other.y + m[0, 2] * other.z ,
+            m[1, 0] * other.x + m[1, 1] * other.y + m[1, 2] * other.z ,
+            m[2, 0] * other.x + m[2, 1] * other.y + m[2, 2] * other.z
         )
 
         return newVector
     }
      operator fun times(other:Normal):Normal {
          val newNormal = Normal(
-             invm[0, 0] * other.x + invm[0, 1] * other.y + invm[0, 2] * other.z + invm[0, 3],
-             invm[1, 0] * other.x + invm[1, 1] * other.y + invm[1, 2] * other.z + invm[1, 3],
-             invm[2, 0] * other.x + invm[2, 1] * other.y + invm[2, 2] * other.z + invm[2, 3]
+             invm[0, 0] * other.x + invm[0, 1] * other.y + invm[0, 2] * other.z ,
+             invm[1, 0] * other.x + invm[1, 1] * other.y + invm[1, 2] * other.z ,
+             invm[2, 0] * other.x + invm[2, 1] * other.y + invm[2, 2] * other.z
          )
          return newNormal
      }

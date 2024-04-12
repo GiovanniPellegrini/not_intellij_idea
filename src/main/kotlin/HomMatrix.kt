@@ -50,7 +50,7 @@ data class HomMatrix(var elements: FloatArray) {
      * get operator overloading with two indexes
      */
     operator fun get(x: Int, y: Int): Float {
-        return elements[y * 4 + x]
+        return elements[x* 4 + y]
     }
 
     /**
@@ -64,7 +64,7 @@ data class HomMatrix(var elements: FloatArray) {
      * set operator overloading with two indexes
      */
     operator fun set(x: Int,y: Int, b: Float){
-        elements[y * 4 + x] = b
+        elements[x * 4 + y] = b
     }
     /**
      * row by column product between two HomMatrices

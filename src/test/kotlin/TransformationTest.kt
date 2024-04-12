@@ -47,7 +47,7 @@ class TransformationTest{
     }
 
     @Test
-    fun times(){
+    fun matrixtimes(){
         val mArray = HomMatrix(
             floatArrayOf(
                 33.0f, 32.0f, 16.0f, 18.0f,
@@ -67,12 +67,40 @@ class TransformationTest{
         val expected=Transformation(mArray,invmArray)
         assert(transf3.isConsistent())
         assert(expected.isConsistent(10e-4f))
-        println(transf1.m*transf3.m)
-
+        assert(expected==transf1*transf3)
     }
 
+    @Test
+    fun times(){
+        val mArray= HomMatrix(
+            floatArrayOf(
+                1.0f, 2.0f, 3.0f, 4.0f,
+                5.0f, 6.0f, 7.0f, 8.0f,
+                9.0f, 9.0f, 8.0f, 7.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
+            )
+        )
+        val invmArray=HomMatrix(
+            floatArrayOf(
+                -3.75f, 2.75f, -1.0f, 0.0f,
+                5.75f, -4.75f, 2.0f, 1.0f,
+                -2.25f, 2.25f, -1.0f, -2.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
+            )
+        )
+        val transf4=Transformation(mArray,invmArray)
+        assert(transf4.isConsistent())
 
+        val expectedV=Vector(14f,38f,51f)
+        assert(expectedV.isClose(transf4*Vector(1f,2f,3f)))
 
+        val expectedP=Point(18f,46f,58f)
+        assert(expectedP.isClose(transf4*Point(1f,2f,3f)))
+
+        val expectedN=Normal(-1.25f, 2.25f, -0.75f)
+        assert(expectedN.isClose(transf4*Normal(1f,2f,3f)))
+
+    }
 
 
 
