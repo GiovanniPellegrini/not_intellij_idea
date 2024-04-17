@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/InvalidPfmFileFormat.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ReadHdrFunctions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ReadHdrFunctions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/TransformationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/TransformationTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
   </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
@@ -29,11 +34,48 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="geometry" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOLccSW85q6Pjf&quot;,
+        &quot;number&quot;: 1
+      },
+      &quot;lastSeen&quot;: 1712743983019
+    }
+  ]
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/GiovanniPellegrini/not_intellij_idea.git&quot;,
+    &quot;accountId&quot;: &quot;e7f33b2e-d52a-4467-b716-647568d991d7&quot;
+  },
+  &quot;editorReviewEnabled&quot;: false
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -47,29 +89,59 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.HdrImageTest.clampImage.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.luminosity.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.writePFM.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.ColorTest.executor": "Run",
+    "Gradle.HdrImageTest.clampImage.executor": "Run",
+    "Gradle.HdrImageTest.executor": "Run",
+    "Gradle.HdrImageTest.luminosity.executor": "Run",
+    "Gradle.HdrImageTest.writePFM.executor": "Run",
+    "Gradle.HomMatrixTest.executor": "Run",
+    "Gradle.HomMatrixTest.getSetTests.executor": "Run",
+    "Gradle.HomMatrixTest.isCloseTest.executor": "Run",
+    "Gradle.HomMatrixTest.productTest.executor": "Run",
+    "Gradle.NormalTest.executor": "Run",
+    "Gradle.PointTest.testPoint.executor": "Run",
+    "Gradle.PointTest.testPointOperations.executor": "Run",
+    "Gradle.TransformationTest.executor": "Run",
+    "Gradle.TransformationTest.inverse.executor": "Run",
+    "Gradle.TransformationTest.isCloseTest.executor": "Run",
+    "Gradle.TransformationTest.isConsistent.executor": "Run",
+    "Gradle.TransformationTest.translationTest.executor": "Run",
+    "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
+    "Gradle.VectorTest.testVectors.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "#1 on geometry",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "kotlin-gradle-user-dirs": [
+      "/Users/lorenzoesposito/.gradle"
+    ]
   }
-}</component>
-  <component name="RunManager" selected="Gradle.HdrImageTest.writePFM">
-    <configuration name="HdrImageTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.TransformationTest">
+    <configuration name="TransformationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -82,7 +154,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;HdrImageTest&quot;" />
+            <option value="&quot;TransformationTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -93,7 +165,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HdrImageTest.clampImage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TransformationTest.inverse" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -106,7 +178,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;HdrImageTest.clampImage&quot;" />
+            <option value="&quot;TransformationTest.inverse&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -117,7 +189,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HdrImageTest.luminosity" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TransformationTest.isCloseTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -130,7 +202,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;HdrImageTest.luminosity&quot;" />
+            <option value="&quot;TransformationTest.isCloseTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -141,12 +213,12 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HdrImageTest.writePFM" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TransformationTest.isConsistent" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--scan" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -154,7 +226,31 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;HdrImageTest.writePFM&quot;" />
+            <option value="&quot;TransformationTest.isConsistent&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="TransformationTest.translationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;TransformationTest.translationTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -167,17 +263,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.HdrImageTest.writePFM" />
-        <item itemvalue="Gradle.HdrImageTest" />
-        <item itemvalue="Gradle.HdrImageTest.clampImage" />
-        <item itemvalue="Gradle.HdrImageTest.luminosity" />
+        <item itemvalue="Gradle.TransformationTest" />
+        <item itemvalue="Gradle.TransformationTest.translationTest" />
+        <item itemvalue="Gradle.TransformationTest.inverse" />
+        <item itemvalue="Gradle.TransformationTest.isConsistent" />
+        <item itemvalue="Gradle.TransformationTest.isCloseTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-9b16c6e2" />
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
       </set>
     </attachedChunks>
   </component>
@@ -191,6 +289,14 @@
       <updated>1711105420826</updated>
       <workItem from="1711105422780" duration="1689000" />
       <workItem from="1711353860117" duration="10256000" />
+      <workItem from="1711799830231" duration="4098000" />
+      <workItem from="1712239387859" duration="9069000" />
+      <workItem from="1712734474354" duration="5707000" />
+      <workItem from="1712743701202" duration="337000" />
+      <workItem from="1712744081145" duration="1969000" />
+      <workItem from="1712904445837" duration="3391000" />
+      <workItem from="1712909255470" duration="3218000" />
+      <workItem from="1712930807782" duration="4468000" />
     </task>
     <servers />
   </component>

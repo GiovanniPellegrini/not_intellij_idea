@@ -1,0 +1,352 @@
+Index: src/test/kotlin/HomMatrixTest.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.junit.jupiter.api.Assertions.*\nimport org.junit.jupiter.api.Test\n\n\nclass HomMatrixTest{\n    val sampleMat = HomMatrix()\n    val product = sampleMat*sampleMat\n    @Test\n    fun productTest(){\n        assert((sampleMat*sampleMat).isClose(sampleMat))\n    }\n\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/kotlin/HomMatrixTest.kt b/src/test/kotlin/HomMatrixTest.kt
+--- a/src/test/kotlin/HomMatrixTest.kt	(revision 5e2c4388f648fcddfaf2dceb52ee4390e54b6521)
++++ b/src/test/kotlin/HomMatrixTest.kt	(date 1712739329818)
+@@ -4,12 +4,25 @@
+ 
+ class HomMatrixTest{
+     val sampleMat = HomMatrix()
+-    val product = sampleMat*sampleMat
++    val oneMat = HomMatrix(1f)
++
++    @Test
++    fun isCloseTest(){
++        assert(sampleMat.isClose(HomMatrix())){"Error: Matrices are not equal"}
++    }
++
+     @Test
+     fun productTest(){
+         assert((sampleMat*sampleMat).isClose(sampleMat))
+     }
+ 
+-
+-
++    @Test
++    fun getSetTests(){
++        val setMat = HomMatrix(0f)
++        assertEquals(oneMat[1],oneMat[2])
++        assertEquals(oneMat[1,2],oneMat[2,3])
++        setMat[5] = 2f
++        setMat[1,0] = 2.0f
++        assertEquals(setMat[5],setMat[1,0])
++    }
+ }
+\ No newline at end of file
+Index: src/main/kotlin/HomMatrix.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\n * homogeneous 4x4 matrix\n */\ndata class HomMatrix(var elements: FloatArray) {\n    init {\n        require(elements.size == 16) { \"A homogeneous matrix must be 4×4\" }\n    }\n\n    constructor() : this(\n        floatArrayOf(\n            1.0f, 0.0f, 0.0f, 0.0f,\n            0.0f, 1.0f, 0.0f, 0.0f,\n            0.0f, 0.0f, 1.0f, 0.0f,\n            0.0f, 0.0f, 0.0f, 1.0f\n        )\n    )\n\n    constructor(a : Int): this(\n        floatArrayOf(\n            0.0f, 0.0f, 0.0f, 0.0f,\n            0.0f, 0.0f, 0.0f, 0.0f,\n            0.0f, 0.0f, 0.0f, 0.0f,\n            0.0f, 0.0f, 0.0f, 0.0f\n        )\n    )\n\n    fun isClose(other: HomMatrix): Boolean {\n        for(i in 0 until 16){\n            if(!are_close(this[i], other[i])) {\n                return false\n            }\n        }\n        return true\n    }\n\n    /**\n     * get operator overloading with one index\n     */\n    operator fun get(i: Int): Float{\n        return elements[i]\n    }\n\n    /**\n     * get operator overloading with two indexes\n     */\n    operator fun get(x: Int, y: Int): Float {\n        return elements[y * 4 + x]\n    }\n\n    /**\n     * set operator overloading with one index\n     */\n    operator fun set(i: Int, b: Float){\n        elements[i] = b\n    }\n\n    /**\n     * set operator overloading with two indexes\n     */\n    operator fun set(x: Int,y: Int, b: Float){\n        elements[y * 4 + x] = b\n    }\n\n    operator fun times(m: HomMatrix): HomMatrix{\n        val result = HomMatrix(1)\n        for(i in 0 until 4) {\n            for (j in 0 until 4) {\n                for (k in 0 until 4) {\n                    result[i,j] += this[i,k] * m[k,j]\n                }\n            }\n        }\n        return result\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/kotlin/HomMatrix.kt b/src/main/kotlin/HomMatrix.kt
+--- a/src/main/kotlin/HomMatrix.kt	(revision 5e2c4388f648fcddfaf2dceb52ee4390e54b6521)
++++ b/src/main/kotlin/HomMatrix.kt	(date 1712743108870)
+@@ -6,6 +6,9 @@
+         require(elements.size == 16) { "A homogeneous matrix must be 4×4" }
+     }
+ 
++    /**
++     * constructor of the identity matrix
++     */
+     constructor() : this(
+         floatArrayOf(
+             1.0f, 0.0f, 0.0f, 0.0f,
+@@ -15,15 +18,18 @@
+         )
+     )
+ 
+-    constructor(a : Int): this(
+-        floatArrayOf(
+-            0.0f, 0.0f, 0.0f, 0.0f,
+-            0.0f, 0.0f, 0.0f, 0.0f,
+-            0.0f, 0.0f, 0.0f, 0.0f,
+-            0.0f, 0.0f, 0.0f, 0.0f
+-        )
+-    )
++    /**
++     * constructor of an array with all elements equal to the argument
++     */
++    constructor(a:Float): this(){
++        for(i in elements.indices){
++            elements[i]=a
++        }
++    }
+ 
++    /**
++     * verify if two HomMatrix are equals
++     */
+     fun isClose(other: HomMatrix): Boolean {
+         for(i in 0 until 16){
+             if(!are_close(this[i], other[i])) {
+@@ -61,8 +67,11 @@
+         elements[y * 4 + x] = b
+     }
+ 
++    /**
++     * row by column product between two HomMatrices
++     */
+     operator fun times(m: HomMatrix): HomMatrix{
+-        val result = HomMatrix(1)
++        val result = HomMatrix(0f)
+         for(i in 0 until 4) {
+             for (j in 0 until 4) {
+                 for (k in 0 until 4) {
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"21\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 5e2c4388f648fcddfaf2dceb52ee4390e54b6521)
++++ b/.idea/misc.xml	(date 1712743731117)
+@@ -1,5 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$" />
++  </component>
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"414c4467-58ae-48ee-add9-25e79a91f777\" name=\"Changes\" comment=\"\">\n      <change afterPath=\"$PROJECT_DIR$/.idea/.name\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/prova.png\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <task path=\"$PROJECT_DIR$\">\n          <activation />\n        </task>\n        <projects_view />\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"JUnit5 Test Class\" />\n        <option value=\"Kotlin Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;customColor&quot;: &quot;&quot;,\n  &quot;associatedIndex&quot;: 3\n}</component>\n  <component name=\"ProjectId\" id=\"2e2b3BAiC16KeTkdalCOuXxyVbk\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Gradle.ColorTest.executor\": \"Run\",\n    \"Gradle.HdrImageTest.clampImage.executor\": \"Run\",\n    \"Gradle.HdrImageTest.executor\": \"Run\",\n    \"Gradle.HdrImageTest.luminosity.executor\": \"Run\",\n    \"Gradle.HdrImageTest.writePFM.executor\": \"Run\",\n    \"Gradle.NormalTest.executor\": \"Run\",\n    \"Gradle.VectorTest.VectorsOperationsTest.executor\": \"Run\",\n    \"Gradle.VectorTest.testVectors.executor\": \"Run\",\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary\": \"JUnit5\",\n    \"com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5\": \"\",\n    \"git-widget-placeholder\": \"geometry\",\n    \"kotlin-language-version-configured\": \"true\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"project.structure.last.edited\": \"SDKs\",\n    \"project.structure.proportion\": \"0.15\",\n    \"project.structure.side.proportion\": \"0.0\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"CreateTestDialog.Recents.Supers\">\n      <recent name=\"\" />\n    </key>\n    <key name=\"CreateTestDialog.RecentsKey\">\n      <recent name=\"\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Gradle.NormalTest\">\n    <configuration name=\"ColorTest\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" value=\"\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\":test\" />\n            <option value=\"--tests\" />\n            <option value=\"&quot;ColorTest&quot;\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>true</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"HdrImageTest\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" value=\"\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\":test\" />\n            <option value=\"--tests\" />\n            <option value=\"&quot;HdrImageTest&quot;\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>true</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"NormalTest\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" value=\"\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\":test\" />\n            <option value=\"--tests\" />\n            <option value=\"&quot;NormalTest&quot;\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>true</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"VectorTest.VectorsOperationsTest\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" value=\"\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\":test\" />\n            <option value=\"--tests\" />\n            <option value=\"&quot;VectorTest.VectorsOperationsTest&quot;\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>true</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"VectorTest.testVectors\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" value=\"\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\":test\" />\n            <option value=\"--tests\" />\n            <option value=\"&quot;VectorTest.testVectors&quot;\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>true</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Gradle.NormalTest\" />\n        <item itemvalue=\"Gradle.VectorTest.VectorsOperationsTest\" />\n        <item itemvalue=\"Gradle.HdrImageTest\" />\n        <item itemvalue=\"Gradle.ColorTest\" />\n        <item itemvalue=\"Gradle.VectorTest.testVectors\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"414c4467-58ae-48ee-add9-25e79a91f777\" name=\"Changes\" comment=\"\" />\n      <created>1711105420826</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1711105420826</updated>\n      <workItem from=\"1711105422780\" duration=\"1689000\" />\n      <workItem from=\"1711353860117\" duration=\"10256000\" />\n      <workItem from=\"1711799830231\" duration=\"3391000\" />\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5e2c4388f648fcddfaf2dceb52ee4390e54b6521)
++++ b/.idea/workspace.xml	(date 1712743731111)
+@@ -5,13 +5,19 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/prova.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HomMatrixTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HomMatrixTest.kt" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="ExternalProjectsData">
++    <projectState path="$PROJECT_DIR$">
++      <ProjectState />
++    </projectState>
+   </component>
+   <component name="ExternalProjectsManager">
+     <system id="GRADLE">
+@@ -26,14 +32,33 @@
+   <component name="FileTemplateManagerImpl">
+     <option name="RECENT_TEMPLATES">
+       <list>
+-        <option value="JUnit5 Test Class" />
+         <option value="Kotlin Class" />
++        <option value="JUnit5 Test Class" />
+       </list>
+     </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;history&quot;: [
++    {
++      &quot;state&quot;: &quot;OPEN&quot;
++    }
++  ],
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/GiovanniPellegrini/not_intellij_idea.git",
++    "accountId": "e7f33b2e-d52a-4467-b716-647568d991d7"
++  }
++}]]></component>
++  <component name="MarkdownSettingsMigration">
++    <option name="stateVersion" value="1" />
++  </component>
+   <component name="ProjectColorInfo">{
+   &quot;customColor&quot;: &quot;&quot;,
+   &quot;associatedIndex&quot;: 3
+@@ -53,14 +78,20 @@
+     "Gradle.HdrImageTest.executor": "Run",
+     "Gradle.HdrImageTest.luminosity.executor": "Run",
+     "Gradle.HdrImageTest.writePFM.executor": "Run",
++    "Gradle.HomMatrixTest.executor": "Run",
++    "Gradle.HomMatrixTest.getSetTests.executor": "Run",
++    "Gradle.HomMatrixTest.isCloseTest.executor": "Run",
++    "Gradle.HomMatrixTest.productTest.executor": "Run",
+     "Gradle.NormalTest.executor": "Run",
++    "Gradle.PointTest.testPoint.executor": "Run",
++    "Gradle.PointTest.testPointOperations.executor": "Run",
+     "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
+     "Gradle.VectorTest.testVectors.executor": "Run",
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+-    "git-widget-placeholder": "geometry",
++    "git-widget-placeholder": "#1 on geometry",
+     "kotlin-language-version-configured": "true",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.tslint": "true",
+@@ -71,6 +102,11 @@
+     "project.structure.proportion": "0.15",
+     "project.structure.side.proportion": "0.0",
+     "vue.rearranger.settings.migration": "true"
++  },
++  "keyToStringList": {
++    "kotlin-gradle-user-dirs": [
++      "/Users/lorenzoesposito/.gradle"
++    ]
+   }
+ }]]></component>
+   <component name="RecentsManager">
+@@ -81,8 +117,8 @@
+       <recent name="" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Gradle.NormalTest">
+-    <configuration name="ColorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++  <component name="RunManager" selected="Gradle.HomMatrixTest.getSetTests">
++    <configuration name="HomMatrixTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -95,7 +131,7 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;ColorTest&quot;" />
++            <option value="&quot;HomMatrixTest&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -106,7 +142,7 @@
+       <RunAsTest>true</RunAsTest>
+       <method v="2" />
+     </configuration>
+-    <configuration name="HdrImageTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++    <configuration name="HomMatrixTest.getSetTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -119,7 +155,7 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;HdrImageTest&quot;" />
++            <option value="&quot;HomMatrixTest.getSetTests&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -130,7 +166,7 @@
+       <RunAsTest>true</RunAsTest>
+       <method v="2" />
+     </configuration>
+-    <configuration name="NormalTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++    <configuration name="HomMatrixTest.isCloseTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -143,7 +179,7 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;NormalTest&quot;" />
++            <option value="&quot;HomMatrixTest.isCloseTest&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -154,7 +190,7 @@
+       <RunAsTest>true</RunAsTest>
+       <method v="2" />
+     </configuration>
+-    <configuration name="VectorTest.VectorsOperationsTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++    <configuration name="HomMatrixTest.productTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -167,7 +203,7 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;VectorTest.VectorsOperationsTest&quot;" />
++            <option value="&quot;HomMatrixTest.productTest&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -178,7 +214,7 @@
+       <RunAsTest>true</RunAsTest>
+       <method v="2" />
+     </configuration>
+-    <configuration name="VectorTest.testVectors" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++    <configuration name="PointTest.testPointOperations" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -191,7 +227,7 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;VectorTest.testVectors&quot;" />
++            <option value="&quot;PointTest.testPointOperations&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -204,14 +240,22 @@
+     </configuration>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="Gradle.NormalTest" />
+-        <item itemvalue="Gradle.VectorTest.VectorsOperationsTest" />
+-        <item itemvalue="Gradle.HdrImageTest" />
+-        <item itemvalue="Gradle.ColorTest" />
+-        <item itemvalue="Gradle.VectorTest.testVectors" />
++        <item itemvalue="Gradle.HomMatrixTest.getSetTests" />
++        <item itemvalue="Gradle.HomMatrixTest.isCloseTest" />
++        <item itemvalue="Gradle.HomMatrixTest.productTest" />
++        <item itemvalue="Gradle.HomMatrixTest" />
++        <item itemvalue="Gradle.PointTest.testPointOperations" />
+       </list>
+     </recent_temporary>
+   </component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
++        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
++      </set>
++    </attachedChunks>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+@@ -222,7 +266,10 @@
+       <updated>1711105420826</updated>
+       <workItem from="1711105422780" duration="1689000" />
+       <workItem from="1711353860117" duration="10256000" />
+-      <workItem from="1711799830231" duration="3391000" />
++      <workItem from="1711799830231" duration="4098000" />
++      <workItem from="1712239387859" duration="9069000" />
++      <workItem from="1712734474354" duration="5707000" />
++      <workItem from="1712743701202" duration="29000" />
+     </task>
+     <servers />
+   </component>

@@ -8,6 +8,12 @@ data class Color(var r:Float, var g:Float, var b:Float) {
      **/
     constructor() : this(0.0F, 0F, 0.0F);
     /**
+     * Print the 3 components of the color
+     */
+    fun print(){
+        println("Color(r=${this.r}, g=${this.g}, b=${this.b}")
+    }
+    /**
     Sum of two colors
      **/
     operator fun plus(other: Color): Color {
@@ -16,15 +22,11 @@ data class Color(var r:Float, var g:Float, var b:Float) {
 
 
     /**
-     * Operator == for color class
+     * Operator == for Colors. It uses the are_close function
      */
-    override fun equals(other: Any?): Boolean { //override operatore logico ==
-        /**
-         * override == function
-         */
-
+    override fun equals(other: Any?): Boolean {
         if (other is Color) {
-            return ((this.r == other.r) and (this.g == other.g) and (this.b == other.b))
+            return (are_close(r,other.r) and (are_close(this.g,other.g)) and (are_close(this.b ,other.b)))
 
         }
         return false
@@ -33,7 +35,7 @@ data class Color(var r:Float, var g:Float, var b:Float) {
     /**
      * Boolean to understand if two colors are close
      */
-    fun areCloseColor(other: Color): Boolean {
+    fun areClose(other: Color): Boolean {
         return (are_close(r, other.r) &&
                 are_close(g, other.g) &&
                 are_close(b, other.b))
