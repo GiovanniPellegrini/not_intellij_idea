@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 class ImageTracerTest(){
 
     @Test
-    fun testImageTracer(){
+    fun testImageTracer() {
         val image = HdrImage(width = 4, height = 2)
         val camera = PerspectiveCamera(aspectRatio = 2f)
         val tracer = ImageTracer(image = image, camera = camera)
@@ -18,4 +18,5 @@ class ImageTracerTest(){
         for row in range(image.height):
         for col in range(image.width):
         assert image.get_pixel(col, row) == Color(1.0, 2.0, 3.0)*/
+    }
 }
