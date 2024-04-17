@@ -1,5 +1,7 @@
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
+
+    constructor():this(HomMatrix(),HomMatrix())
     override fun toString(): String {
         return "Matrix:\n" + m.toString()  + "Inverse:\n" + invm.toString()
     }
