@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Ray.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/RayTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/TransformationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/TransformationTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +105,7 @@
     "Gradle.PointTest.testPointOperations.executor": "Run",
     "Gradle.RayTest.atTest.executor": "Run",
     "Gradle.RayTest.isCloseTest.executor": "Run",
+    "Gradle.TransformationTest.Test_rotation.executor": "Run",
     "Gradle.TransformationTest.executor": "Run",
     "Gradle.TransformationTest.inverse.executor": "Run",
     "Gradle.TransformationTest.isCloseTest.executor": "Run",
@@ -142,7 +143,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.RayTest.atTest">
+  <component name="RunManager" selected="Gradle.TransformationTest">
     <configuration name="RayTest.atTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -215,7 +216,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TransformationTest.inverse" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TransformationTest.Test_rotation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -228,7 +229,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TransformationTest.inverse&quot;" />
+            <option value="&quot;TransformationTest.Test_rotation&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -265,11 +266,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TransformationTest" />
+        <item itemvalue="Gradle.TransformationTest.Test_rotation" />
         <item itemvalue="Gradle.RayTest.atTest" />
         <item itemvalue="Gradle.RayTest.isCloseTest" />
-        <item itemvalue="Gradle.TransformationTest" />
         <item itemvalue="Gradle.TransformationTest.translationTest" />
-        <item itemvalue="Gradle.TransformationTest.inverse" />
       </list>
     </recent_temporary>
   </component>

@@ -1,3 +1,6 @@
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
 /**
  * homogeneous 4x4 matrix
  */
@@ -25,6 +28,29 @@ data class HomMatrix(var elements: FloatArray) {
         for(i in elements.indices){
             elements[i]=a
         }
+    }
+
+    /**
+     * constructor of a rotation matrix
+     */
+    constructor(v: Vector, theta: Float = 0f) : this() {
+        v.normalize()
+        elements[0] = cos(theta) + v.x.pow(2) * (1 - cos(theta))
+        elements[1] = v.x * v.y*(1-cos(theta))-v.z*sin(theta)
+        elements[2] = v.x*v.z*(1-cos(theta))+v.y* sin(theta)
+        elements[3] = 0f
+        elements[4] = v.y * v.x * (1 - cos(theta)) + v.z * sin(theta)
+        elements[5] =cos(theta)+(v.y.pow(2)*(1-cos(theta)))
+        elements[6] =v.y*v.z*(1-cos(theta))-v.x* sin(theta)
+        elements[7] =0f
+        elements[8] =v.z * v.x * (1 - cos(theta)) - v.y * sin(theta)
+        elements[9] =v.z*v.y*(1-cos(theta))+v.x* sin(theta)
+        elements[10] =cos(theta)+(v.z.pow(2)*(1-cos(theta)))
+        elements[11] =0f
+        elements[12] =0f
+        elements[13] = 0f
+        elements[14] = 0f
+        elements[15] = 1f
     }
 
     /**

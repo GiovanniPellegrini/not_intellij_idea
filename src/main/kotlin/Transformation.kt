@@ -103,3 +103,36 @@ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
      }
 }
 
+/**
+ * Rotation class derived from Transformation
+ */
+class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
+    /**
+     * constructor of a rotation
+     */
+    constructor(vec: Vector, theta: Float = 0f):this(){
+        m = HomMatrix(vec,theta)
+        invm = HomMatrix(vec,-theta)
+    }
+}
+
+/**
+ * scale transformation class derived from Transformation
+ */
+class scalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
+    constructor(sx:Float=1f, sy:Float=1f, sz:Float=1f):this(){
+        m = HomMatrix(floatArrayOf(
+            sx, 0f, 0f, 0f,
+            0f, sy, 0f, 0f,
+            0f, 0f, sz, 0f,
+            0f, 0f, 0f, 1f,
+        ))
+        invm = HomMatrix(floatArrayOf(
+            1f/sx, 0f, 0f, 0f,
+            0f, 1f/sy, 0f, 0f,
+            0f, 0f, 1f/sz, 0f,
+            0f, 0f, 0f, 1f,
+        ))
+    }
+}
+
