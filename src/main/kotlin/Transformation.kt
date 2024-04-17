@@ -121,7 +121,7 @@ class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
 /**
  * scale transformation class derived from Transformation
  */
-class scalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
+class ScalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
     constructor(sx:Float=1f, sy:Float=1f, sz:Float=1f):this(){
         m = HomMatrix(floatArrayOf(
             sx, 0f, 0f, 0f,

@@ -6,7 +6,8 @@ data class Color(var r:Float, var g:Float, var b:Float) {
     /**
     Constructor for black color
      **/
-    constructor() : this(0.0F, 0F, 0.0F);
+    constructor() : this(0.0F, 0F, 0.0F)
+
     /**
      * Print the 3 components of the color
      */

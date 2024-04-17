@@ -4,7 +4,7 @@ data class Ray(var origin: Point,
                var tMin: Float = 1e-5f, var tMax: Float = Float.POSITIVE_INFINITY,
                var depth: Int = 0) {
 
-    fun isClose(other: Ray, epsilon: Float = 1e-5f): Boolean {
+    fun isClose(other: Ray): Boolean {
         return this.origin.isClose(other.origin) && this.dir.isClose(other.dir)
     }
 

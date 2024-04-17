@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.nio.ByteOrder
 
 /**
@@ -13,7 +11,7 @@ fun byteArrayOfInts(vararg ints: Int) =
 
 class HdrImageTest {
 
-    var SampleImage = HdrImage(10, 10)
+    var sampleImage = HdrImage(10, 10)
 
     @Test
     fun getPixel() {
