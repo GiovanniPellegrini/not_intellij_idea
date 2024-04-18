@@ -1,7 +1,10 @@
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
-
     constructor():this(HomMatrix(),HomMatrix())
+
+    /**
+     * print transformation matrices
+     */
     override fun toString(): String {
         return "Matrix:\n" + m.toString()  + "Inverse:\n" + invm.toString()
     }
@@ -110,7 +113,7 @@ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
  */
 class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
     /**
-     * constructor of a rotation
+     * constructor of a rotation, angular parameter theta must be passed un radians
      */
     constructor(vec: Vector, theta: Float = 0f):this(){
         m = HomMatrix(vec,theta)

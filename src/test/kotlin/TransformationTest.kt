@@ -124,7 +124,7 @@ class TransformationTest{
     }
 
     @Test
-    fun RotationTest() {
+    fun rotationTest() {
         val rotx = Rotation(Vector(1f, 0f, 0f), (PI).toFloat())
         val roty = Rotation(Vector(0f, 1f, 0f), (PI).toFloat())
         val rotz = Rotation(Vector(0f, 0f, 1f), (PI).toFloat())
