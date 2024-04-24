@@ -3,9 +3,9 @@ import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class Sphere(val transformation: Transformation):Shape(transformation){
+class Sphere(val transformation: Transformation): Shape{
 
-    override fun rayIntersaction(ray: Ray): HitRecord? {
+    override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay=ray.transformation(this.transformation.inverse())
 
         val origin=invRay.origin.toVec()
@@ -15,9 +15,9 @@ class Sphere(val transformation: Transformation):Shape(transformation){
 
         if(delta<=0) return null
 
-        val deltasqr= sqrt(delta)/4
-        val t1=(-origin*invRay.dir-deltasqr)/a
-        val t2=(-origin*invRay.dir+deltasqr)/a
+        val deltaSqr= sqrt(delta)/4
+        val t1=(-origin*invRay.dir-deltaSqr)/a
+        val t2=(-origin*invRay.dir+deltaSqr)/a
 
         val firstHitT:Float
 
@@ -34,7 +34,7 @@ class Sphere(val transformation: Transformation):Shape(transformation){
         return if (point.toVec()*rayDir<0) normal
         else -normal
     }
-    fun spherePointtoUV(point: Point):Vec2d{
+    fun spherePointToUV(point: Point):Vec2d{
         var u:Float=atan2(point.y,point.x)/(2* PI.toFloat())
         if (u<0) u=u+1
         return Vec2d(u, acos(point.z)/ PI.toFloat() )

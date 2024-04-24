@@ -4,7 +4,7 @@
 class HitRecord(private val worldPoint: Point,
                 private val normal: Normal,
                 private val surfacePoint: Vec2d,
-                private val t: Float,val ray: Ray){
+                val t: Float,val ray: Ray){
 
     /**
      * verify if two HitRecord are equals
