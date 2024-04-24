@@ -5,6 +5,9 @@ import kotlin.math.sqrt
 
 class Sphere(val transformation: Transformation): Shape{
 
+    //i don't know if defining a translation with 0 vector has sense...
+    constructor(): this(Translation(Vector(0f,0f,0f)))
+
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay=ray.transformation(this.transformation.inverse())
 
@@ -19,24 +22,28 @@ class Sphere(val transformation: Transformation): Shape{
         val t1=(-origin*invRay.dir-deltaSqr)/a
         val t2=(-origin*invRay.dir+deltaSqr)/a
 
-        val firstHitT:Float
 
+        val firstHitT:Float = if(invRay.tMin<t1 && t1<invRay.tMax) t1
+        else if (invRay.tMin<t2 && t2<invRay.tMax) {
+            t2
+        } else return null
 
-        if(invRay.tMin<t1 && t1<invRay.tMax) firstHitT=t1
-        else if (invRay.tMin<t1 && t1<invRay.tMax) firstHitT=t2
-        else return null
-
-        TODO("to be implemented")
+        val hitPoint = invRay.at(firstHitT)
+        return HitRecord(worldPoint=this.transformation * hitPoint,
+                         normal=this.transformation * sphereNormal(hitPoint, ray.dir),
+                         surfacePoint= spherePointToUV(hitPoint),
+                         t=firstHitT,
+                         ray=ray)
     }
 
-    fun sphereNormal(point: Point,rayDir:Vector):Normal{
-        val normal=Normal(point.x,point.y,point.z)
-        return if (point.toVec()*rayDir<0) normal
+    fun sphereNormal(point: Point, rayDir:Vector): Normal{
+        val normal = Normal(point.x,point.y,point.z)
+        return if (point.toVec()*rayDir<0f) normal
         else -normal
     }
-    fun spherePointToUV(point: Point):Vec2d{
-        var u:Float=atan2(point.y,point.x)/(2* PI.toFloat())
-        if (u<0) u=u+1
+    fun spherePointToUV(point: Point): Vec2d{
+        var u:Float=atan2(point.y,point.x)/(2 * PI.toFloat())
+        if (u<0) u += 1
         return Vec2d(u, acos(point.z)/ PI.toFloat() )
     }
 }

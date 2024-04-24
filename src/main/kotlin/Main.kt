@@ -1,17 +1,17 @@
-import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import javax.imageio.ImageIO
-import javax.imageio.ImageIO.*
 import kotlin.math.abs
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.arguments.argument
 
-/* Main arguments:
+
+/** Main arguments:
     1. PFM input file
     2. parameter "a"
     3. gamma value
     3. png file output name
- */
+ **/
 fun main(args: Array<String>){
     if (args.size != 4) {
         throw IOException(
@@ -66,3 +66,4 @@ fun main(args: Array<String>){
 fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
     return (abs(x-y)<epsilon)
 }
+

@@ -1,6 +1,6 @@
-
+/**
+ * abstract class for shape
+ */
 interface Shape {
-    fun rayIntersection(ray:Ray): HitRecord?{
-        TODO("DA IMPLEMENTARE")
-    }
+    fun rayIntersection(ray:Ray): HitRecord?
 }
