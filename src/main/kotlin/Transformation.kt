@@ -1,5 +1,10 @@
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
+    constructor():this(HomMatrix(),HomMatrix())
+
+    /**
+     * print transformation matrices
+     */
     override fun toString(): String {
         return "Matrix:\n" + m.toString()  + "Inverse:\n" + invm.toString()
     }
@@ -101,5 +106,38 @@ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
          invm[1,3]=-vec.y
          invm[2,3]=-vec.z
      }
+}
+
+/**
+ * Rotation class derived from Transformation
+ */
+class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
+    /**
+     * constructor of a rotation, angular parameter theta must be passed un radians
+     */
+    constructor(vec: Vector, theta: Float = 0f):this(){
+        m = HomMatrix(vec,theta)
+        invm = HomMatrix(vec,-theta)
+    }
+}
+
+/**
+ * scale transformation class derived from Transformation
+ */
+class scalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
+    constructor(sx:Float=1f, sy:Float=1f, sz:Float=1f):this(){
+        m = HomMatrix(floatArrayOf(
+            sx, 0f, 0f, 0f,
+            0f, sy, 0f, 0f,
+            0f, 0f, sz, 0f,
+            0f, 0f, 0f, 1f,
+        ))
+        invm = HomMatrix(floatArrayOf(
+            1f/sx, 0f, 0f, 0f,
+            0f, 1f/sy, 0f, 0f,
+            0f, 0f, 1f/sz, 0f,
+            0f, 0f, 0f, 1f,
+        ))
+    }
 }
 

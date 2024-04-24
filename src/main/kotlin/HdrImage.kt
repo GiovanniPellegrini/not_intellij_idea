@@ -17,7 +17,7 @@ class HdrImage (var width: Int, var height: Int) {
     /**
      * Initialize image with dimension width*height
      */
-    var pixels = Array(width * height) { Color(1.0F, 1.0F, 1.0F) }
+    private var pixels = Array(width * height) { Color(1.0F, 1.0F, 1.0F) }
 
     /**
      * Get color of a pixel
@@ -29,14 +29,14 @@ class HdrImage (var width: Int, var height: Int) {
     /**
      * Set Color of a pixel
      */
-    fun setPixel(x: Int, y: Int, new_color: Color) {
-        pixels[y * width + x] = new_color
+    fun setPixel(x: Int, y: Int, newColor: Color) {
+        pixels[y * width + x] = newColor
     }
 
     /**
      * convert and write Float32 into a bytearray
      */
-    fun writeFloat(stream: OutputStream, value : Float, order: ByteOrder){
+    private fun writeFloat(stream: OutputStream, value : Float, order: ByteOrder){
 
         val bytes = ByteBuffer.allocate(4).putFloat(value).array() /* ByteArray written in Big Endian */
 
@@ -75,8 +75,8 @@ class HdrImage (var width: Int, var height: Int) {
      */
     fun averageLuminosity(delta: Float =1e-10F):Float{
         var sum= 0.0f
-        for (i in 0 until  pixels.size ){
-            sum+= log10(delta+pixels[i].luminosity())
+        for (element in pixels){
+            sum+= log10(delta+ element.luminosity())
         }
         return 10.0.pow(sum / pixels.size.toDouble()).toFloat()
     }
@@ -87,7 +87,7 @@ class HdrImage (var width: Int, var height: Int) {
     **/
     fun normalizeImage(factor:Float,  luminosity: Float?=null){
         val lum=luminosity ?: averageLuminosity()
-        for(i in 0 until  pixels.size){
+        for(i in pixels.indices){
             pixels[i]=pixels[i].scalarProduct(factor/lum)
         }
     }

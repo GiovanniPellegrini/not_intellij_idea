@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream
 import java.nio.ByteOrder
 
 /**
- * Test class for auxiliary functions of HDRimage
+ * Test class for auxiliary functions of HdrImage
  */
-class Read_Hdr_functionsTest{
+class ReadHdrFunctionsTest{
 
     @Test
     fun readFloat() {}

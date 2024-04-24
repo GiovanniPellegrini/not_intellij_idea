@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import kotlin.math.PI
 import kotlin.math.exp
 
 class TransformationTest{
@@ -19,8 +20,8 @@ class TransformationTest{
             -1.375f, 0.875f, 0.0f, -0.5f
         )
     )
-    val transf1=Transformation(m.copy(),invm.copy())
-    val transf2=Transformation(invm.copy(),m.copy())
+    val transf1=Transformation(m.copy(), invm.copy())
+    val transf2=Transformation(invm.copy(), m.copy())
 
     val transf3=Transformation(HomMatrix(floatArrayOf(
         3.0f, 5.0f, 2.0f, 4.0f,
@@ -122,16 +123,40 @@ class TransformationTest{
 
     }
 
+    @Test
+    fun rotationTest() {
+        val rotx = Rotation(Vector(1f, 0f, 0f), (PI).toFloat())
+        val roty = Rotation(Vector(0f, 1f, 0f), (PI).toFloat())
+        val rotz = Rotation(Vector(0f, 0f, 1f), (PI).toFloat())
+
+        val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = (2 * PI).toFloat())
+
+        //rotation x PI * null vector
+        assertTrue((rotx * Vector()).isClose(Vector()))
+
+        //rotation x PI * (4,9,11) == (4-9,-11)
+        assertTrue((rotx * Vector(4f, 9f, 11f)).isClose(Vector(4f, -9f, -11f)))
+        println("rotx(PI)*${Vector(4f, 9f, 11f)}")
+        println(rotx * Vector(4f, 9f, 11f))
+
+        //rotation y PI * null vector
+        assertTrue((roty * Vector()).isClose(Vector()))
+
+        assertTrue((roty * Vector(7f, 21f, 7f)).isClose(Vector(-7f, 21f, -7f)))
 
 
+        assertTrue((rotz * Vector()).isClose(Vector()))
 
+        assertTrue((rotz * Vector(3f, 7f, 4f)).isClose(Vector(-3f, -7f, 4f)))
 
+        //rotation 2pi
+        assertTrue((rotIDz * Vector(6f, 1f, 9f)).isClose(Vector(6f, 1f, 9f)))
+    }
 
-
-
-
-
-
-
+    @Test
+    fun scalingTransformationTest() {
+        val sc:Transformation= scalingTransformation(2f,3f,4f)
+        assertTrue((sc*Vector(5f, 7f, 11f)).isClose(Vector(10f, 21f, 44f)))
+    }
 
 }

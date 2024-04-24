@@ -1,11 +1,6 @@
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.math.abs
-
 
 class ColorTest{
-
-
 
     @Test
     fun equal(){
@@ -13,8 +8,6 @@ class ColorTest{
         val color2=Color(1F,2F,3F)
         assert(color1==color2)
     }
-
-
 
     @Test
     fun sum(){

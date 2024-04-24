@@ -3,8 +3,8 @@ import org.junit.jupiter.api.Test
 
 
 class HomMatrixTest{
-    val sampleMat = HomMatrix()
-    val oneMat = HomMatrix(1f)
+    private val sampleMat = HomMatrix()
+    private val oneMat = HomMatrix(1f)
 
     @Test
     fun isCloseTest(){
