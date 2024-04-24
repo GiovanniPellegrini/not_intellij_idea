@@ -26,9 +26,9 @@ class Sphere(val transformation: Transformation):Shape(transformation){
         else if (invRay.tMin<t1 && t1<invRay.tMax) firstHitT=t2
         else return null
 
-        val
-
+        TODO("to be implemented")
     }
+
     fun sphereNormal(point: Point,rayDir:Vector):Normal{
         val normal=Normal(point.x,point.y,point.z)
         return if (point.toVec()*rayDir<0) normal
