@@ -83,9 +83,11 @@ data class Normal(var x: Float, var y: Float, var z: Float) {
     /**
      * Method for normalizing the Vector
      */
-    fun normalize() {
-        x /= norm()
-        y /= norm()
-        z /= norm()
+    fun normalize (): Normal {
+        val norm = norm()
+        x /= norm
+        y /= norm
+        z /= norm
+        return Normal(x,y,z)
     }
 }

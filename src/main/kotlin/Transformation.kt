@@ -125,17 +125,17 @@ class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
  * scale transformation class derived from Transformation
  */
 class scalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
-    constructor(sx:Float=1f, sy:Float=1f, sz:Float=1f):this(){
+    constructor(s: Vector = Vector(1f,1f,1f)):this(){
         m = HomMatrix(floatArrayOf(
-            sx, 0f, 0f, 0f,
-            0f, sy, 0f, 0f,
-            0f, 0f, sz, 0f,
+            s.x, 0f, 0f, 0f,
+            0f, s.y, 0f, 0f,
+            0f, 0f, s.z, 0f,
             0f, 0f, 0f, 1f,
         ))
         invm = HomMatrix(floatArrayOf(
-            1f/sx, 0f, 0f, 0f,
-            0f, 1f/sy, 0f, 0f,
-            0f, 0f, 1f/sz, 0f,
+            1f/s.x, 0f, 0f, 0f,
+            0f, 1f/s.y, 0f, 0f,
+            0f, 0f, 1f/s.z, 0f,
             0f, 0f, 0f, 1f,
         ))
     }
