@@ -125,11 +125,11 @@ class TransformationTest{
 
     @Test
     fun rotationTest() {
-        val rotx = Rotation(Vector(1f, 0f, 0f), (PI).toFloat())
-        val roty = Rotation(Vector(0f, 1f, 0f), (PI).toFloat())
-        val rotz = Rotation(Vector(0f, 0f, 1f), (PI).toFloat())
+        val rotx = Rotation(Vector(1f, 0f, 0f), 180f)
+        val roty = Rotation(Vector(0f, 1f, 0f), 180f)
+        val rotz = Rotation(Vector(0f, 0f, 1f), 180f)
 
-        val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = (2 * PI).toFloat())
+        val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = 2f * 180f)
 
         //rotation x PI * null vector
         assertTrue((rotx * Vector()).isClose(Vector()))

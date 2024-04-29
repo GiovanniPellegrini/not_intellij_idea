@@ -118,7 +118,7 @@ class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
      * constructor of a rotation, angular parameter theta must be passed in degrees
      */
     constructor(vec: Vector, theta: Float = 0f):this(){
-        val thetaInDegrees = theta * 180f / PI.toFloat()
+        val thetaInDegrees = theta * PI.toFloat() / 180f
         m = HomMatrix(vec,thetaInDegrees)
         invm = HomMatrix(vec,-thetaInDegrees)
     }

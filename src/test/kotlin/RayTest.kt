@@ -25,7 +25,7 @@ class RayTest{
     @Test
     fun transformTest(){
         val ray = Ray(Point(1.0f, 2.0f, 3.0f), Vector(6.0f, 5.0f, 4.0f))
-        val transform = Translation(Vector(10.0f, 11.0f, 12.0f)) * Rotation(Vector(1f,0f,0f),(PI/2).toFloat())
+        val transform = Translation(Vector(10.0f, 11.0f, 12.0f)) * Rotation(Vector(1f,0f,0f),90f)
         val transformed = ray.transformation(transform)
 
         assert(transformed.origin.isClose(Point(11.0f, 8.0f, 14.0f))){"Error1"}
