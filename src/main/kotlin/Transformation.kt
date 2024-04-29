@@ -1,3 +1,5 @@
+import kotlin.math.PI
+
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
     constructor():this(HomMatrix(),HomMatrix())
@@ -113,11 +115,12 @@ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
  */
 class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
     /**
-     * constructor of a rotation, angular parameter theta must be passed un radians
+     * constructor of a rotation, angular parameter theta must be passed in degrees
      */
     constructor(vec: Vector, theta: Float = 0f):this(){
-        m = HomMatrix(vec,theta)
-        invm = HomMatrix(vec,-theta)
+        val thetaInDegrees = theta * 180f / PI.toFloat()
+        m = HomMatrix(vec,thetaInDegrees)
+        invm = HomMatrix(vec,-thetaInDegrees)
     }
 }
 

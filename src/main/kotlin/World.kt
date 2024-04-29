@@ -1,7 +1,11 @@
 /**
  * class that contains all the shapes in the scene
  */
-class World(private var shapes: Array<Shape>) {
+class World(var shapes: Array<Shape>) {
+    /**
+     * empty array constructor
+     */
+    constructor(): this(emptyArray<Shape>())
     /**
      * add a shape to the shape array of World type
      */
