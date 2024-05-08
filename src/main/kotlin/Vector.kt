@@ -4,11 +4,7 @@ import kotlin.math.sqrt
 /**
  * 3D vector with Float components
  */
-data class Vector(var x: Float, var y: Float, var z: Float) {
-    /**
-     * Constructor of the 0 vector
-     */
-    constructor() : this(0.0F, 0F, 0.0F)
+data class Vector(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     /**
      * Print the vector components
      */

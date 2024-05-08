@@ -3,7 +3,7 @@ import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class Sphere(private val transformation: Transformation = Transformation()): Shape{
+class Sphere(val transformation: Transformation = Transformation()): Shape{
     /**
      * evaluates if a ray intersect the sphere and returns the closest intersection to the point of view
      */
@@ -14,6 +14,7 @@ class Sphere(private val transformation: Transformation = Transformation()): Sha
         val d2 = invRay.dir.sqNorm()
         val b = origin.sqNorm()
         val delta = (origin*invRay.dir)*(origin*invRay.dir)-d2*(b-1f)
+
 
         if(delta<=0) return null
 

@@ -155,8 +155,9 @@ class TransformationTest{
 
     @Test
     fun scalingTransformationTest() {
-        val sc:Transformation= scalingTransformation(Vector(2f,3f,4f))
+        val sc:Transformation = scalingTransformation(Vector(2f,3f,4f))
         assertTrue((sc*Vector(5f, 7f, 11f)).isClose(Vector(10f, 21f, 44f)))
     }
+    
 
 }

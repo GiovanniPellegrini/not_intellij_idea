@@ -23,7 +23,7 @@ data class Ray(var origin: Point,
     /**
      * transforms origin and dir type for a given transformation object
      */
-    fun transformation(transformation: Transformation):Ray{
+    fun transformation(transformation: Transformation): Ray{
         return Ray(transformation*origin,transformation*dir, tMin,tMax,depth)
     }
 }

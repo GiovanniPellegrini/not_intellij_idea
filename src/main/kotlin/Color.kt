@@ -73,7 +73,7 @@ data class Color(var r:Float, var g:Float, var b:Float) {
      * Evaluate luminosity of a color with Shirley & Morley formula
      */
     fun luminosity(): Float {
-        return (maxOf(maxOf(r, g), b) + minOf(minOf(r, g), b)) / 2
+        return (maxOf(r, g, b) + minOf(r, g, b)) / 2f
     }
 }
 

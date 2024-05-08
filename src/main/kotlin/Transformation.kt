@@ -89,6 +89,13 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
          )
          return newNormal
      }
+
+    /**
+     * overloading * operator for sphere
+     */
+    operator fun times(other: Sphere): Sphere {
+        return Sphere(this * other.transformation)
+    }
 }
 
 /**

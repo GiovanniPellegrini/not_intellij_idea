@@ -101,7 +101,7 @@ class SphereTest(){
     @Test
     fun testNormal(){
         val sphere = Sphere(transformation=scalingTransformation(Vector(2.0f, 1.0f, 1.0f)))
-        val ray = Ray(origin=Point(1.0f, 1.0f, 0.0f), dir=Vector(-1.0f, -1.0f,0f))
+        val ray = Ray(origin=Point(1.0f, 1.0f, 0.0f), dir=Vector(-1.0f, -1.0f))
         val intersection = sphere.rayIntersection(ray)
         if(intersection is HitRecord){
             intersection.normal.normalize()
@@ -113,12 +113,13 @@ class SphereTest(){
     @Test
     fun testNormalDirection() {
         //scaling with negative numbers reverse its reference system
-        val sphere = Sphere(transformation=scalingTransformation(Vector(-1.0f, -1.0f, -1.0f)))
-        val ray = Ray(origin=Point(0.0f, 2.0f, 0.0f), dir=-Vector(0.0f, -1.0f,0f))
+        val sphere = Sphere(transformation=scalingTransformation(Vector(-1f, -1f, -1f)))
+        val ray = Ray(origin=Point(0.0f, 2.0f, 0.0f), dir=Vector(0.0f, -1.0f,0f))
         val intersection = sphere.rayIntersection(ray)
         if(intersection is HitRecord){
-            assert(intersection.normal.normalize().isClose(Normal(0.0f, 1.0f, 0.0f).normalize()))
+            assert(intersection.normal.normalize().isClose(Normal(0.0f, -1.0f, 0.0f).normalize())){"Error: normal is not correct" }
         }
+
     }
 
 }
