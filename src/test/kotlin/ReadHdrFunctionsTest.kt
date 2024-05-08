@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.nio.ByteOrder
-
 /**
  * Test class for auxiliary functions of HdrImage
  */
@@ -31,6 +30,6 @@ class ReadHdrFunctionsTest{
 
     @Test
     fun readPfmImage(){
-
+        // ? e questa?
     }
 }

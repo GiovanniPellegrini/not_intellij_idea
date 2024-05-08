@@ -1,18 +1,16 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.math.PI
-import kotlin.math.exp
 
 class TransformationTest{
 
-    val m=HomMatrix(floatArrayOf(
+    private val m=HomMatrix(floatArrayOf(
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
         9.0f, 9.0f, 8.0f, 7.0f,
         6.0f, 5.0f, 4.0f, 1.0f
         )
     )
-    val invm=HomMatrix(
+    private val invm = HomMatrix(
         floatArrayOf(
             -3.75f, 2.75f, -1.0f, 0.0f,
             4.375f, -3.875f, 2.0f, -0.5f,
@@ -20,10 +18,10 @@ class TransformationTest{
             -1.375f, 0.875f, 0.0f, -0.5f
         )
     )
-    val transf1=Transformation(m.copy(), invm.copy())
-    val transf2=Transformation(invm.copy(), m.copy())
+    private val transf1 = Transformation(m.copy(), invm.copy())
+    private val transf2 = Transformation(invm.copy(), m.copy())
 
-    val transf3=Transformation(HomMatrix(floatArrayOf(
+    private val transf3 = Transformation(HomMatrix(floatArrayOf(
         3.0f, 5.0f, 2.0f, 4.0f,
         4.0f, 1.0f, 0.0f, 5.0f,
         6.0f, 3.0f, 2.0f, 0.0f,

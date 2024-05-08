@@ -48,7 +48,7 @@ class Sphere(val transformation: Transformation = Transformation()): Shape{
         }
     }
 
-    fun spherePointToUV(point: Point): Vec2d{
+    private fun spherePointToUV(point: Point): Vec2d{
         val u:Float = atan2(point.y,point.x)/(2f * PI.toFloat())
         return if (u>=0){
             Vec2d(u = u, v = acos(point.z)/ PI.toFloat())

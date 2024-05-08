@@ -61,8 +61,9 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
         )
 
         val a = other.x * m[3, 0] + other.y * m[3, 1] + other.z * m[3, 2] + m[3, 3]
-        if (a == 1F) return newPoint
-        else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
+        if (a == 1F) {
+            return newPoint
+        } else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
     }
 
     /**

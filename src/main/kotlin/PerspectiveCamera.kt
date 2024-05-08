@@ -2,7 +2,6 @@
  * derived camera class for perspective projections
  */
 class PerspectiveCamera(private val distance:Float=1F, private val aspectRatio: Float =1F, private val transformation: Transformation=Transformation()):Camera {
-
     /**
      * From 2 coordinates (u,v) returns a ray
      */

@@ -7,13 +7,13 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import java.io.FileOutputStream
 import java.nio.ByteOrder
-import kotlin.math.PI
+
 
 class Tracer: CliktCommand() {
     override fun run() = Unit
 }
 
-class Convert(): CliktCommand() {
+class Convert: CliktCommand() {
     private val args: List<String> by argument().multiple()
     /** Main arguments:
     1. PFM input file
@@ -33,23 +33,23 @@ class Convert(): CliktCommand() {
         }
 
         var aValue: Float
-        var GammaValue: Float
+        var gammaValue: Float
 
         //defining main parameters values
         try {
-            val InputFile = File(args[0])
-            if (!InputFile.name.endsWith(".pfm")) {
+            val inputFile = File(args[0])
+            if (!inputFile.name.endsWith(".pfm")) {
                 throw IllegalArgumentException("First argument must have .pfm extension")
             }
 
             aValue = args[1].toFloat()
-            GammaValue = args[2].toFloat()
-            if (aValue <=0f || GammaValue<=0f){
+            gammaValue = args[2].toFloat()
+            if (aValue <=0f || gammaValue<=0f){
                 throw Exception("parameters 'a' and 'gamma' must be strictly positive")
             }
 
-            val OutputFile = File(args[3])
-            if (!OutputFile.name.endsWith(".png")) {
+            val outputFile = File(args[3])
+            if (!outputFile.name.endsWith(".png")) {
                 throw IllegalArgumentException("Last argument must have .png extension")
             }
         } catch (e: NumberFormatException) {
@@ -60,7 +60,7 @@ class Convert(): CliktCommand() {
                     "- Output .png filename ")
 
             aValue = 1F
-            GammaValue = 1F
+            gammaValue = 1F
         }
 
         val sampleStream = FileInputStream(args[0])
@@ -68,7 +68,7 @@ class Convert(): CliktCommand() {
         sampleImage.normalizeImage(aValue)
         sampleImage.clampImage()
 
-        sampleImage.writeLdrImage("png", GammaValue, "prova.png")
+        sampleImage.writeLdrImage("png", gammaValue, "test.png")
     }
 }
 

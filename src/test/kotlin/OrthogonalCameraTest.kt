@@ -3,11 +3,11 @@ import kotlin.math.PI
 
 class OrthogonalCameraTest {
 
-    val cam=OrthogonalCamera(aspectRatio = 2f)
-    val ray1=cam.fireRay(0f,0f)
-    val ray2=cam.fireRay(0f,1f)
-    val ray3=cam.fireRay(1f,0f)
-    val ray4=cam.fireRay(1f,1f)
+    private val cam = OrthogonalCamera(aspectRatio = 2f)
+    private val ray1 = cam.fireRay(0f,0f)
+    private val ray2 = cam.fireRay(0f,1f)
+    private val ray3 = cam.fireRay(1f,0f)
+    private val ray4 = cam.fireRay(1f,1f)
 
     @Test
     fun parallelRays(){

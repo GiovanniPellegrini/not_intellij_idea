@@ -1,14 +1,14 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.math.pow
-import kotlin.test.assertIsNot
 
 class VectorTest{
 
-    val a = Vector(1.0f, 2.0f, 3.0f)
-    val b = Vector(4.0f, 6.0f, 8.0f)
+    private val a = Vector(1.0f, 2.0f, 3.0f)
+    private val b = Vector(4.0f, 6.0f, 8.0f)
+
     @Test
-    fun VectorsTest() {
+    fun vectorsTest() {
         assert(a.isClose(a))
         assert(a.isClose(b).not())
     }

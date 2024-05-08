@@ -1,10 +1,6 @@
 import kotlin.math.sqrt
 
-data class Normal(var x: Float, var y: Float, var z: Float) {
-    /**
-     * Constructor for the normal with all components 0
-     */
-    constructor() : this(0f,0f,0f)
+data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     /**
      * print Vector components
      */

@@ -17,7 +17,7 @@ class HdrImage (var width: Int = 0, var height: Int = 0) {
     /**
      * Initialize image with dimension width*height
      */
-    var pixels = Array<Color>(size = width * height) {Color()}
+    var pixels = Array(size = width * height) {Color()}
 
     /**
      * Get color of a pixel

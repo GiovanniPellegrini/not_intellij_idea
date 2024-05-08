@@ -1,6 +1,5 @@
 import kotlin.math.sqrt
 
-
 /**
  * 3D vector with Float components
  */

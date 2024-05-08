@@ -86,7 +86,6 @@ fun parseEndianness(line: String): ByteOrder {
     }
 
 }
-
 /**
  * Create an HdrImage from a PFM stream
  */
