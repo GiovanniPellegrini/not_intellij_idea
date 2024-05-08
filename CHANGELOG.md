@@ -1,6 +1,5 @@
 ## Head
 ### - fixed bug "image upside down" related to issue #3
-
 ## V 0.1.1
 ##### - added a new command `gradle run --args="demo <thetaParam> <outputFilename.png> "` to create a demo image with a given theta (observer angle) value
 #### - with the bash script `animation.sh` you can create an animation of the demo image with different theta values
