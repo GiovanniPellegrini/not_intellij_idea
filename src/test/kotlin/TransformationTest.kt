@@ -1,18 +1,16 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.math.PI
-import kotlin.math.exp
 
 class TransformationTest{
 
-    val m=HomMatrix(floatArrayOf(
+    private val m=HomMatrix(floatArrayOf(
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
         9.0f, 9.0f, 8.0f, 7.0f,
         6.0f, 5.0f, 4.0f, 1.0f
         )
     )
-    val invm=HomMatrix(
+    private val invm = HomMatrix(
         floatArrayOf(
             -3.75f, 2.75f, -1.0f, 0.0f,
             4.375f, -3.875f, 2.0f, -0.5f,
@@ -20,10 +18,10 @@ class TransformationTest{
             -1.375f, 0.875f, 0.0f, -0.5f
         )
     )
-    val transf1=Transformation(m.copy(), invm.copy())
-    val transf2=Transformation(invm.copy(), m.copy())
+    private val transf1 = Transformation(m.copy(), invm.copy())
+    private val transf2 = Transformation(invm.copy(), m.copy())
 
-    val transf3=Transformation(HomMatrix(floatArrayOf(
+    private val transf3 = Transformation(HomMatrix(floatArrayOf(
         3.0f, 5.0f, 2.0f, 4.0f,
         4.0f, 1.0f, 0.0f, 5.0f,
         6.0f, 3.0f, 2.0f, 0.0f,
@@ -125,11 +123,11 @@ class TransformationTest{
 
     @Test
     fun rotationTest() {
-        val rotx = Rotation(Vector(1f, 0f, 0f), (PI).toFloat())
-        val roty = Rotation(Vector(0f, 1f, 0f), (PI).toFloat())
-        val rotz = Rotation(Vector(0f, 0f, 1f), (PI).toFloat())
+        val rotx = Rotation(Vector(1f, 0f, 0f), 180f)
+        val roty = Rotation(Vector(0f, 1f, 0f), 180f)
+        val rotz = Rotation(Vector(0f, 0f, 1f), 180f)
 
-        val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = (2 * PI).toFloat())
+        val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = 2f * 180f)
 
         //rotation x PI * null vector
         assertTrue((rotx * Vector()).isClose(Vector()))
@@ -155,8 +153,9 @@ class TransformationTest{
 
     @Test
     fun scalingTransformationTest() {
-        val sc:Transformation= scalingTransformation(2f,3f,4f)
+        val sc:Transformation = scalingTransformation(Vector(2f,3f,4f))
         assertTrue((sc*Vector(5f, 7f, 11f)).isClose(Vector(10f, 21f, 44f)))
     }
+    
 
 }

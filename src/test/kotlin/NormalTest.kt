@@ -4,9 +4,8 @@ import kotlin.math.pow
 
 class NormalTest{
 
-    val a = Normal(1.0f, 2.0f, 3.0f)
-    val b = Normal(4.0f, 6.0f, 8.0f)
-    val c = Vector(4.0f, 6.0f, 8.0f)
+    private val a = Normal(1.0f, 2.0f, 3.0f)
+    private val b = Normal(4.0f, 6.0f, 8.0f)
 
     @Test
     fun normalsTest() {

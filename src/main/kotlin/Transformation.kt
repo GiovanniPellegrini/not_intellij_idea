@@ -1,3 +1,5 @@
+import kotlin.math.PI
+
 open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
 
     constructor():this(HomMatrix(),HomMatrix())
@@ -59,8 +61,9 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
         )
 
         val a = other.x * m[3, 0] + other.y * m[3, 1] + other.z * m[3, 2] + m[3, 3]
-        if (a == 1F) return newPoint
-        else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
+        if (a == 1F) {
+            return newPoint
+        } else return Point(newPoint.x / a, newPoint.y / a, newPoint.z / a)
     }
 
     /**
@@ -87,6 +90,13 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
          )
          return newNormal
      }
+
+    /**
+     * overloading * operator for sphere
+     */
+    operator fun times(other: Sphere): Sphere {
+        return Sphere(this * other.transformation)
+    }
 }
 
 /**
@@ -113,11 +123,12 @@ class Translation(): Transformation(HomMatrix(),HomMatrix()) {
  */
 class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
     /**
-     * constructor of a rotation, angular parameter theta must be passed un radians
+     * constructor of a rotation, angular parameter theta must be passed in degrees
      */
     constructor(vec: Vector, theta: Float = 0f):this(){
-        m = HomMatrix(vec,theta)
-        invm = HomMatrix(vec,-theta)
+        val thetaInDegrees = theta * PI.toFloat() / 180f
+        m = HomMatrix(vec,thetaInDegrees)
+        invm = HomMatrix(vec,-thetaInDegrees)
     }
 }
 
@@ -125,17 +136,17 @@ class Rotation(): Transformation(HomMatrix(),HomMatrix()) {
  * scale transformation class derived from Transformation
  */
 class scalingTransformation(): Transformation(HomMatrix(),HomMatrix()) {
-    constructor(sx:Float=1f, sy:Float=1f, sz:Float=1f):this(){
+    constructor(s: Vector = Vector(1f,1f,1f)):this(){
         m = HomMatrix(floatArrayOf(
-            sx, 0f, 0f, 0f,
-            0f, sy, 0f, 0f,
-            0f, 0f, sz, 0f,
+            s.x, 0f, 0f, 0f,
+            0f, s.y, 0f, 0f,
+            0f, 0f, s.z, 0f,
             0f, 0f, 0f, 1f,
         ))
         invm = HomMatrix(floatArrayOf(
-            1f/sx, 0f, 0f, 0f,
-            0f, 1f/sy, 0f, 0f,
-            0f, 0f, 1f/sz, 0f,
+            1f/s.x, 0f, 0f, 0f,
+            0f, 1f/s.y, 0f, 0f,
+            0f, 0f, 1f/s.z, 0f,
             0f, 0f, 0f, 1f,
         ))
     }

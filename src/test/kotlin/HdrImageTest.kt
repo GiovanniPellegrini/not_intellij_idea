@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
 import java.nio.ByteOrder
 
 /**
@@ -11,7 +12,13 @@ fun byteArrayOfInts(vararg ints: Int) =
 
 class HdrImageTest {
 
-    var sampleImage = HdrImage(10, 10)
+    @Test
+    fun getSetPixelTest(){
+        val img = HdrImage(7,4)
+        val referenceCol = Color(1f,2f,3f)
+        img.setPixel(3,2,referenceCol)
+        assert(referenceCol.areClose(img.getPixel(3,2)))
+    }
 
     @Test
     fun getPixel() {
@@ -106,12 +113,29 @@ class HdrImageTest {
         img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
         img.clampImage()
 
-        /*for (pixel in img.pixels) {
-                assert(pixel.r in 0.0..1.0)
-                assert(pixel.b in 0.0..1.0)
-                assert(pixel.g in 0.0..1.0)
+        for (pixel in img.pixels){
+            assert(pixel.r in 0.0..1.0)
+            assert(pixel.g in 0.0..1.0)
+            assert(pixel.b in 0.0..1.0)
+        }
+    }
 
-          */
+    @Test
+    fun writeLdrTest(){
+        val img = HdrImage(16, 16)
+        var i = 1f
+        var j = 256f
+        for (y in img.height-1 downTo 0){
+            for (x in 0..<img.width){
+                img.setPixel(x,y, Color(141f,50f,122f))
+                i += 1f
+                j -= 1f
+            }
+        }
+
+        val stream = FileOutputStream("test.pfm")
+        img.writePFM(stream, ByteOrder.BIG_ENDIAN)
+        img.writeLdrImage("png",1f, "mix.png")
     }
 }
 

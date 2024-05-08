@@ -2,9 +2,9 @@ import org.junit.jupiter.api.Test
 
 class ImageTracerTest {
 
-    val image = HdrImage(width = 4, height = 2)
-    val camera = PerspectiveCamera(aspectRatio = 2f)
-    val tracer = ImageTracer(image, camera)
+    private val image = HdrImage(width = 4, height = 2)
+    private val camera = PerspectiveCamera(aspectRatio = 2f)
+    private val tracer = ImageTracer(image, camera)
 
     @Test
     fun testOrientation() {
@@ -23,7 +23,7 @@ class ImageTracerTest {
     }
 
     //define lambda to set constant Color
-    val sampleColor = { _: Ray -> Color(1.0f,2.0f,3.0f)}
+    private val sampleColor = { _: Ray -> Color(1.0f,2.0f,3.0f)}
     //set all pixels with constant Color(1.0f,2.0f,3.0f)
 
     @Test
