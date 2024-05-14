@@ -18,43 +18,24 @@ class plane(val transformation: Transformation = Transformation(),
         var t: Float? = null
 
         // control if there is the intersection.
-        if (invRay.dir.z == 0f) {
+        if (invRay.dir.z != 0f) {
             t = -(origin.z / invRay.dir.z)
         } else return null
         if (t < invRay.tMin || t > invRay.tMax) return null
 
-        //no
-
-
-        val normal = if (invRay.dir.z < 0) transformation * Normal(0f, 0f, -1f)
-        else transformation * Normal(0f, 0f, 1f)
+        //
+        val normal = if (invRay.dir.z < 0) transformation * Normal(0f, 0f, 1f)
+        else transformation * Normal(0f, 0f, -1f)
 
         val hitPoint = invRay.at(t)
 
         val hit = HitRecord(
             worldPoint = hitPoint,
             normal = normal,
-            surfacePoint = Vec2d(hitPoint.x- floor(hitPoint.x),hitPoint.y- floor(hitPoint.y)),
-            t= t,
-            ray=ray)
+            surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
+            t = t,
+            ray = ray
+        )
         return hit
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        return null
-    }
-
 }
