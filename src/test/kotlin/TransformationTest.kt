@@ -99,8 +99,9 @@ class TransformationTest{
         val expectedP=Point(18f,46f,58f)
         assert(expectedP.isClose(transf4*Point(1f,2f,3f)))
 
-        val expectedN=Normal(-1.25f, 2.25f, -0.75f)
-        assert(expectedN.isClose(transf4*Normal(1f,2f,3f)))
+
+        val excpetedN2=Normal(-8.75f, 7.75f,-3f)
+        assert(excpetedN2.isClose(transf4*Normal(3f,2f,4f)))
 
     }
 
