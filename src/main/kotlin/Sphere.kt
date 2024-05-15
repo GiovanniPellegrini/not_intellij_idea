@@ -3,7 +3,8 @@ import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class Sphere(val transformation: Transformation = Transformation()): Shape{
+class Sphere(val transformation: Transformation = Transformation(),
+             override val material: Material = Material()): Shape{
     /**
      * evaluates if a ray intersect the sphere and returns the closest intersection to the point of view
      */
