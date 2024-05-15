@@ -10,6 +10,9 @@ interface Pigment {
  * uniform pigment, return the same color for all points
  */
 class UniformPigment(private val color: Color) : Pigment {
+
+    constructor(): this(Color())
+
     override fun getColor(vec2d: Vec2d): Color {
         return color
     }
