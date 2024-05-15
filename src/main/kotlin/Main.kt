@@ -121,16 +121,14 @@ class Demo: CliktCommand() {
 class TDemo: CliktCommand() {
     private val args: List<String> by argument().multiple()
     override fun run() {
-        val tri = Triangle(transformation = Transformation(),
-                            a = Point(2f,0f,1f),
-                            b = Point(2f,0f,-1f),
-                            c = Point(2f,1f,0f))
+        val cube = Box(Pmin = Point(-0.3f,-0.3f,-0.5f),
+                       Pmax = Point(0.3f,0.3f,0.5f))
         val world = World()
-        world.add(tri)
+        world.add(cube)
 
         val image = HdrImage(400,400)
 
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) , args[0].toFloat()))
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,1f,0f) , args[0].toFloat()))
         val trace = ImageTracer(image,camera)
 
         val onOff: (Ray) -> Color = { ray ->

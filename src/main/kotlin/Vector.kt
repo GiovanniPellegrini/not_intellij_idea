@@ -103,5 +103,15 @@ data class Vector(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
         return Normal(x,y,z)
     }
 
+    operator fun get(i: Any): Float {
+        return when(i){
+            0 -> x
+            1 -> y
+            2 -> z
+            else -> throw IllegalArgumentException("i must be 0, 1 or 2")
+        }
+
+    }
+
 }
 

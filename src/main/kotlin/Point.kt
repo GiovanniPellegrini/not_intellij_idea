@@ -69,6 +69,16 @@ data class Point (var x:Float, var y:Float, var z:Float) {
         return Vector(x,y,z)
     }
 
+    operator fun get(i: Int): Float {
+        return when(i){
+            0 -> x
+            1 -> y
+            2 -> z
+            else -> throw IllegalArgumentException("i must be 0, 1 or 2")
+        }
+
+    }
+
 }
 
 
