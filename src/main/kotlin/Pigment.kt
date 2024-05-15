@@ -9,19 +9,15 @@ interface Pigment {
 /**
  * uniform pigment, return the same color for all points
  */
-class uniformPigment(private val color: Color) : Pigment {
+class UniformPigment(private val color: Color) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
-        return color
-    }
-
-    fun getColor(): Color {
         return color
     }
 }
 /**
  * checkered pigment, return one of two colors depending on the position of the point
  */
-class checkeredPigment(private val color1: Color, private val color2: Color, private val steps: Int) : Pigment {
+class CheckeredPigment(private val color1: Color, private val color2: Color, private val steps: Int) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
         val u = (vec2d.u * steps).toInt()
         val v = (vec2d.v * steps).toInt()
@@ -31,7 +27,7 @@ class checkeredPigment(private val color1: Color, private val color2: Color, pri
 /**
  * Image pigment, return the color of a pixel of an image
  */
-class imagePigment(private val image: HdrImage) : Pigment {
+class ImagePigment(private val image: HdrImage) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
         var col = (vec2d.u * image.width).toInt()
         var row = (vec2d.v * image.height).toInt()
