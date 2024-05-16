@@ -37,7 +37,7 @@ class Sphere(val transformation: Transformation = Transformation(),
                          normal = this.transformation * sphereNormal(hitPoint, ray.dir),
                          surfacePoint = spherePointToUV(hitPoint),
                          t = firstHitT,
-                         ray = ray)
+                         ray = ray, shape = this)
     }
 
     private fun sphereNormal(point: Point, rayDir:Vector): Normal{
