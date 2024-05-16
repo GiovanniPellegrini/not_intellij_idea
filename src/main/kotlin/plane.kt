@@ -20,8 +20,7 @@ class Plane(val transformation: Transformation = Transformation()): Shape{
         else transformation * Normal(0f, 0f, -1f)
 
         val hitPoint = invRay.at(t)
-
-
+        
         val hit = HitRecord(
             worldPoint = transformation*hitPoint,
             normal = normal,
