@@ -84,9 +84,9 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
      */
      operator fun times(other:Normal):Normal {
          val newNormal = Normal(
-             invm[0, 0] * other.x + invm[1, 0] * other.y + invm[2, 0] * other.z ,
-             invm[0, 1] * other.x + invm[1, 1] * other.y + invm[2, 1] * other.z ,
-             invm[0, 2] * other.x + invm[1, 2] * other.y + invm[2, 2] * other.z
+             invm[0, 0] * other.x + invm[0, 1] * other.y + invm[0, 2] * other.z ,
+             invm[1, 0] * other.x + invm[1, 1] * other.y + invm[1, 2] * other.z ,
+             invm[2, 0] * other.x + invm[2, 1] * other.y + invm[2, 2] * other.z
          )
          return newNormal
      }

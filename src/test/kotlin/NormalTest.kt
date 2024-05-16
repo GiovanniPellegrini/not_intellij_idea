@@ -24,5 +24,4 @@ class NormalTest{
         assert(are_close(a.norm().pow(2),14.0f))
     }
 
-
 }
