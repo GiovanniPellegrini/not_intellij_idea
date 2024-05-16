@@ -3,7 +3,7 @@
  */
 class Box(val transformation: Transformation = Transformation(),
           val Pmin: Point = Point(0f,0f,0f),
-          val Pmax: Point = Point(0f,0f,0f)): Shape{
+          val Pmax: Point = Point(0f,0f,0f), override val material: Material=Material()): Shape{
 
     /**
      * checkVertex evaluates if the vertex of the box are correct (i.e. Pmin < Pmax)
@@ -77,7 +77,8 @@ class Box(val transformation: Transformation = Transformation(),
             normal = transformation * normal,
             surfacePoint = surfacePoint(hit, normal),
             t = t,
-            ray = ray)
+            ray = ray,
+            shape=this)
     }
 
 

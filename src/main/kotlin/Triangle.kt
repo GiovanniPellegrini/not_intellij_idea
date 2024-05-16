@@ -7,7 +7,7 @@
 class Triangle(val transformation: Transformation = Transformation(),
                val a: Point = Point(0f,0f,0f),
                val b: Point = Point(0f,0f,0f),
-               val c: Point = Point(0f,0f,0f)): Shape {
+               val c: Point = Point(0f,0f,0f),override val material: Material=Material()): Shape {
 
     /**
      * returns True if beta and gamma are in the range [0,1]
@@ -99,8 +99,8 @@ class Triangle(val transformation: Transformation = Transformation(),
                             normal = this.transformation * this.triangleNormal(invRay.at(t),ray.dir),
                             surfacePoint = Vec2d(beta, gamma),
                             t = t,
-                            ray = ray)
-
+                            ray = ray,
+                            shape=this)
         }
         return null
     }
