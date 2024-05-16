@@ -1,7 +1,8 @@
 import kotlin.math.abs
 import kotlin.math.floor
 
-class Plane(val transformation: Transformation = Transformation()): Shape{
+class Plane(val transformation: Transformation = Transformation(),
+            override val material: Material): Shape{
 
     /**
      * constructor for xy plane
@@ -26,7 +27,8 @@ class Plane(val transformation: Transformation = Transformation()): Shape{
             normal = normal,
             surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
             t = t,
-            ray = ray
+            ray = ray,
+            shape = this
         )
         return hit
 
