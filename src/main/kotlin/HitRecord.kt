@@ -1,10 +1,11 @@
 /**
  * type that record information of a ray intersection
  */
-class HitRecord(val worldPoint: Point,
-                val normal: Normal,
-                val surfacePoint: Vec2d,
-                val t: Float,val ray: Ray){
+class HitRecord(var worldPoint: Point,
+                var normal: Normal,
+                var surfacePoint: Vec2d,
+                var t: Float,var ray: Ray,
+                var shape: Shape){
 
     /**
      * verify if two HitRecord are equals

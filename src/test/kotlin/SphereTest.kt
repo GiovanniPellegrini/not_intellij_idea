@@ -17,7 +17,8 @@ class SphereTest{
                     normal = Normal(0f, 0f, 1f),
                     surfacePoint = Vec2d(0f, 0f),
                     t = 1f,
-                    ray = ray1
+                    ray = ray1,
+                    shape = sphere
             ).isClose(intersection1))
         }
 
@@ -31,7 +32,8 @@ class SphereTest{
                 normal = Normal(1f, 0f, 0f),
                 surfacePoint = Vec2d(0f, 0.5f),
                 t = 2f,
-                ray = ray2
+                ray = ray2,
+                shape = sphere
             ).isClose(intersection2))
         }
 
@@ -51,7 +53,8 @@ class SphereTest{
                 normal=Normal(-1.0f, 0.0f, 0.0f),
                 surfacePoint=Vec2d(0.0f, 0.5f),
                 t=1f,
-                ray=ray
+                ray=ray,
+                shape=sphere
             ).isClose(intersection))
         }
     }
@@ -71,6 +74,7 @@ class SphereTest{
                     surfacePoint = Vec2d(0.0f, 0.0f),
                     t = 1.0f,
                     ray = ray1,
+                    shape = sphere
                 ).isClose(intersection1)
             )
         }
@@ -86,6 +90,7 @@ class SphereTest{
                     surfacePoint = Vec2d(0.0f, 0.5f),
                     t = 2.0f,
                     ray = ray2,
+                    shape = sphere
                 ).isClose(intersection2)
             )
         }
