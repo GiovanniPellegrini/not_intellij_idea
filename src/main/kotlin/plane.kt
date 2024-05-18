@@ -31,14 +31,6 @@ class Plane(val transformation: Transformation = Transformation(),
             shape = this
         )
         return hit
-    }
 
-    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
-        val hits= ArrayList<HitRecord>()
-        if(this.rayIntersection(ray)==null) return null
-        else {
-            hits.add(this.rayIntersection(ray)!!)
-            return hits
-        }
     }
 }

@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/PCG.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +73,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
@@ -124,14 +126,19 @@
     "Gradle.TransformationTest.scalingSphereTest.executor": "Run",
     "Gradle.TransformationTest.scalingTest2.executor": "Run",
     "Gradle.TransformationTest.translationTest.executor": "Run",
+    "Gradle.TriangleTest.executor": "Run",
+    "Gradle.TriangleTest.kramerRuleTest.executor": "Run",
+    "Gradle.TriangleTest.testDeterminant3x3.executor": "Run",
+    "Gradle.TriangleTest.testMatrix.executor": "Run",
+    "Gradle.TriangleTest.testReplaceAndPrintMatrix.executor": "Run",
+    "Gradle.TriangleTest.testTriangle.executor": "Run",
     "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
     "Gradle.VectorTest.testVectors.executor": "Run",
-    "Kotlin.MainKt.executor": "Run",
+    "Kotlin.MainKt.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "PCG",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -158,8 +165,8 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.ImageTracerTest.testOrientation">
-    <configuration name="ImageTracerTest.testOrientation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.TriangleTest.kramerRuleTest">
+    <configuration name="TriangleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -172,7 +179,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ImageTracerTest.testOrientation&quot;" />
+            <option value="&quot;TriangleTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -183,7 +190,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="SphereTest.testNormal" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TriangleTest.kramerRuleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -196,7 +203,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;SphereTest.testNormal&quot;" />
+            <option value="&quot;TriangleTest.kramerRuleTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -207,7 +214,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="SphereTest.testNormalDirection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TriangleTest.testDeterminant3x3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -220,7 +227,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;SphereTest.testNormalDirection&quot;" />
+            <option value="&quot;TriangleTest.testDeterminant3x3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -231,7 +238,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TransformationTest.scalingSphereTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TriangleTest.testMatrix" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -244,7 +251,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TransformationTest.scalingSphereTest&quot;" />
+            <option value="&quot;TriangleTest.testMatrix&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -255,7 +262,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TransformationTest.scalingTest2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TriangleTest.testReplaceAndPrintMatrix" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -268,7 +275,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TransformationTest.scalingTest2&quot;" />
+            <option value="&quot;TriangleTest.testReplaceAndPrintMatrix&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -281,11 +288,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.ImageTracerTest.testOrientation" />
-        <item itemvalue="Gradle.SphereTest.testNormalDirection" />
-        <item itemvalue="Gradle.SphereTest.testNormal" />
-        <item itemvalue="Gradle.TransformationTest.scalingTest2" />
-        <item itemvalue="Gradle.TransformationTest.scalingSphereTest" />
+        <item itemvalue="Gradle.TriangleTest.kramerRuleTest" />
+        <item itemvalue="Gradle.TriangleTest.testDeterminant3x3" />
+        <item itemvalue="Gradle.TriangleTest" />
+        <item itemvalue="Gradle.TriangleTest.testReplaceAndPrintMatrix" />
+        <item itemvalue="Gradle.TriangleTest.testMatrix" />
       </list>
     </recent_temporary>
   </component>
