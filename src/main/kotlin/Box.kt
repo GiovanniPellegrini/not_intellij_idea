@@ -187,11 +187,6 @@ class Box(val transformation: Transformation = Transformation(),
         }
     }
 
-
-
-
-
-
     /**
      * evaluates the normal of the box, for a given t,
      * if t is relative to x, y or z, the normal will be the respective axis
@@ -203,9 +198,7 @@ class Box(val transformation: Transformation = Transformation(),
             2 -> Normal(0f,0f,1f)  //parallel to z
             else -> throw IllegalArgumentException("tDir must be 0, 1 or 2")
         }
-
         return if(normal * ray.dir < 0) normal else -normal
-
     }
 
     /**
