@@ -75,7 +75,8 @@ class Convert: CliktCommand() {
 class Demo: CliktCommand() {
     private val args: List<String> by argument().multiple()
     override fun run() {
-        val sphere1 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,3.0f)))
+        val sphere1 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,3.0f)),
+            Material(emittedRad = CheckeredPigment(Color(255f,0f,0f),color2 = Color(), steps = 10)))
         val sphere2 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,-3.0f)))
         val sphere3 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,3.0f)))
         val sphere4 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,3.0f)))
@@ -97,19 +98,8 @@ class Demo: CliktCommand() {
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
         val tracer = ImageTracer(image,camera)
-
-        val onOff: (Ray) -> Color = { ray ->
-            val defaultColor = Color(75f, 60f, 66f)
-            val intersection = world.rayIntersection(ray)
-
-            if (intersection == null) {
-                Color()
-            } else {
-                defaultColor
-            }
-        }
-
-        tracer.fireAllRays(onOff)
+        val renderer = FlatRenderer(world)
+        tracer.fireAllRays(renderer::render)
         image.normalizeImage(0.1f)
         image.clampImage()
         val stream = FileOutputStream("output.pfm")
@@ -118,8 +108,35 @@ class Demo: CliktCommand() {
     }
 }
 
+class CheckDemo: CliktCommand() {
+    private val args: List<String> by argument().multiple()
+    override fun run() {
 
-fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo()).main(args)
+        val sphere1 = Sphere(
+            scalingTransformation(Vector(0.8f, 0.8f, 0.8f)) * Translation(Vector(1.0f, 0f, 0.5f)),
+            Material(emittedRad = CheckeredPigment(Color(255f, 0f, 0f), color2 = Color(0f,0f,255f), steps = 15))
+        )
+        val plane1 = Plane(transformation = Translation(Vector(0f, 0f, -1f)),
+            Material(emittedRad = CheckeredPigment(Color(255f, 0f, 0f), color2 = Color(0f,0f,255f), steps = 4))
+        )
+        val world = World()
+        world.add(sphere1)
+        world.add(plane1)
+        val image = HdrImage(720, 720)
+
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
+        val tracer = ImageTracer(image, camera)
+        val renderer = FlatRenderer(world)
+        tracer.fireAllRays(renderer::render)
+        image.normalizeImage(0.1f)
+        image.clampImage()
+        val stream = FileOutputStream("output.pfm")
+        image.writePFM(stream, ByteOrder.BIG_ENDIAN)
+        image.writeLdrImage("png", 1f, args[1])
+    }
+}
+
+fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), CheckDemo()).main(args)
 
 
 
