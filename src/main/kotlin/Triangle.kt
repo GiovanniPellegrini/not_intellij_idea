@@ -104,6 +104,18 @@ class Triangle(val transformation: Transformation = Transformation(),
         }
         return null
     }
+    /**
+     * evaluates if a ray intersect the triangle and returns all the intersection from the point of view
+     */
+    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
+        val hits= ArrayList<HitRecord>()
+        if(this.rayIntersection(ray)==null) return null
+        else {
+            hits.add(this.rayIntersection(ray)!!)
+            return hits
+        }
+    }
+
 
     /**
      * evaluates the determinant of a 3x3 matrix

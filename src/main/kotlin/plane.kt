@@ -31,6 +31,16 @@ class Plane(val transformation: Transformation = Transformation(),
             shape = this
         )
         return hit
-
+    }
+    /**
+     *evaluates if a ray intersect the plane and returns all the intersection from the point of view
+     */
+    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
+        val hits= ArrayList<HitRecord>()
+        if(this.rayIntersection(ray)==null) return null
+        else {
+            hits.add(this.rayIntersection(ray)!!)
+            return hits
+        }
     }
 }
