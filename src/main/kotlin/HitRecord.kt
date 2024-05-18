@@ -7,6 +7,8 @@ class HitRecord(var worldPoint: Point,
                 var t: Float,var ray: Ray,
                 var shape: Shape){
 
+
+
     /**
      * verify if two HitRecord are equals
      */
