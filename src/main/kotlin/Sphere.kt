@@ -11,7 +11,7 @@ class Sphere(val transformation: Transformation = Transformation(),
      */
     override fun pointInternal(point: Point): Boolean {
         val point1=transformation.inverse()*point
-        if(point1.toVec().sqNorm()<1f) return true
+        if(point1.toVec().sqNorm()<=1f) return true
         else return false
     }
     /**

@@ -1,10 +1,19 @@
+/**
+ * CSG= CONSTRUCTIVE SOLID GEOMETRY
+ *
+ * This class is the implementation of the operation Union between shapes
+ */
+
  class CSGUnion(val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
 
      override fun pointInternal(point: Point): Boolean {
-         if(shape1.pointInternal(point) || shape2.pointInternal(point)) return true
+         if(shape1.pointInternal(transformation.inverse()*point) || shape2.pointInternal(transformation.inverse()*point)) return true
          else return false
      }
 
+    /**
+     * function to calculate the HitRecord given a ray
+     */
      override fun rayIntersection(ray: Ray): HitRecord? {
          val hitsTot= mutableListOf<HitRecord>()
          val invRay=ray.transformation(transformation.inverse())
@@ -15,7 +24,6 @@
          if(hits2!=null) hitsTot.addAll(hits2)
          if(hitsTot.isEmpty()) return null
 
-
          var union= hitsTot[0]
          for(hit in hitsTot){
              if(hit.t<union.t) union=hit
@@ -24,6 +32,7 @@
      }
 
 
+    //return all the intersection on the board of both shapes
      override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
          val hits= mutableListOf<HitRecord>()
          val invRay=ray.transformation(transformation.inverse())
@@ -32,13 +41,13 @@
 
          if(hit1!=null){
              for(h in hit1)
-                 if(!shape1.pointInternal(h.worldPoint)) hits.add(transformation*h)
+                 if(!shape2.pointInternal(h.worldPoint)) hits.add(transformation*h)
          }
          if(hit2!=null){
              for(h in hit2)
-                 if(!shape2.pointInternal(h.worldPoint)) hits.add(transformation*h)
+                 if(!shape1.pointInternal(h.worldPoint)) hits.add(transformation*h)
          }
-         
+
          if(hits.isEmpty()) return null
          else{
              hits.sortBy { it.t }
