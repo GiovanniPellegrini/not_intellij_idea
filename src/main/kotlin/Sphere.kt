@@ -5,6 +5,15 @@ import kotlin.math.sqrt
 
 class Sphere(val transformation: Transformation = Transformation(),
              override val material: Material = Material()): Shape{
+
+    /**
+     * check if a point is internal to the sphere
+     */
+    override fun pointInternal(point: Point): Boolean {
+        val point1=transformation.inverse()*point
+        if(point1.toVec().sqNorm()<1f) return true
+        else return false
+    }
     /**
      * evaluates if a ray intersect the sphere and returns the closest intersection from the point of view
      */

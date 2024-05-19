@@ -10,6 +10,13 @@ class Triangle(val transformation: Transformation = Transformation(),
                val c: Point = Point(0f,0f,0f),override val material: Material=Material()): Shape {
 
     /**
+     * override PointInternal. However, is not useful for this class because triangle are not used in CSG.
+     */
+    override fun pointInternal(point: Point): Boolean {
+        return false
+    }
+
+    /**
      * returns True if beta and gamma are in the range [0,1]
       */
     private fun isInside(beta: Float, gamma: Float): Boolean{

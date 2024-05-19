@@ -14,6 +14,17 @@ class Box(val transformation: Transformation = Transformation(),
         return Pmin.x < Pmax.x && Pmin.y < Pmax.y && Pmin.z < Pmax.z
     }
 
+    /**
+     * check if a point is internal to the box
+     */
+    override fun pointInternal(point: Point): Boolean {
+        if(!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
+        if( point.x in Pmin.x..Pmax.x &&
+            point.y in Pmin.y..Pmax.y &&
+            point.z in Pmin.z..Pmax.z) return true
+        else return false
+    }
+
 
     override fun rayIntersection(ray: Ray): HitRecord? {
         if(!checkVertex()){

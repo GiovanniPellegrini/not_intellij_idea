@@ -1,5 +1,10 @@
  class CSGUnion(val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
 
+     override fun pointInternal(point: Point): Boolean {
+         if(shape1.pointInternal(point) || shape2.pointInternal(point)) return true
+         else return false
+     }
+     
      override fun rayIntersection(ray: Ray): HitRecord? {
          val hitsTot= mutableListOf<HitRecord>()
          val hits1=shape1.rayIntersectionList(ray)
@@ -22,5 +27,6 @@
          val hits=this.rayIntersection(ray)
          TODO("not implemented yet")
      }
+
 
 }

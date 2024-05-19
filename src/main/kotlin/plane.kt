@@ -5,8 +5,13 @@ class Plane(val transformation: Transformation = Transformation(),
             override val material: Material): Shape{
 
     /**
-     * constructor for xy plane
+     * check if a point belongs to the plane
      */
+    override fun pointInternal(point: Point): Boolean {
+        val point1=transformation.inverse()*point
+        if(point1.z<1e-5f) return true
+        else return false
+    }
 
     override fun rayIntersection(ray: Ray): HitRecord? {
         // compute t
