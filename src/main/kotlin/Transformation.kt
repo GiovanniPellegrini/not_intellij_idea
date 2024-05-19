@@ -90,6 +90,20 @@ open class Transformation(var m: HomMatrix, var invm: HomMatrix) {
          )
          return newNormal
      }
+    /**
+     * override for * operator between transformation and Hitpoint
+     */
+    operator fun times(other:HitRecord):HitRecord{
+        val newHitRecord=HitRecord(
+            worldPoint = this*other.worldPoint,
+            normal = this*other.normal,
+            surfacePoint = other.surfacePoint,
+            t=other.t,
+            ray=other.ray,
+            shape=other.shape
+        )
+        return newHitRecord
+    }
 
     /**
      * overloading * operator for sphere

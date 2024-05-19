@@ -8,7 +8,6 @@ class HitRecord(var worldPoint: Point,
                 var shape: Shape){
 
 
-
     /**
      * verify if two HitRecord are equals
      */
