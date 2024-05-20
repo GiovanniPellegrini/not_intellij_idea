@@ -137,7 +137,7 @@ class SphereTest{
         val hits=sphere1.rayIntersectionList(ray)
         assertNotNull(hits)
         assertNotNull(hits!![0])
-        assertNotNull(hits!![1])
+        assertNotNull(hits[1])
         val hit1= HitRecord(
                 worldPoint = Point(0f,0f,1f),
                 normal = Normal(0f,0f,1f),
@@ -157,5 +157,28 @@ class SphereTest{
             shape = sphere1,
         )
         assert(hits[1].isClose((hit2)))
+    }
+
+    @Test
+    fun pointInternal(){
+        val sphere1=Sphere()
+
+        val point1=Point(0.5f,0.4f,0.7f)
+        val point2=Point(1f,0f,0f)
+        val point3=Point(1f,4f,6f)
+
+        assert(sphere1.pointInternal(point1))
+        assert(sphere1.pointInternal(point2))
+        assert(!sphere1.pointInternal(point3))
+
+        val sphere2=Sphere(Translation(Vector(1f,0f,0f)))
+
+        val point4=Point(1f,0.5f,0.6f)
+        val point5=Point(0f,0f,0f)
+        val point6=Point(0f,0f,1f)
+
+        assert(sphere2.pointInternal(point4))
+        assert(sphere2.pointInternal(point5))
+        assert(!sphere2.pointInternal(point6))
     }
 }

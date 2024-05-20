@@ -92,4 +92,26 @@ class BoxTest {
         )
     }
 
+    @Test
+    fun pointInternal(){
+        val cube1=Box(Pmin=Point(-1f,-1f,-1f), Pmax = Point(1f,1f,1f))
+
+        val point1=Point(0.5f,0.4f,0.7f)
+        val point2=Point(1f,0f,0f)
+        val point3=Point(1f,4f,6f)
+
+        assert(cube1.pointInternal(point1))
+        assert(cube1.pointInternal(point2))
+        assert(!cube1.pointInternal(point3))
+
+        val cube2=Box(transformation = Translation(Vector(1f,0f,0f)),Pmin=Point(-1f,-1f,-1f), Pmax = Point(1f,1f,1f))
+
+        val point4=Point(2f,0.5f,0.6f)
+        val point5=Point(0f,0f,0f)
+        val point6=Point(-0.25f,0.25f,1f)
+
+        assert(cube2.pointInternal(point4))
+        assert(cube2.pointInternal(point5))
+        //assert(!cube2.pointInternal(point6))
+    }
 }

@@ -19,9 +19,10 @@ class Box(val transformation: Transformation = Transformation(),
      */
     override fun pointInternal(point: Point): Boolean {
         if(!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
-        if( point.x in Pmin.x..Pmax.x &&
-            point.y in Pmin.y..Pmax.y &&
-            point.z in Pmin.z..Pmax.z) return true
+        val point1=transformation.inverse()*point
+        if( point1.x in Pmin.x..Pmax.x &&
+            point1.y in Pmin.y..Pmax.y &&
+            point1.z in Pmin.z..Pmax.z) return true
         else return false
     }
 
