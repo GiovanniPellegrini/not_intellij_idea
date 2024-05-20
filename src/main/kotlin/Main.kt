@@ -121,28 +121,57 @@ class Demo: CliktCommand() {
 class TDemo: CliktCommand() {
     private val args: List<String> by argument().multiple()
     override fun run() {
-        val cube = Box(Pmin = Point(-0.3f,-0.3f,-0.5f),
-                       Pmax = Point(0.3f,0.3f,0.5f))
+        val mesh = TriangleMesh(
+            vertices = arrayOf(
+                    Point(0.0f, 0.0f, 1.0f),        // P0
+                    Point(0.894427f, 0.0f, 0.447214f),  // P1
+                    Point(0.276393f, 0.850651f, 0.447214f),  // P2
+                Point(-0.723607f, 0.525731f, 0.447214f),  // P3
+                    Point(-0.723607f, -0.525731f, 0.447214f),  // P4
+                        Point(0.276393f, -0.850651f, 0.447214f),  // P5
+                            Point(0.723607f, 0.525731f, -0.447214f),  // P6
+                                Point(-0.276393f, 0.850651f, -0.447214f),  // P7
+                                    Point(-0.894427f, 0.0f, -0.447214f),  // P8
+                                        Point(0.276393f, -0.850651f, -0.447214f),  // P9
+                                            Point(-0.276393f, -0.850651f, -0.447214f),  // P10
+                                                Point(0.0f, 0.0f, -1.0f)         // P11
+                )
+            , indices =
+            arrayOf(
+                    arrayOf(0, 1, 2),  // Triangolo 0
+                    arrayOf(0, 2, 3),  // Triangolo 1
+                    arrayOf(0, 3, 4),  // Triangolo 2
+                    arrayOf(0, 4, 5),  // Triangolo 3
+                    arrayOf(0, 5, 1),  // Triangolo 4
+                    arrayOf(1, 6, 2),  // Triangolo 5
+                    arrayOf(2, 7, 3),  // Triangolo 6
+                    arrayOf(3, 8, 4),  // Triangolo 7
+                    arrayOf(4, 9, 5),  // Triangolo 8
+                    arrayOf(5, 10, 1), // Triangolo 9
+                    arrayOf(6, 7, 2),  // Triangolo 10
+                    arrayOf(7, 8, 3),  // Triangolo 11
+                    arrayOf(8, 9, 4),  // Triangolo 12
+                    arrayOf(9, 10, 5), // Triangolo 13
+                    arrayOf(10, 6, 1), // Triangolo 14
+                    arrayOf(6, 11, 7), // Triangolo 15
+                    arrayOf(7, 11, 8), // Triangolo 16
+                    arrayOf(8, 11, 9), // Triangolo 17
+                    arrayOf(9, 11, 10), // Triangolo 18
+                    arrayOf(10, 11, 6)  // Triangolo 19
+
+            ),
+            material = Material(emittedRad = CheckeredPigment(Color(255f,0f,0f),color2 = Color(0f,0f,255f), steps = 10)),
+            transformation = scalingTransformation(Vector(0.6f,0.6f,0.6f)
+        ))
         val world = World()
-        world.add(cube)
+        world.add(mesh)
 
         val image = HdrImage(400,400)
 
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,1f,0f) , args[0].toFloat()))
-        val trace = ImageTracer(image,camera)
-
-        val onOff: (Ray) -> Color = { ray ->
-            val defaultColor = Color(255f, 255f, 255f)
-            val intersection = world.rayIntersection(ray)
-
-            if (intersection == null) {
-                Color()
-            } else {
-                defaultColor
-            }
-        }
-
-        trace.fireAllRays(onOff)
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) , 0f))
+        val tracer = ImageTracer(image,camera)
+        val renderer = FlatRenderer(world)
+        tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()
         val stream = FileOutputStream("triangle.pfm")
