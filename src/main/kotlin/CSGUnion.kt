@@ -2,6 +2,9 @@
  * CSG= CONSTRUCTIVE SOLID GEOMETRY
  *
  * This class is the implementation of the operation Union between shapes
+ *
+ * It's useful to understand the code to consult  the slides #3 (for @rayIntersection) and #15 (for @rayListIntersection)
+ * at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
  */
 
  class CSGUnion(val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
@@ -32,7 +35,11 @@
      }
 
 
-    //return all the intersection on the board of both shapes
+    /**
+     * return all the intersection that can be:
+     * - on the surface of the first shape and not inside the second shape
+     * - on the surface of the second shape and not inside the first shape
+     */
      override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
          val hits= mutableListOf<HitRecord>()
          val invRay=ray.transformation(transformation.inverse())
