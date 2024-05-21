@@ -6,32 +6,15 @@
  * It's useful to understand the code to consult  the slides #5 (for @rayIntersection) and #16 (for @rayListIntersection)
  * at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
  */
-class CSGIntersection (val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
+class CSGIntersection (var shape1:Shape, var shape2:Shape,val transformation: Transformation=Transformation(), override var material: Material=Material()):Shape {
 
     override fun pointInternal(point: Point): Boolean {
-        if(shape1.pointInternal(transformation.inverse()*point) && shape2.pointInternal(transformation.inverse()*point)) return true
-        else return false
+        return shape1.pointInternal(transformation.inverse()*point) && shape2.pointInternal(transformation.inverse()*point)
     }
 
     override fun rayIntersection(ray: Ray): HitRecord? {
-        val invRay=ray.transformation(transformation.inverse())
-        val hit1=shape1.rayIntersectionList(invRay)
-        val hit2=shape2.rayIntersectionList(invRay)
-
-        //the ray must intersect both shapes
-        if(hit1==null) return null
-        if(hit2==null) return null
-
-
-        val hit1min=hit1.minBy { it.t }
-        val hit1max=hit1.maxBy { it.t }
-        val hit2min=hit2.minBy { it.t }
-        val hit2max=hit2.minBy { it.t }
-
-        //returns the first intersection that is contained in the interval of the other shape
-        if(hit1min.t in hit2min.t..hit2max.t) return transformation*hit1min
-        else if (hit2min.t in hit1min.t..hit1max.t) return transformation*hit2min
-        else return null
+        val hits=this.rayIntersectionList(ray)
+        return hits?.get(0)
     }
 
     /**
@@ -63,3 +46,25 @@ class CSGIntersection (val shape1:Shape, val shape2:Shape,val transformation: Tr
         }
     }
 }
+
+
+/**
+ * val invRay=ray.transformation(transformation.inverse())
+ *         val hit1=shape1.rayIntersectionList(invRay)
+ *         val hit2=shape2.rayIntersectionList(invRay)
+ *
+ *         //the ray must intersect both shapes
+ *         if(hit1==null) return null
+ *         if(hit2==null) return null
+ *
+ *
+ *         val hit1min=hit1.minBy { it.t }
+ *         val hit1max=hit1.maxBy { it.t }
+ *         val hit2min=hit2.minBy { it.t }
+ *         val hit2max=hit2.minBy { it.t }
+ *
+ *         //returns the first intersection that is contained in the interval of the other shape
+ *         if(hit1min.t in hit2min.t..hit2max.t && shape2.pointInternal(hit1min.worldPoint)) return transformation*hit1min
+ *         else if (hit2min.t in hit1min.t..hit1max.t && shape1.pointInternal(hit2min.worldPoint)) return transformation*hit2min
+ *         else return null
+ */

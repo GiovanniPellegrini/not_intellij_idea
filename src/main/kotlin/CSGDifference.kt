@@ -11,28 +11,12 @@
 class CSGDifference(val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
 
     override fun pointInternal(point: Point): Boolean {
-        if(shape1.pointInternal(transformation*point) || !shape2.pointInternal(transformation*point)) return true
+        if(shape1.pointInternal(transformation*point) && !shape2.pointInternal(transformation*point)) return true
         else return false
     }
     override fun rayIntersection(ray: Ray): HitRecord? {
-        val invRay=ray.transformation(transformation.inverse())
-        val hit1=shape1.rayIntersectionList(invRay)
-        val hit2=shape2.rayIntersectionList(invRay)
-
-        //the ray must intersect the first shape
-        if(hit1==null) return null
-        //if the ray doesn't intersect the shape 2 there is nothing to subtract
-        if(hit2==null) return transformation*hit1[0]
-
-        val hit1min=hit1.minBy { it.t }
-        val hit1max=hit1.maxBy { it.t }
-        val hit2min=hit2.minBy { it.t }
-        val hit2max=hit2.minBy { it.t }
-
-
-        if(hit1min.t<hit2min.t) return transformation*hit1min
-        else if(hit2max.t>hit1max.t) return transformation*hit2max
-        else return null
+        val hits=this.rayIntersectionList(ray)
+        return hits?.get(0)
     }
     /**
      * return all the intersection that can be:

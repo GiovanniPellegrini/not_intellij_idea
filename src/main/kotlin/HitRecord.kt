@@ -18,4 +18,5 @@ class HitRecord(var worldPoint: Point,
                this.ray.isClose(other.ray) &&
                are_close(this.t, other.t)
     }
+
 }

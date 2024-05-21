@@ -85,7 +85,7 @@ class Sphere(val transformation: Transformation = Transformation(),
             hits.add(HitRecord(worldPoint = this.transformation * hitPoint2,
                 normal = this.transformation * sphereNormal(hitPoint2, ray.dir),
                 surfacePoint = spherePointToUV(hitPoint2),
-                t = t1,
+                t = t2,
                 ray = ray,
                 shape = this))
         }
