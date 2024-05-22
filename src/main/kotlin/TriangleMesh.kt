@@ -15,10 +15,10 @@ import java.io.FileReader
     3rd triangle: i = ...
  **/
 
-class TriangleMesh(private var vertices: MutableList<Point>, private var indices: MutableList<Array<Int>>,
+class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<MutableList<Int>>,
                    val transformation: Transformation = Transformation(),
                    override val material: Material = Material(),
-                   private var boundingBox: Box)
+                   var boundingBox: Box)
     : Shape {
 
     /**
@@ -40,7 +40,7 @@ class TriangleMesh(private var vertices: MutableList<Point>, private var indices
     constructor(filename : String, transformation: Transformation = Transformation(),
                 material: Material = Material()): this(
                 vertices = mutableListOf(),
-                indices = mutableListOf(arrayOf(0,0,0)),
+                indices = mutableListOf(),
                 transformation = transformation,
                 material = material,
                 boundingBox = Box()) {
@@ -66,7 +66,7 @@ class TriangleMesh(private var vertices: MutableList<Point>, private var indices
                     val i0 = index[1].toInt()
                     val i1 = index[2].toInt()
                     val i2 = index[3].toInt()
-                    indices += arrayOf(i0-1,i1-1,i2-1) // -1 because the indices in the file start from 1
+                    indices += mutableListOf(i0-1,i1-1,i2-1) // -1 because the indices in the file start from 1
                 }
                 line = reader.readLine()
             }while(line != null)

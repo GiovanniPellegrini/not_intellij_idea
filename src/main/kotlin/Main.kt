@@ -122,8 +122,8 @@ class MeshDemo: CliktCommand() {
     private val args: List<String> by argument().multiple()
     override fun run() {
 
-        val mesh = TriangleMesh("path of the file .obj", transformation = Translation(Vector(1f,0f,0f))
-                *scalingTransformation(Vector(0.5f,0.5f,0.5f)),
+        val mesh = TriangleMesh("tetrahedron.obj", transformation = Translation(Vector(1f,-2f,-1f))
+                *Rotation(Vector(0f,0f,1f), 45f),
                 material = Material(emittedRad = UniformPigment(Color(242f,140f,140f)))
         )
         val plane = Plane(transformation = Translation(Vector(0f,0f,-1f)),
