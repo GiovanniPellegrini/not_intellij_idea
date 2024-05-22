@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 class TriangleMeshTest{
     @Test
     fun testSecondaryConstructor(){
-        val mesh = TriangleMesh("tetrahedron.obj")
+        val mesh = TriangleMesh("src/test/kotlin/tetrahedron.obj")
         assertEquals(4, mesh.vertices.size)
         assertEquals(4, mesh.indices.size)
 
