@@ -2,6 +2,10 @@
  * abstract class for shape
  */
 interface Shape {
-    fun rayIntersection(ray:Ray): HitRecord?
+
     val material: Material
+    fun rayIntersection(ray:Ray): HitRecord?
+    fun rayIntersectionList(ray: Ray):List<HitRecord>?
+
+    fun pointInternal(point: Point): Boolean
 }

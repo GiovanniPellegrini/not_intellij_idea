@@ -93,13 +93,13 @@ class Demo: CliktCommand() {
         world.add(sphere6)
         world.add(sphere7)
         world.add(sphere8)
-        val image = HdrImage(400,400)
+        val image = HdrImage(500,500)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
         val tracer = ImageTracer(image,camera)
+        val defaultColor = Color(75f, 60f, 66f)
 
         val onOff: (Ray) -> Color = { ray ->
-            val defaultColor = Color(75f, 60f, 66f)
             val intersection = world.rayIntersection(ray)
 
             if (intersection == null) {
@@ -118,8 +118,41 @@ class Demo: CliktCommand() {
     }
 }
 
+class TDemo: CliktCommand() {
+    private val args: List<String> by argument().multiple()
+    override fun run() {
+        val cube = Box(Pmin = Point(-0.3f,-0.3f,-0.5f),
+                       Pmax = Point(0.3f,0.3f,0.5f))
+        val world = World()
+        world.add(cube)
 
-fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo()).main(args)
+        val image = HdrImage(400,400)
+
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,1f,0f) , args[0].toFloat()))
+        val trace = ImageTracer(image,camera)
+
+        val onOff: (Ray) -> Color = { ray ->
+            val defaultColor = Color(255f, 255f, 255f)
+            val intersection = world.rayIntersection(ray)
+
+            if (intersection == null) {
+                Color()
+            } else {
+                defaultColor
+            }
+        }
+
+        trace.fireAllRays(onOff)
+        image.normalizeImage(1f)
+        image.clampImage()
+        val stream = FileOutputStream("triangle.pfm")
+        image.writePFM(stream, ByteOrder.BIG_ENDIAN)
+        image.writeLdrImage("png",1f, args[1])
+    }
+}
+
+
+fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), TDemo()).main(args)
 
 
 

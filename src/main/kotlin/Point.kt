@@ -9,7 +9,7 @@ data class Point (var x:Float, var y:Float, var z:Float) {
      * Converting the object to String
      */
     override fun toString():String{
-        return "<x:$x, y=$y, z=$z"
+        return "<x:$x, y=$y, z=$z>"
     }
 
     fun isClose(p: Point): Boolean{
@@ -67,6 +67,16 @@ data class Point (var x:Float, var y:Float, var z:Float) {
      */
     fun toVec(): Vector {
         return Vector(x,y,z)
+    }
+
+    operator fun get(i: Int): Float {
+        return when(i){
+            0 -> x
+            1 -> y
+            2 -> z
+            else -> throw IllegalArgumentException("i must be 0, 1 or 2")
+        }
+
     }
 
 }
