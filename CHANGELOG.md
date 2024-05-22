@@ -1,5 +1,6 @@
 ## Head
-#### - fixed bug "image upside down" related to issue #3
+#### - fixed bug "Normal transformation" related to issue #9
+#### - fixed bug "image upside down" related to issue #9
 #### - added Class Material to store the material properties of the objects
 #### - added 2 new Renderer (FlatRenderer and onOffRenderer)
 ## V 0.1.1
