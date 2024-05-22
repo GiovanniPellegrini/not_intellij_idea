@@ -148,11 +148,12 @@ class SphereTest{
             )
         assert(hits[0].isClose(hit1))
 
+
         val hit2= HitRecord(
             worldPoint = Point(0f,0f,-1f),
             normal = Normal(0f,0f,1f),
             surfacePoint =Vec2d(0f,1f) ,
-            t = 1f,
+            t = 3f,
             ray=ray,
             shape = sphere1,
         )
