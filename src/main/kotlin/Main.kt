@@ -139,7 +139,3 @@ fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), CheckDem
 
 
 
-fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
-    return (abs(x-y)<epsilon)
-}
-
