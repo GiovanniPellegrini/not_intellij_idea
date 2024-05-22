@@ -1,5 +1,5 @@
 import kotlin.math.sqrt
-
+import java.lang.Math
 data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     /**
      * print Vector components

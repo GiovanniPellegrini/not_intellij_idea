@@ -91,9 +91,10 @@ data class Vector(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
      * Method for normalizing the Vector
      */
     fun normalize() {
-        x /= norm()
-        y /= norm()
-        z /= norm()
+        val norm=this.norm()
+        x /= norm
+        y /= norm
+        z /= norm
     }
 
     /**

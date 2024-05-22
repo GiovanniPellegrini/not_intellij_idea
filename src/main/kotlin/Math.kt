@@ -1,4 +1,5 @@
 import kotlin.math.abs
+import kotlin.math.withSign
 
 /**
  * Return 0 if two Float are close more than epsilon
@@ -9,10 +10,10 @@ fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
 
 
 /**
- * return an Orthonormal base from a Vector (it will be axis-z)
+ * return an Orthonormal base from a Vector/Normal(IT MUST BE NORMALIZED) (it will be axis-z).
  */
 fun onbFromZ(normal:Normal):Triple<Vector,Vector,Vector>{
-    val sign:Float=Math.copySign(1f,normal.z)
+    val sign:Float= 1f.withSign(normal.z)
     val a:Float=-1/(normal.z+sign)
     val b:Float= normal.x*normal.y*a
 
@@ -23,7 +24,7 @@ fun onbFromZ(normal:Normal):Triple<Vector,Vector,Vector>{
 }
 
 fun onbFromZ(normal:Vector):Triple<Vector,Vector,Vector>{
-    val sign:Float=Math.copySign(1f,normal.z)
+    val sign:Float= 1f.withSign(normal.z)
     val a:Float=-1/(normal.z+sign)
     val b:Float= normal.x*normal.y*a
 
