@@ -103,4 +103,17 @@ class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<Mu
         }
         return null
     }
+
+    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
+        val hits = mutableListOf<HitRecord>()
+        if(this.rayIntersection(ray) == null) return null
+        else {
+            hits.add(this.rayIntersection(ray)!!)
+            return hits
+        }
+    }
+
+    override fun pointInternal(point: Point): Boolean {
+        TODO("Not yet implemented")
+    }
 }
