@@ -7,6 +7,7 @@ class HitRecord(var worldPoint: Point,
                 var t: Float,var ray: Ray,
                 var shape: Shape){
 
+
     /**
      * verify if two HitRecord are equals
      */
@@ -17,4 +18,5 @@ class HitRecord(var worldPoint: Point,
                this.ray.isClose(other.ray) &&
                are_close(this.t, other.t)
     }
+
 }

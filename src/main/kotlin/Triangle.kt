@@ -10,6 +10,13 @@ class Triangle(val transformation: Transformation = Transformation(),
                val c: Point = Point(0f,0f,0f),override val material: Material=Material()): Shape {
 
     /**
+     * override PointInternal. However, is not useful for this class because triangle are not used in CSG.
+     */
+    override fun pointInternal(point: Point): Boolean {
+        return false
+    }
+
+    /**
      * returns True if beta and gamma are in the range [0,1]
       */
     private fun isInside(beta: Float, gamma: Float): Boolean{
@@ -104,6 +111,18 @@ class Triangle(val transformation: Transformation = Transformation(),
         }
         return null
     }
+    /**
+     * evaluates if a ray intersect the triangle and returns all the intersection from the point of view
+     */
+    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
+        val hits= ArrayList<HitRecord>()
+        if(this.rayIntersection(ray)==null) return null
+        else {
+            hits.add(this.rayIntersection(ray)!!)
+            return hits
+        }
+    }
+
 
     /**
      * evaluates the determinant of a 3x3 matrix

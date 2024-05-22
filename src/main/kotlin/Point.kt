@@ -9,7 +9,7 @@ data class Point (var x:Float, var y:Float, var z:Float) {
      * Converting the object to String
      */
     override fun toString():String{
-        return "<x:$x, y=$y, z=$z"
+        return "<x:$x, y=$y, z=$z>"
     }
 
     fun isClose(p: Point): Boolean{

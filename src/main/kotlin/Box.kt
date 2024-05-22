@@ -1,3 +1,5 @@
+import java.security.cert.PolicyNode
+
 /**
  * Box class, inherited from shape, represents a box in 3D space identified by two vertex points Pmin and Pmax
  */
@@ -10,6 +12,18 @@ class Box(val transformation: Transformation = Transformation(),
      */
     private fun checkVertex(): Boolean{
         return Pmin.x < Pmax.x && Pmin.y < Pmax.y && Pmin.z < Pmax.z
+    }
+
+    /**
+     * check if a point is internal to the box
+     */
+    override fun pointInternal(point: Point): Boolean {
+        if(!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
+        val point1=transformation.inverse()*point
+        if( point1.x in Pmin.x..Pmax.x &&
+            point1.y in Pmin.y..Pmax.y &&
+            point1.z in Pmin.z..Pmax.z) return true
+        else return false
     }
 
 
@@ -63,24 +77,127 @@ class Box(val transformation: Transformation = Transformation(),
         }
 
         //if minDir is -1, the ray intersects the box only at t1
-        var t = t1
-        var dir = minDir
-        if (minDir == -1) {
-            t = t1
-            dir = maxDir
+        if(minDir==-1) {
+            val hit=invRay.at(t1)
+            val normal=getNormal(invRay,maxDir)
+            return HitRecord(
+                worldPoint = transformation*hit,
+                normal= transformation*normal,
+                surfacePoint=surfacePoint(hit,normal),
+                t=t1,
+                ray=ray,
+                shape = this
+            )
+        }else {
+            val t = t0
+            val dir = minDir
+            val hit = invRay.at(t0)
+            val normal = getNormal(invRay, minDir)
+            return HitRecord(
+                worldPoint = transformation * hit,
+                normal = transformation * normal,
+                surfacePoint = surfacePoint(hit, normal),
+                t = t0,
+                ray = ray,
+                shape = this
+            )
         }
-
-        val hit = invRay.at(t)
-        val normal = getNormal(invRay, dir)
-        return HitRecord(
-            worldPoint = transformation * hit,
-            normal = transformation * normal,
-            surfacePoint = surfacePoint(hit, normal),
-            t = t,
-            ray = ray,
-            shape=this)
     }
 
+    /**
+     * evaluates if a ray intersect the Box and returns all the intersection from the point of view
+     */
+    override fun rayIntersectionList(ray: Ray):List<HitRecord>? {
+        if(!checkVertex()){
+            throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
+        }
+
+        val hits=ArrayList<HitRecord>()
+        //transform the system in the coordinates box
+        val invRay=ray.transformation(transformation.inverse())
+        var t0=invRay.tMin
+        var t1=invRay.tMax
+
+        /* minDir and maxDir are the direction of the intersection
+        - 0 for x
+        - 1 for y
+        - 2 for z
+         */
+        var minDir = -1
+        var maxDir = -1
+
+        /*
+        iterate over x, y and z to evaluate t-values
+        at the end if t0 < t1 means that the intervals [t_i(0),t_i(1)]are not disjointed and thus
+        the ray intersects the box
+        */
+        for(i in 0 until 3) {
+            //evaluate t values where the ray intersects the plane of the box for each coordinate xyz
+            var tmin = (Pmin[i] - (invRay.origin)[i]) / invRay.dir[i]
+            var tmax = (Pmax[i] - (invRay.origin)[i]) / invRay.dir[i]
+
+            //swap tmin and tmax if tmin > tmax
+            // (the minor t indicates the possible first point of intersection)
+            if (tmin > tmax) {
+                val t = tmin
+                tmin = tmax
+                tmax = t
+            }
+
+            //if  the new tmin is greater tha t0, update t0 and the direction of intersection
+            if (tmin > t0) {
+                t0 = tmin
+                minDir = i
+            }
+            //if the new tmax is smaller than the previous t1, update t1 and the direction of the intersection
+            if (tmax < t1) {
+                t1 = tmax
+                maxDir = i
+            }
+            //if t0 is greater than t1, the ray does not intersect the box
+            if (t0 > t1) return null
+        }
+
+        //If minDir==-1 means that the intersection occurs only at t1
+        if(minDir==-1) {
+            val hit1=invRay.at(t1)
+            val normal=getNormal(invRay,maxDir)
+            hits.add(HitRecord(
+                worldPoint = transformation*hit1,
+                normal= transformation*normal,
+                surfacePoint=surfacePoint(hit1,normal),
+                t=t1,
+                ray=ray,
+                shape = this)
+            )
+            return hits
+        }
+        //else there are two interactions, and they are both added to intersectionLists
+        else{
+            val hit0=invRay.at(t0)
+            val normal0=getNormal(invRay,minDir)
+            hits.add(HitRecord(
+                worldPoint = transformation*hit0,
+                normal= transformation*normal0,
+                surfacePoint=surfacePoint(hit0,normal0),
+                t=t0,
+                ray=ray,
+                shape = this)
+            )
+
+            val hit1=invRay.at((t1))
+            val normal1=getNormal(invRay,maxDir)
+            hits.add(HitRecord(
+                worldPoint = transformation*hit1,
+                normal= transformation*normal1,
+                surfacePoint=surfacePoint(hit1,normal1),
+                t=t1,
+                ray=ray,
+                shape = this)
+            )
+            return hits
+        }
+    }
 
     /**
      * evaluates the normal of the box, for a given t,
@@ -93,9 +210,7 @@ class Box(val transformation: Transformation = Transformation(),
             2 -> Normal(0f,0f,1f)  //parallel to z
             else -> throw IllegalArgumentException("tDir must be 0, 1 or 2")
         }
-
         return if(normal * ray.dir < 0) normal else -normal
-
     }
 
     /**
