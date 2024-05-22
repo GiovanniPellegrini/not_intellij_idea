@@ -25,9 +25,7 @@ class MathTest {
 
             assert(are_close(onb.first.sqNorm(), 1f))
             assert(are_close(onb.second.sqNorm(), 1f))
-
             assert(are_close(onb.third.sqNorm(), 1f))
-
 
             assert(onb.first.xTimes(onb.second).isClose(onb.third))
             assert(onb.second.xTimes(onb.third).isClose(onb.first))
