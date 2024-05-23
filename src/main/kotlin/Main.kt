@@ -94,7 +94,7 @@ class Demo: CliktCommand() {
         world.add(sphere6)
         world.add(sphere7)
         world.add(sphere8)
-        val image = HdrImage(400,400)
+        val image = HdrImage(500,500)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
         val tracer = ImageTracer(image,camera)

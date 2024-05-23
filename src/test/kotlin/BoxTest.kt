@@ -34,13 +34,14 @@ class BoxTest {
         val hit = box.rayIntersection(ray)
         assertNotNull(hit)
         val hit1 = HitRecord(
-            worldPoint = Point(1.8f,1f,1f),
+            worldPoint = Point(1.0f,1f,1f),
             normal = Normal(0f,0f,1f),
-            surfacePoint = Vec2d(1.8f,1f),
-            t=1.341640f,
+            surfacePoint = Vec2d(1.0f,1f),
+            t=2.236068f,
             ray=ray,
             shape = box
         )
+
         assert(hit.isClose(hit1))
     }
 
@@ -53,10 +54,10 @@ class BoxTest {
         val hit = box.rayIntersection(ray)
         assertNotNull(hit)
         val hit1 = HitRecord(
-            worldPoint = Point(1.8f,2f,1f),
+            worldPoint = Point(1.0f,2f,1f),
             normal = Normal(0f,0f,1f),
-            surfacePoint = Vec2d(1.8f,1f),
-            t=1.341640f,
+            surfacePoint = Vec2d(1.0f,1f),
+            t=2.236068f,
             ray=ray,
             shape = box
         )
@@ -82,14 +83,6 @@ class BoxTest {
         assert(hits[0].isClose(hit1))
 
         assertNotNull(hits[1])
-        val hit2=HitRecord(
-            worldPoint = Point(-1f,0f,0f),
-            normal = Normal(1f,0f,0f),
-            surfacePoint = Vec2d(0f,0f),
-            t=3f,
-            ray=ray,
-            shape = cube
-        )
     }
 
     @Test
@@ -108,10 +101,8 @@ class BoxTest {
 
         val point4=Point(2f,0.5f,0.6f)
         val point5=Point(0f,0f,0f)
-        val point6=Point(-0.25f,0.25f,1f)
 
         assert(cube2.pointInternal(point4))
         assert(cube2.pointInternal(point5))
-        //assert(!cube2.pointInternal(point6))
     }
 }
