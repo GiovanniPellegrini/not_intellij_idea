@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/TriangleMesh.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/TriangleMesh.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/TriangleMeshTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/TriangleMeshTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +129,9 @@
     "Gradle.TransformationTest.scalingSphereTest.executor": "Run",
     "Gradle.TransformationTest.scalingTest2.executor": "Run",
     "Gradle.TransformationTest.translationTest.executor": "Run",
+    "Gradle.TriangleMeshTest.testRayIntersection.executor": "Run",
+    "Gradle.TriangleMeshTest.testRotation.executor": "Run",
+    "Gradle.TriangleMeshTest.testTransformation.executor": "Run",
     "Gradle.TriangleTest.executor": "Run",
     "Gradle.TriangleTest.kramerRuleTest.executor": "Run",
     "Gradle.TriangleTest.testDeterminant3x3.executor": "Run",
@@ -172,8 +175,8 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TriangleTest.kramerRuleTest">
-    <configuration name="TriangleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.TriangleMeshTest.testRotation">
+    <configuration name="TriangleMeshTest.testRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -186,7 +189,55 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleTest&quot;" />
+            <option value="&quot;TriangleMeshTest.testRayIntersection&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="TriangleMeshTest.testRotation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;TriangleMeshTest.testRotation&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="TriangleMeshTest.testTransformation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;TriangleMeshTest.testTransformation&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -245,61 +296,13 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.testMatrix" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;TriangleTest.testMatrix&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="TriangleTest.testReplaceAndPrintMatrix" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;TriangleTest.testReplaceAndPrintMatrix&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TriangleMeshTest.testRotation" />
+        <item itemvalue="Gradle.TriangleMeshTest.testTransformation" />
+        <item itemvalue="Gradle.TriangleMeshTest.testRayIntersection" />
         <item itemvalue="Gradle.TriangleTest.kramerRuleTest" />
         <item itemvalue="Gradle.TriangleTest.testDeterminant3x3" />
-        <item itemvalue="Gradle.TriangleTest" />
-        <item itemvalue="Gradle.TriangleTest.testReplaceAndPrintMatrix" />
-        <item itemvalue="Gradle.TriangleTest.testMatrix" />
       </list>
     </recent_temporary>
   </component>
