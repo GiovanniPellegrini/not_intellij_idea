@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import java.io.FileOutputStream
 import java.nio.ByteOrder
+import kotlin.io.path.Path
 
 
 class Tracer: CliktCommand() {
@@ -112,26 +113,34 @@ class CheckDemo: CliktCommand() {
     override fun run() {
 
         val sphere1 = Sphere(
-            scalingTransformation(Vector(0.8f, 0.8f, 0.8f)) * Translation(Vector(1.0f, 0f, 0.5f)),
-            Material(emittedRad = CheckeredPigment(Color(255f, 0f, 0f), color2 = Color(0f,0f,255f), steps = 15))
+            scalingTransformation(Vector(0.6f, 0.6f, 0.6f)) * Translation(Vector(0.8f, 1.3f, -0.5f)),
+            Material(emittedRad = UniformPigment(Color(230f, 0f, 0f)))
         )
         val plane1 = Plane(transformation = Translation(Vector(0f, 0f, -1f)),
-            Material(emittedRad = CheckeredPigment(Color(255f, 0f, 0f), color2 = Color(0f,0f,255f), steps = 4))
+            Material(emittedRad = CheckeredPigment(Color(170f, 0f, 255f), color2 = Color(0.1f,0.2f,0.5f), steps = 4))
+        )
+        val mirror=Sphere(scalingTransformation(Vector(0.4f,0.4f,0.4f))*Translation(Vector(4f,-1.5f,-2f)),
+            Material(brdf = SpecularBRDF(UniformPigment(Color(0.2f,0.4f,0.6f)))))
+        val sky=Sphere(transformation=scalingTransformation(Vector(200f, 200f, 200f)) * Translation(Vector(0f, 0f, 0.4f)),
+            material = Material(brdf =DiffusionBRDF(UniformPigment(Color(0f,0f,0f))),emittedRad = UniformPigment(Color(0f,255f,255f)))
+
         )
         val world = World()
         world.add(sphere1)
         world.add(plane1)
-        val image = HdrImage(720, 720)
+        world.add(mirror)
+        world.add(sky)
+        val image = HdrImage(2*720, 2*720)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
         val tracer = ImageTracer(image, camera)
-        val renderer = FlatRenderer(world)
+        val renderer = PathTracer(world=world)
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(0.1f)
         image.clampImage()
         val stream = FileOutputStream("output.pfm")
         image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        image.writeLdrImage("png", 1f, args[1])
+        image.writeLdrImage("png", 1.7f, args[1])
     }
 }
 
