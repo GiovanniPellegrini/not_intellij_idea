@@ -114,6 +114,6 @@ class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<Mu
     }
 
     override fun pointInternal(point: Point): Boolean {
-        TODO("Not yet implemented")
+        throw NotImplementedError("Not implemented")
     }
 }
