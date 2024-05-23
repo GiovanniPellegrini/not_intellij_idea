@@ -1,6 +1,7 @@
 ## Head
 #### - fixed bug "Normal transformation" related to issue #9
 #### - fixed bug "image upside down" related to issue #3
+#### - added new Geometric Object: with Triangle mesh you can create a 3d object with a list of triangles and a .obj file
 ## V 0.2.0
  ##### - added `Flat renderer` with `Pigments` (checkered or uniform)
  ##### - added `Plane` shape and `CSG` operations
