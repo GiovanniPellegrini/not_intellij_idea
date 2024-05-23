@@ -82,14 +82,6 @@ class BoxTest {
         assert(hits[0].isClose(hit1))
 
         assertNotNull(hits[1])
-        val hit2=HitRecord(
-            worldPoint = Point(-1f,0f,0f),
-            normal = Normal(1f,0f,0f),
-            surfacePoint = Vec2d(0f,0f),
-            t=3f,
-            ray=ray,
-            shape = cube
-        )
     }
 
     @Test
@@ -108,10 +100,8 @@ class BoxTest {
 
         val point4=Point(2f,0.5f,0.6f)
         val point5=Point(0f,0f,0f)
-        val point6=Point(-0.25f,0.25f,1f)
 
         assert(cube2.pointInternal(point4))
         assert(cube2.pointInternal(point5))
-        //assert(!cube2.pointInternal(point6))
     }
 }

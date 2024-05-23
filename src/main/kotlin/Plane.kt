@@ -4,6 +4,7 @@ import kotlin.math.floor
 class Plane(val transformation: Transformation = Transformation(),
             override val material: Material=Material()): Shape{
 
+
     /**
      * check if a point belongs to the plane
      */
