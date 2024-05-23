@@ -34,13 +34,14 @@ class BoxTest {
         val hit = box.rayIntersection(ray)
         assertNotNull(hit)
         val hit1 = HitRecord(
-            worldPoint = Point(1.8f,1f,1f),
+            worldPoint = Point(1.0f,1f,1f),
             normal = Normal(0f,0f,1f),
-            surfacePoint = Vec2d(1.8f,1f),
-            t=1.341640f,
+            surfacePoint = Vec2d(1.0f,1f),
+            t=2.236068f,
             ray=ray,
             shape = box
         )
+
         assert(hit.isClose(hit1))
     }
 
@@ -53,10 +54,10 @@ class BoxTest {
         val hit = box.rayIntersection(ray)
         assertNotNull(hit)
         val hit1 = HitRecord(
-            worldPoint = Point(1.8f,2f,1f),
+            worldPoint = Point(1.0f,2f,1f),
             normal = Normal(0f,0f,1f),
-            surfacePoint = Vec2d(1.8f,1f),
-            t=1.341640f,
+            surfacePoint = Vec2d(1.0f,1f),
+            t=2.236068f,
             ray=ray,
             shape = box
         )
