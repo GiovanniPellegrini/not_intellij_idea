@@ -56,4 +56,29 @@ class RendererTest{
         assert(image.getPixel(1, 2) == Color())
         assert(image.getPixel(2, 2) == Color())
     }
+
+    @Test
+    fun furnaceTest(){
+        val pcg=PCG()
+
+        for(i in 0 until 1){
+            val world=World()
+            val emittedRad=pcg.randomFloat()
+            val rad=pcg.randomFloat()*0.9f
+            val material=Material(DiffusionBRDF(UniformPigment(Color(1f,1f,1f)*rad)), emittedRad = UniformPigment(Color(1f,1f,1f)*emittedRad))
+            
+            val pathTracer=PathTracer(world, maxdepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
+            val ray=Ray(Point(0f,0f,0f),Vector(1f,0f,0f))
+            world.add(Sphere(material = material))
+            val color=pathTracer.render(ray)
+
+            val expected=emittedRad/(1-rad)
+            println(color.r)
+            println(expected)
+            assert(are_close(expected,color.r))
+            assert(are_close(expected,color.g))
+            assert(are_close(expected,color.b))
+
+        }
+    }
 }

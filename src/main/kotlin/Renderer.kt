@@ -39,9 +39,9 @@ class PathTracer(world: World, backgroundColor: Color=Color(), val maxdepth:Int=
             for(i in 0 until numberOfRays){
                 val newray=hitMaterial.brdf.scatterRay(pcg,hit.ray.dir,hit.worldPoint,hit.normal, depth = ray.depth+1)
                 val newRadiance=render(newray)
-                cum+=newRadiance+hitColor
+                cum+=newRadiance*hitColor
             }
         }
-        return (cum+emittedRadiance)*(1f/numberOfRays)
+        return emittedRadiance+cum*(1f/numberOfRays.toFloat())
     }
 }
