@@ -4,10 +4,10 @@
 #### - added new Geometric Object: with Triangle mesh you can create a 3d object with a list of triangles and a .obj file
 
 ## V 0.3.0
-####-triangle class and triangle mesh PR #7
-####-Path tracing render PR #12
-####-Implemented method Scatter Ray for brdf PR #12
-####-implemented Specular BRDF PR #12
+#### -triangle class and triangle mesh PR #7
+#### -Path tracing render PR #12
+#### -Implemented method Scatter Ray for brdf PR #12
+#### -implemented Specular BRDF PR #12
 ## V 0.2.0
  ##### - added `Flat renderer` with `Pigments` (checkered or uniform)
  ##### - added `Plane` shape and `CSG` operations
