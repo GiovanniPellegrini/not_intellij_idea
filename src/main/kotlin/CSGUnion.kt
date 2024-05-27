@@ -61,4 +61,8 @@
              return hits
          }
      }
+
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        TODO("Not yet implemented")
+    }
 }

@@ -7,8 +7,8 @@ class WorldTest{
         val world = World()
         val sphere1 = Sphere(transformation = Translation(Vector(1f,0f,0f) * 2f))
         val sphere2 = Sphere(transformation = Translation(Vector(1f,0f,0f) * 8f))
-        world.add(sphere1)
-        world.add(sphere2)
+        world.addShape(sphere1)
+        world.addShape(sphere2)
 
         val intersection1 = world.rayIntersection(Ray(origin=Point(0.0f, 0.0f, 0.0f),
                                                       dir = Vector(1f,0f,0f)))

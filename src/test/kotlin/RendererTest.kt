@@ -12,7 +12,7 @@ class RendererTest{
         val camera = OrthogonalCamera()
         val tracer = ImageTracer(image = image, camera = camera)
         val world = World()
-        world.add(sphere)
+        world.addShape(sphere)
         val renderer = OnOffRenderer(world = world)
         tracer.fireAllRays(renderer::render)
 
@@ -39,7 +39,7 @@ class RendererTest{
         val camera = OrthogonalCamera()
         val tracer = ImageTracer(image=image, camera=camera)
         val world = World()
-        world.add(sphere)
+        world.addShape(sphere)
         val renderer = FlatRenderer(world=world)
         tracer.fireAllRays(renderer::render)
 
@@ -66,9 +66,9 @@ class RendererTest{
             val rad=pcg.randomFloat()*0.9f
             val material=Material(DiffusionBRDF(UniformPigment(Color(1f,1f,1f)*rad)), emittedRad = UniformPigment(Color(1f,1f,1f)*emittedRad))
             
-            val pathTracer=PathTracer(world, maxdepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
+            val pathTracer=PathTracer(world, maxDepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
             val ray=Ray(Point(0f,0f,0f),Vector(1f,0f,0f))
-            world.add(Sphere(material = material))
+            world.addShape(Sphere(material = material))
             val color=pathTracer.render(ray)
 
             val expected=emittedRad/(1-rad)

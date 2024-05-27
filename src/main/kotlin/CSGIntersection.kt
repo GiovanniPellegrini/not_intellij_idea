@@ -45,6 +45,10 @@ class CSGIntersection (var shape1:Shape, var shape2:Shape,val transformation: Tr
             return hits
         }
     }
+
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        TODO("Not yet implemented")
+    }
 }
 
 

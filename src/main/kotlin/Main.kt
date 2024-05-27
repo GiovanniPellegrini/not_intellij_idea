@@ -150,7 +150,7 @@ class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo i
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
         val tracer = ImageTracer(image, camera)
-        val renderer = PathTracer(world=world, maxdepth = args[1].toInt(), russianRouletteLimit = args[2].toInt(), numberOfRays = args[3].toInt())
+        val renderer = PathTracer(world=world, maxDepth = args[1].toInt(), russianRouletteLimit = args[2].toInt(), numberOfRays = args[3].toInt())
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()

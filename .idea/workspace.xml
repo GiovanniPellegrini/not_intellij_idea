@@ -73,7 +73,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -345,7 +345,7 @@
       <workItem from="1716284974731" duration="1646000" />
       <workItem from="1716294212465" duration="8599000" />
       <workItem from="1716539453538" duration="610000" />
-      <workItem from="1716821765139" duration="3868000" />
+      <workItem from="1716821765139" duration="4431000" />
     </task>
     <servers />
   </component>

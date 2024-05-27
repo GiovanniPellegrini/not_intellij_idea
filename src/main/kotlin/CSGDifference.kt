@@ -46,4 +46,8 @@ class CSGDifference(val shape1:Shape, val shape2:Shape,val transformation: Trans
             return hits
         }
     }
+
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        TODO("Not yet implemented")
+    }
 }
