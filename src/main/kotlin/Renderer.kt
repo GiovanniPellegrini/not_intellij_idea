@@ -18,9 +18,12 @@ class FlatRenderer(world: World, backgroundColor: Color = Color()): Renderer(wor
     }
 }
 
-class PathTracer(world: World, backgroundColor: Color=Color(), val maxdepth:Int=2, val russianRouletteLimit:Int=5, val pcg: PCG=PCG(),val numberOfRays:Int=100): Renderer(world,backgroundColor){
+class PathTracer(world: World, backgroundColor: Color=Color(),
+                 val maxDepth:Int=2, val russianRouletteLimit:Int=5,
+                 val pcg: PCG=PCG(),val numberOfRays:Int=100): Renderer(world,backgroundColor){
+
     override fun render(ray: Ray): Color {
-        if(ray.depth>maxdepth) return Color()
+        if(ray.depth>maxDepth) return Color()
 
         val hit= world.rayIntersection(ray) ?: return backgroundColor
         val hitMaterial=hit.shape.material
@@ -37,11 +40,42 @@ class PathTracer(world: World, backgroundColor: Color=Color(), val maxdepth:Int=
         var cum=Color()
         if(hitColorLum>0f){
             for(i in 0 until numberOfRays){
-                val newray=hitMaterial.brdf.scatterRay(pcg,hit.ray.dir,hit.worldPoint,hit.normal, depth = ray.depth+1)
-                val newRadiance=render(newray)
-                cum+=newRadiance*hitColor
+                val newRay = hitMaterial.brdf.scatterRay(pcg,hit.ray.dir,hit.worldPoint,hit.normal, depth = ray.depth+1)
+                val newRadiance = render(newRay)
+                cum += newRadiance * hitColor
             }
         }
         return emittedRadiance+cum*(1f/numberOfRays.toFloat())
     }
+}
+
+class PointLightRenderer(world: World, backgroundColor: Color = Color(), val ambientColor: Color = Color(0.1f, 0.1f, 0.1f)):
+                        Renderer(world = world, backgroundColor = backgroundColor){
+
+    override fun render(ray: Ray): Color {
+        val hit = world.rayIntersection(ray) ?: return backgroundColor
+        val hitMaterial = hit.shape.material
+        var hitColor = this.ambientColor
+
+        for(light in world.pointLights){
+            if(world.isPointVisible(light.position, hit.worldPoint)){
+                val distVec = hit.worldPoint - light.position
+                val distVecNorm = distVec.norm()
+                val inDir = distVec * (1f / distVecNorm)
+                val cosTheta = max(0f, -ray.dir.normalizedDot(hit.normal))
+                var distFactor = 1f
+                if (light.linearRadius > 0f) {
+                    distFactor = (light.linearRadius / distVecNorm)
+                }
+
+                val emittedColor = hitMaterial.emittedRad.getColor(hit.surfacePoint)
+                val brdfColor = hitMaterial.brdf.eval(hit.normal, inDir, -ray.dir, hit.surfacePoint)
+
+                hitColor += (emittedColor + brdfColor) * light.color * cosTheta * distFactor
+            }
+
+        }
+        return hitColor
+    }
+
 }

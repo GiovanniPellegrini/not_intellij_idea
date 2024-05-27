@@ -33,8 +33,8 @@ class DiffusionBRDF(override val p: Pigment, val reflectance:Float=1f): BRDF(p){
 
 class SpecularBRDF(override val p: Pigment, val thresholdAngleRad: Float = PI.toFloat()/1800f): BRDF(p){
     override fun eval(normal: Normal, inDir: Vector, outDir: Vector, uv: Vec2d): Color {
-        val thetaIn = acos(normal.toVector() * inDir)
-        val thetaOut = acos(normal.toVector() * outDir)
+        val thetaIn = acos(normal.normalizedDot(inDir))
+        val thetaOut = acos(normal.normalizedDot(outDir))
 
         return if(abs(thetaIn - thetaOut) < this.thresholdAngleRad) {
             this.p.getColor(uv)

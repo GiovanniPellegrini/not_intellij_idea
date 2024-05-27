@@ -93,4 +93,28 @@ data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     fun toVector(): Vector{
         return Vector(x,y,z)
     }
+
+    /**
+     * scalar product between two normalized normals
+     */
+    fun normalizedDot(other: Normal): Float {
+        val n1 = Normal(x,y,z)
+        val n2 = Normal(other.x,other.y,other.z)
+        n1.normalize()
+        n2.normalize()
+        return n1 * n2
+    }
+
+    /**
+     * scalar product between a normalized vector and normalized normal
+     */
+    fun normalizedDot(other: Vector): Float {
+        val n1 = Normal(x, y, z)
+        val n2 = Normal(other.x, other.y, other.z)
+        n1.normalize()
+        n2.normalize()
+        return n1 * n2
+    }
+
+
 }

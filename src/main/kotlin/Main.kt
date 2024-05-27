@@ -95,16 +95,16 @@ class Demo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image 
 
 
         val world = World()
-        world.add(sphere1)
-        world.add(sphere2)
-        world.add(sphere3)
-        world.add(sphere4)
-        world.add(sphere5)
-        world.add(sphere6)
-        world.add(sphere7)
-        world.add(sphere8)
-        world.add(sphere9)
-        world.add(sphere10)
+        world.addShape(sphere1)
+        world.addShape(sphere2)
+        world.addShape(sphere3)
+        world.addShape(sphere4)
+        world.addShape(sphere5)
+        world.addShape(sphere6)
+        world.addShape(sphere7)
+        world.addShape(sphere8)
+        world.addShape(sphere9)
+        world.addShape(sphere10)
         val image = HdrImage(500,500)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
@@ -141,10 +141,10 @@ class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo i
 
         )
         val world = World()
-        world.add(sphere1)
-        world.add(plane1)
-        world.add(mirror)
-        world.add(sky)
+        world.addShape(sphere1)
+        world.addShape(plane1)
+        world.addShape(mirror)
+        world.addShape(sky)
 
         val image = HdrImage(1080, 1080)
 
