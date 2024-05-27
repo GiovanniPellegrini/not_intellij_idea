@@ -49,4 +49,12 @@ class Plane(val transformation: Transformation = Transformation(),
             return hits
         }
     }
+
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        val invRay = ray.transformation(transformation.inverse())
+        if(abs(invRay.dir.z) <1e-5f) return false
+
+        val t = -invRay.origin.z / invRay.dir.z
+        return invRay.tMin < t && t < invRay.tMax
+    }
 }
