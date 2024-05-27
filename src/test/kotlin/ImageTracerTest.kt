@@ -35,5 +35,27 @@ class ImageTracerTest {
             }
         }
     }
+
+    @Test
+    fun stratifiedSampling(){
+        var numOfRay=0
+        val smallImage=HdrImage(1,1)
+        val camera=OrthogonalCamera(1f)
+        val tracer=ImageTracer(smallImage,camera)
+
+        val nullTraceRay:(Ray)->Color={ray->
+
+            val point=ray.at(1f)
+            assert(point.x==0f)
+            assert(point.y>-1f && point.y<1f)
+            assert(point.z>-1f && point.z<1f)
+            numOfRay+=1
+            Color()
+        }
+        tracer.fireAllRays(nullTraceRay, raysForSide = 10)
+        assert(numOfRay==100)
+
+
+    }
 }
 
