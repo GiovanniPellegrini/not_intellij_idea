@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import java.io.FileOutputStream
 import java.nio.ByteOrder
+import kotlin.io.path.Path
 
 
 class Tracer: CliktCommand() {
@@ -97,19 +98,8 @@ class Demo: CliktCommand() {
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
         val tracer = ImageTracer(image,camera)
-        val defaultColor = Color(75f, 60f, 66f)
-
-        val onOff: (Ray) -> Color = { ray ->
-            val intersection = world.rayIntersection(ray)
-
-            if (intersection == null) {
-                Color()
-            } else {
-                defaultColor
-            }
-        }
-
-        tracer.fireAllRays(onOff)
+        val renderer = FlatRenderer(world)
+        tracer.fireAllRays(renderer::render)
         image.normalizeImage(0.1f)
         image.clampImage()
         val stream = FileOutputStream("output.pfm")
@@ -118,40 +108,43 @@ class Demo: CliktCommand() {
     }
 }
 
-class MeshDemo: CliktCommand() {
+class CheckDemo: CliktCommand() {
     private val args: List<String> by argument().multiple()
     override fun run() {
 
-        val mesh = TriangleMesh("tetrahedron.obj", transformation = Translation(Vector(1f,-2f,-1f))
-                *Rotation(Vector(0f,0f,1f), 45f),
-                material = Material(emittedRad = UniformPigment(Color(242f,140f,140f)))
+        val sphere1 = Sphere(
+            scalingTransformation(Vector(0.6f, 0.6f, 0.6f)) * Translation(Vector(0.8f, 1.3f, -0.5f)),
+            Material(emittedRad = UniformPigment(Color(230f, 0f, 0f)))
         )
-        val plane = Plane(transformation = Translation(Vector(0f,0f,-1f)),
-            material = Material(emittedRad = CheckeredPigment(Color(0f,0f,255f),Color(255f,0f,0f),steps = 2)))
+        val plane1 = Plane(transformation = Translation(Vector(0f, 0f, -1f)),
+            Material(emittedRad = CheckeredPigment(Color(170f, 0f, 255f), color2 = Color(0.1f,0.2f,0.5f), steps = 4))
+        )
+        val mirror=Sphere(scalingTransformation(Vector(0.4f,0.4f,0.4f))*Translation(Vector(4f,-1.5f,-2f)),
+            Material(brdf = SpecularBRDF(UniformPigment(Color(0.2f,0.4f,0.6f)))))
+        val sky=Sphere(transformation=scalingTransformation(Vector(200f, 200f, 200f)) * Translation(Vector(0f, 0f, 0.4f)),
+            material = Material(brdf =DiffusionBRDF(UniformPigment(Color(0f,0f,0f))),emittedRad = UniformPigment(Color(0f,255f,255f)))
+
+        )
         val world = World()
-        world.add(mesh)
-        world.add(plane)
+        world.add(sphere1)
+        world.add(plane1)
+        world.add(mirror)
+        world.add(sky)
+        val image = HdrImage(2*720, 2*720)
 
-        val image = HdrImage(400,400)
-
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) , 0f))
-        val tracer = ImageTracer(image,camera)
-        val renderer = FlatRenderer(world)
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
+        val tracer = ImageTracer(image, camera)
+        val renderer = PathTracer(world=world)
         tracer.fireAllRays(renderer::render)
-        image.normalizeImage(1f, luminosity = 0.1f)
+        image.normalizeImage(0.1f)
         image.clampImage()
-        val stream = FileOutputStream("triangle.pfm")
+        val stream = FileOutputStream("output.pfm")
         image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        image.writeLdrImage("png",0.1f, args[1])
+        image.writeLdrImage("png", 1.7f, args[1])
     }
 }
 
-
-fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), MeshDemo()).main(args)
-
+fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), CheckDemo()).main(args)
 
 
-fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
-    return (abs(x-y)<epsilon)
-}
 

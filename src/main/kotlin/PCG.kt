@@ -14,6 +14,8 @@ class PCG(private var initState: ULong = 42u, private var initSeq: ULong = 54u){
         val rot = (oldstate shr 59).toInt()
         return xorshifted.rotateRight(rot)
     }
+
+    // Return a Float between 0 and 1
     fun randomFloat():Float{
         return (this.random().toFloat())/0xffffffff
     }

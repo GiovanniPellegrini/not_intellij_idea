@@ -1,5 +1,5 @@
 import kotlin.math.sqrt
-
+import java.lang.Math
 data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     /**
      * print Vector components
@@ -85,5 +85,12 @@ data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
         y /= norm
         z /= norm
         return Normal(x,y,z)
+    }
+
+    /**
+     * Method to convert a normal into a vector
+     */
+    fun toVector(): Vector{
+        return Vector(x,y,z)
     }
 }
