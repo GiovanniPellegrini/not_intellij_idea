@@ -200,6 +200,46 @@ class Box(val transformation: Transformation = Transformation(),
     }
 
     /**
+     * quickRayIntersection evaluates if a ray intersects the box
+     */
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        val invRay=ray.transformation(transformation.inverse())
+        var t0=invRay.tMin
+        var t1=invRay.tMax
+
+        /*
+        iterate over x, y and z to evaluate t-values
+        at the end if t0 < t1 means that the intervals [t_i(0),t_i(1)]are not disjointed and thus
+        the ray intersects the box
+        */
+        for(i in 0 until 3) {
+            //evaluate t values where the ray intersects the plane of the box for each coordinate xyz
+            var tmin = (Pmin[i] - (invRay.origin)[i]) / invRay.dir[i]
+            var tmax = (Pmax[i] - (invRay.origin)[i]) / invRay.dir[i]
+
+            //swap tmin and tmax if tmin > tmax
+            // (the minor t indicates the possible first point of intersection)
+            if (tmin > tmax) {
+                val t = tmin
+                tmin = tmax
+                tmax = t
+            }
+
+            //if  the new tmin is greater tha t0, update t0 and the direction of intersection
+            if (tmin > t0) {
+                t0 = tmin
+            }
+            //if the new tmax is smaller than the previous t1, update t1 and the direction of the intersection
+            if (tmax < t1) {
+                t1 = tmax
+            }
+            //if t0 is greater than t1, the ray does not intersect the box
+            if (t0 > t1) return false
+        }
+        return true
+    }
+
+    /**
      * evaluates the normal of the box, for a given t,
      * if t is relative to x, y or z, the normal will be the respective axis
      */

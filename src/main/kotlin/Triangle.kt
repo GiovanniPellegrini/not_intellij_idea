@@ -123,6 +123,21 @@ class Triangle(val transformation: Transformation = Transformation(),
         }
     }
 
+    /**
+     * evaluates if a ray intersect the triangle and returns a boolean
+     */
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        val invRay = ray.transformation(transformation.inverse())
+        val solution = kramerRule(invRay) ?: return false
+        val beta = solution[0]
+        val gamma = solution[1]
+        val t = solution[2]
+        if(t in (invRay.tMin..invRay.tMax) && isInside(beta,gamma)){
+            return true
+        }
+        return false
+    }
+
 
     /**
      * evaluates the determinant of a 3x3 matrix

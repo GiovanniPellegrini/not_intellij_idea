@@ -113,6 +113,18 @@ class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<Mu
         }
     }
 
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        boundingBox.rayIntersection(ray) ?: return false
+        for(i in indices.indices) {
+            val v0 = vertices[indices[i][0]]
+            val v1 = vertices[indices[i][1]]
+            val v2 = vertices[indices[i][2]]
+            val tri = Triangle(a = v0, b = v1, c = v2, material = material, transformation = transformation)
+            return tri.quickRayIntersection(ray)
+        }
+        return false
+    }
+
     override fun pointInternal(point: Point): Boolean {
         throw NotImplementedError("Not implemented")
     }
