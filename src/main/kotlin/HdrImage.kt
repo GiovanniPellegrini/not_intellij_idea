@@ -66,7 +66,12 @@ class HdrImage (var width: Int = 0, var height: Int = 0) {
                 writeFloat(stream, color.g, order)
                 writeFloat(stream, color.b, order)
             }
+            val progress = ((height-y).toFloat() / this.height.toFloat()) * 100
+            val status = "#".repeat(progress.toInt())
+            val remaining = " ".repeat(100 - progress.toInt())
+            print("writing PFM image progress: [${status}${remaining}] ${round(progress)}% \r")
         }
+        println("\n PFM image saved")
     }
 
     /**
@@ -116,12 +121,16 @@ class HdrImage (var width: Int = 0, var height: Int = 0) {
                 val rgb = red.shl(16) + green.shl(8) + blue
                 bufferedImage.setRGB(x, y, rgb)
             }
+            val progress = (y.toFloat() / this.height.toFloat()) * 100
+            val status = "#".repeat(progress.toInt())
+            val remaining = " ".repeat(99 - progress.toInt())
+            print("writing LDR image progress: [${status}${remaining}] ${round(progress)}% \r")
         }
 
         val outputFile = File(outputFilename)
         try {
             ImageIO.write(bufferedImage, format, outputFile)
-            println("image $outputFilename saved")
+            println("\n image $outputFilename saved")
         } catch (e: Exception) {
             println("Error: image not saved")
         }

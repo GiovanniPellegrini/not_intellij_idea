@@ -15,9 +15,9 @@ data class Vector(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
      * Boolean to understand if two vector components are close for a given discard
      */
     fun isClose(sampleVec: Vector): Boolean{
-        return(are_close(x,sampleVec.x) &&
-                are_close(y,sampleVec.y) &&
-                are_close(z,sampleVec.z))
+        return(areClose(x,sampleVec.x) &&
+                areClose(y,sampleVec.y) &&
+                areClose(z,sampleVec.z))
     }
     /**
      * Overloading ==operator for Points. It uses the are_close function

@@ -4,7 +4,7 @@ import kotlin.math.withSign
 /**
  * Return 0 if two Float are close more than epsilon
  */
-fun are_close(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
+fun areClose(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
     return (abs(x-y) <epsilon)
 }
 

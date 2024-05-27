@@ -71,7 +71,7 @@ data class HomMatrix(var elements: FloatArray) {
      */
     fun isClose(other: HomMatrix,epsilon: Float = 1.0E-5F): Boolean {
         for(i in 0 until 16){
-            if(!are_close(this[i], other[i],epsilon)) {
+            if(!areClose(this[i], other[i],epsilon)) {
                 return false
             }
         }

@@ -66,7 +66,7 @@ class Triangle(val transformation: Transformation = Transformation(),
                              floatArrayOf(b.z - a.z, c.z - a.z, ray.dir.z))
 
         val det = determinant3x3(matrix)
-        if(are_close(0f,det)) return null
+        if(areClose(0f,det)) return null
 
 
         for (j in 0..2) {

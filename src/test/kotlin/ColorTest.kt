@@ -45,8 +45,8 @@ class ColorTest{
         val col1 = Color(1.0F, 2.0F, 3.0F)
         val col2 = Color(9.0F, 5.0F, 7.0F)
 
-        assert(are_close(2.0F,col1.luminosity())){"Error: real and evaluated luminosity  of color 1 are different"}
-        assert(are_close(7.0F,col2.luminosity())){"Error: real and evaluated luminosity  of color 2 are different"}
+        assert(areClose(2.0F,col1.luminosity())){"Error: real and evaluated luminosity  of color 1 are different"}
+        assert(areClose(7.0F,col2.luminosity())){"Error: real and evaluated luminosity  of color 2 are different"}
 
     }
 }

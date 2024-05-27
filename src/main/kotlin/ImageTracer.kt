@@ -1,3 +1,4 @@
+import kotlin.math.round
 /**
  * Image tracer class. This class connects Camera objects with HdrImage objects
  */
@@ -23,7 +24,12 @@ class ImageTracer(private var image: HdrImage, private var camera: Camera) {
                 val color = func(ray)
                 image.setPixel(col, row, color)
             }
+            val progress = (row.toFloat() / image.height.toFloat()) * 100
+            val status = "#".repeat(progress.toInt())
+            val remaining = " ".repeat(99 - progress.toInt())
+            print("Ray tracing progress: [${status}${remaining}] ${round(progress)}% \r")
         }
+        println("Ray tracing progress completed!")
     }
 }
 

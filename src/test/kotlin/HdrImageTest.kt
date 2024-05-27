@@ -81,8 +81,8 @@ class HdrImageTest {
         val col1 = Color(1.0F, 2.0F, 3.0F)
         val col2 = Color(9.0F, 5.0F, 7.0F)
 
-        assert(are_close(2.0F, col1.luminosity()))
-        assert(are_close(7.0F, col2.luminosity()))
+        assert(areClose(2.0F, col1.luminosity()))
+        assert(areClose(7.0F, col2.luminosity()))
     }
 
     @Test
@@ -91,7 +91,7 @@ class HdrImageTest {
         img.setPixel(0, 0, Color(5F, 10F, 15F)) //luminosity 10
         img.setPixel(1, 0, Color(500F, 1000F, 1500F)) //luminosity 1000
 
-        assert(are_close(100F, img.averageLuminosity(0.0F)))
+        assert(areClose(100F, img.averageLuminosity(0.0F)))
 
     }
 

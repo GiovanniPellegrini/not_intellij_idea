@@ -1,5 +1,5 @@
 import kotlin.math.sqrt
-import java.lang.Math
+
 data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
     /**
      * print Vector components
@@ -12,9 +12,9 @@ data class Normal(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
      * Boolean to understand if two Normal components are close for a given discard
      */
     fun isClose(sampleNorm: Normal): Boolean{
-        return(are_close(x,sampleNorm.x) &&
-                are_close(y,sampleNorm.y) &&
-                are_close(z,sampleNorm.z))
+        return(areClose(x,sampleNorm.x) &&
+                areClose(y,sampleNorm.y) &&
+                areClose(z,sampleNorm.z))
     }
 
     /**

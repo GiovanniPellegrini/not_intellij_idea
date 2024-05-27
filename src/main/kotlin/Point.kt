@@ -13,12 +13,12 @@ data class Point (var x:Float, var y:Float, var z:Float) {
     }
 
     fun isClose(p: Point): Boolean{
-        return(are_close(x,p.x) &&
-                are_close(y,p.y) &&
-                are_close(z,p.z))
+        return(areClose(x,p.x) &&
+                areClose(y,p.y) &&
+                areClose(z,p.z))
     }
     /**
-     * Overloading ==operator for Points. It uses the are_close function
+     * Overloading == operator for Points. It uses the are_close function
      */
     override fun equals(other: Any?): Boolean {
         if (other is Point) {

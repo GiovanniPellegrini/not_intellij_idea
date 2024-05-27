@@ -45,7 +45,7 @@ class TriangleTest {
 
         val det = determinant3x3(matrix)
         print("determinant: $det\n")
-        assert(!are_close(0f, det)){"determinant is not close to 0"}
+        assert(!areClose(0f, det)){"determinant is not close to 0"}
 
 
         for (j in 0..2) {
@@ -58,7 +58,7 @@ class TriangleTest {
         }
 
         for (j in (0..2)) {
-            assert(are_close(floatArrayOf(3f, 1f, 0f)[j], solution[j])){"solution is not close to expected value"}
+            assert(areClose(floatArrayOf(3f, 1f, 0f)[j], solution[j])){"solution is not close to expected value"}
         }
 
     }

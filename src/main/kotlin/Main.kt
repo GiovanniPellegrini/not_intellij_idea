@@ -14,8 +14,12 @@ class Tracer: CliktCommand() {
     override fun run() = Unit
 }
 
-class Convert: CliktCommand() {
-    private val args: List<String> by argument().multiple()
+class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM file to a PNG image") {
+    private val args: List<String> by argument(
+        help = "Input .pfm filename,\n- parameter 'a' (Float),\n" +
+                "- parameter 'gamma' (Float),\n" +
+                "- Output .png filename"
+    ).multiple()
     /** Main arguments:
     1. PFM input file
     2. parameter "a"
@@ -73,8 +77,11 @@ class Convert: CliktCommand() {
     }
 }
 
-class Demo: CliktCommand() {
-    private val args: List<String> by argument().multiple()
+class Demo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image with 10 spheres") {
+    private val args: List<String> by argument(
+        help = "- rotation angle of the camera (Float), \n" +
+                "- Output .png filename, "
+    ).multiple()
     override fun run() {
         val sphere1 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,3.0f)))
         val sphere2 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,-3.0f)))
@@ -84,6 +91,9 @@ class Demo: CliktCommand() {
         val sphere6 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,-3.0f,3.0f)))
         val sphere7 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,-3.0f)))
         val sphere8 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,-3.0f)))
+        val sphere9 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,0f)))
+        val sphere10 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(0f,-3.0f,-3.0f)))
+
 
         val world = World()
         world.add(sphere1)
@@ -94,11 +104,13 @@ class Demo: CliktCommand() {
         world.add(sphere6)
         world.add(sphere7)
         world.add(sphere8)
+        world.add(sphere9)
+        world.add(sphere10)
         val image = HdrImage(500,500)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
         val tracer = ImageTracer(image,camera)
-        val renderer = FlatRenderer(world)
+        val renderer = OnOffRenderer(world)
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(0.1f)
         image.clampImage()
@@ -108,8 +120,12 @@ class Demo: CliktCommand() {
     }
 }
 
-class CheckDemo: CliktCommand() {
-    private val args: List<String> by argument().multiple()
+class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image using pathTracing algorithm") {
+    private val args: List<String> by argument(help = "- camera angle ," +
+            "\n- maxDepth parameter (Int),\n" +
+            "- russianRoulette limit parameter (Int),\n" +
+            "- number of rays parameter (Int),\n" +
+            "- Output .png filename").multiple()
     override fun run() {
 
         val sphere1 = Sphere(
@@ -130,17 +146,20 @@ class CheckDemo: CliktCommand() {
         world.add(plane1)
         world.add(mirror)
         world.add(sky)
-        val image = HdrImage(2*720, 2*720)
+
+        val image = HdrImage(1080, 1080)
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
         val tracer = ImageTracer(image, camera)
-        val renderer = PathTracer(world=world)
+        val renderer = PathTracer(world=world, maxdepth = args[1].toInt(), russianRouletteLimit = args[2].toInt(), numberOfRays = args[3].toInt())
         tracer.fireAllRays(renderer::render)
-        image.normalizeImage(0.1f)
+        image.normalizeImage(1f)
         image.clampImage()
         val stream = FileOutputStream("output.pfm")
+        println("Writing PFM file")
         image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        image.writeLdrImage("png", 1.7f, args[1])
+        println("Writing PNG file")
+        image.writeLdrImage("png", 2.2f, args[4])
     }
 }
 

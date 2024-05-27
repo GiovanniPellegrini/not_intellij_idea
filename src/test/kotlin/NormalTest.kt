@@ -20,8 +20,8 @@ class NormalTest{
         assertEquals(a*2f, Normal(2f,4f,6f))
         assert(a.xTimes(b).isClose(Normal(-2.0f, 4.0f, -2.0f)))
         assert(b.xTimes(a).isClose(Normal(2.0f, -4.0f, 2.0f)))
-        assert(are_close(a.sqNorm(),14.0f))
-        assert(are_close(a.norm().pow(2),14.0f))
+        assert(areClose(a.sqNorm(),14.0f))
+        assert(areClose(a.norm().pow(2),14.0f))
     }
 
 }

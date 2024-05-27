@@ -6,6 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HitRecord.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HitRecord.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ImageTracer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ImageTracer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Math.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Math.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Normal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Normal.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Point.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Point.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Triangle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Triangle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/vec2d.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/vec2d.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/MathTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/MathTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/NormalTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/NormalTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/OrthogonalCameraTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/OrthogonalCameraTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/RendererTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/RendererTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/TriangleTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/TriangleTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,79 +109,79 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build not_intellij_idea.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ColorTest.equal.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ColorTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ColorTest.luminosity.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.averageLuminosity.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.clampImage.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.getSetPixelTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.imageCreationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.luminosity.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.normalizeImage.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.writeLdrTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HdrImageTest.writePFM.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HomMatrixTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HomMatrixTest.getSetTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HomMatrixTest.isCloseTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.HomMatrixTest.productTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ImageTracerTest.testOrientation.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.NormalTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PointTest.testPoint.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.PointTest.testPointOperations.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.RayTest.atTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.RayTest.isCloseTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SphereTest.testHit.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SphereTest.testInnerHit.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SphereTest.testNormal.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SphereTest.testNormalDirection.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.SphereTest.testTransformation.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.Test_rotation.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.inverse.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.isCloseTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.isConsistent.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.scalingSphereTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.scalingTest2.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TransformationTest.translationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleMeshTest.testRayIntersection.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleMeshTest.testRotation.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleMeshTest.testTransformation.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.kramerRuleTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.testDeterminant3x3.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.testMatrix.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.testReplaceAndPrintMatrix.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriangleTest.testTriangle.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.VectorTest.VectorsOperationsTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.VectorTest.testVectors.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.MainKt.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#14 on pathTracing&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Diff &amp; Merge&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build not_intellij_idea.executor": "Run",
+    "Gradle.ColorTest.equal.executor": "Run",
+    "Gradle.ColorTest.executor": "Run",
+    "Gradle.ColorTest.luminosity.executor": "Run",
+    "Gradle.HdrImageTest.averageLuminosity.executor": "Run",
+    "Gradle.HdrImageTest.clampImage.executor": "Run",
+    "Gradle.HdrImageTest.executor": "Run",
+    "Gradle.HdrImageTest.getSetPixelTest.executor": "Run",
+    "Gradle.HdrImageTest.imageCreationTest.executor": "Run",
+    "Gradle.HdrImageTest.luminosity.executor": "Run",
+    "Gradle.HdrImageTest.normalizeImage.executor": "Run",
+    "Gradle.HdrImageTest.writeLdrTest.executor": "Run",
+    "Gradle.HdrImageTest.writePFM.executor": "Run",
+    "Gradle.HomMatrixTest.executor": "Run",
+    "Gradle.HomMatrixTest.getSetTests.executor": "Run",
+    "Gradle.HomMatrixTest.isCloseTest.executor": "Run",
+    "Gradle.HomMatrixTest.productTest.executor": "Run",
+    "Gradle.ImageTracerTest.testOrientation.executor": "Run",
+    "Gradle.NormalTest.executor": "Run",
+    "Gradle.PointTest.testPoint.executor": "Run",
+    "Gradle.PointTest.testPointOperations.executor": "Run",
+    "Gradle.RayTest.atTest.executor": "Run",
+    "Gradle.RayTest.isCloseTest.executor": "Run",
+    "Gradle.SphereTest.testHit.executor": "Run",
+    "Gradle.SphereTest.testInnerHit.executor": "Run",
+    "Gradle.SphereTest.testNormal.executor": "Run",
+    "Gradle.SphereTest.testNormalDirection.executor": "Run",
+    "Gradle.SphereTest.testTransformation.executor": "Run",
+    "Gradle.TransformationTest.Test_rotation.executor": "Run",
+    "Gradle.TransformationTest.executor": "Run",
+    "Gradle.TransformationTest.inverse.executor": "Run",
+    "Gradle.TransformationTest.isCloseTest.executor": "Run",
+    "Gradle.TransformationTest.isConsistent.executor": "Run",
+    "Gradle.TransformationTest.scalingSphereTest.executor": "Run",
+    "Gradle.TransformationTest.scalingTest2.executor": "Run",
+    "Gradle.TransformationTest.translationTest.executor": "Run",
+    "Gradle.TriangleMeshTest.testRayIntersection.executor": "Run",
+    "Gradle.TriangleMeshTest.testRotation.executor": "Run",
+    "Gradle.TriangleMeshTest.testTransformation.executor": "Run",
+    "Gradle.TriangleTest.executor": "Run",
+    "Gradle.TriangleTest.kramerRuleTest.executor": "Run",
+    "Gradle.TriangleTest.testDeterminant3x3.executor": "Run",
+    "Gradle.TriangleTest.testMatrix.executor": "Run",
+    "Gradle.TriangleTest.testReplaceAndPrintMatrix.executor": "Run",
+    "Gradle.TriangleTest.testTriangle.executor": "Run",
+    "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
+    "Gradle.VectorTest.testVectors.executor": "Run",
+    "Kotlin.MainKt.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Diff & Merge",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;/Users/lorenzoesposito/.gradle&quot;
+  "keyToStringList": {
+    "kotlin-gradle-user-dirs": [
+      "/Users/lorenzoesposito/.gradle"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />

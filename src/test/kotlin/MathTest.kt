@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class MathTest {
     @Test
@@ -23,9 +22,9 @@ class MathTest {
             assert(onb.second * onb.third < delta)
             assert(onb.third * onb.first < delta)
 
-            assert(are_close(onb.first.sqNorm(), 1f))
-            assert(are_close(onb.second.sqNorm(), 1f))
-            assert(are_close(onb.third.sqNorm(), 1f))
+            assert(areClose(onb.first.sqNorm(), 1f))
+            assert(areClose(onb.second.sqNorm(), 1f))
+            assert(areClose(onb.third.sqNorm(), 1f))
 
             assert(onb.first.xTimes(onb.second).isClose(onb.third))
             assert(onb.second.xTimes(onb.third).isClose(onb.first))

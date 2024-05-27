@@ -11,9 +11,9 @@ class OrthogonalCameraTest {
 
     @Test
     fun parallelRays(){
-        assert(are_close(0f, (ray1.dir.xTimes(ray2.dir)).sqNorm()))
-        assert(are_close(0f, (ray1.dir.xTimes(ray3.dir)).sqNorm()))
-        assert(are_close(0f, (ray1.dir.xTimes(ray4.dir)).sqNorm()))
+        assert(areClose(0f, (ray1.dir.xTimes(ray2.dir)).sqNorm()))
+        assert(areClose(0f, (ray1.dir.xTimes(ray3.dir)).sqNorm()))
+        assert(areClose(0f, (ray1.dir.xTimes(ray4.dir)).sqNorm()))
     }
 
     @Test

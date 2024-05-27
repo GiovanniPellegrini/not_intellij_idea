@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class RendererTest{
@@ -75,9 +74,9 @@ class RendererTest{
             val expected=emittedRad/(1-rad)
             println(color.r)
             println(expected)
-            assert(are_close(expected,color.r))
-            assert(are_close(expected,color.g))
-            assert(are_close(expected,color.b))
+            assert(areClose(expected,color.r))
+            assert(areClose(expected,color.g))
+            assert(areClose(expected,color.b))
 
         }
     }
