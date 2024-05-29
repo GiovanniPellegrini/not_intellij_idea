@@ -9,8 +9,7 @@ import java.io.FileOutputStream
 import java.nio.ByteOrder
 import kotlin.io.path.Path
 
-
-class Tracer: CliktCommand() {
+class Tracer: CliktCommand(help = "Welcome to our raytracer"){
     override fun run() = Unit
 }
 

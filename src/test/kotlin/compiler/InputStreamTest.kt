@@ -32,6 +32,36 @@ class InputStreamTest(){
         assertEquals(stream.location.lineNumber, 1)
         assertEquals(stream.location.columnNumber ,4)
 
-        // not finished we need to develop function skipWhiteSpace
+        stream.skipWhiteSpace()
+
+        assertEquals(stream.readChar(), 'd')
+        assertEquals(stream.location.lineNumber ,2)
+        assertEquals(stream.location.columnNumber,2)
+
+        assertEquals(stream.readChar(),'\n')
+        assertEquals(stream.location.lineNumber, 3)
+        assertEquals(stream.location.columnNumber,1)
+
+        assertEquals(stream.readChar(), 'e')
+        assertEquals(stream.location.lineNumber, 3)
+        assertEquals(stream.location.columnNumber, 2)
+
+        assertEquals(stream.readChar(),'f')
+        assertEquals(stream.location.lineNumber,3)
+        assertEquals(stream.location.columnNumber,3)
+
+        //end of the file
+        assertEquals('\u0000', stream.readChar())
+    }
+
+    @Test
+    fun testEndOfFile(){
+        val stream = InputStream(ByteArrayInputStream("a\u0000".toByteArray()))
+        assertEquals('a', stream.readChar())
+        assertEquals('\u0000', stream.readChar())
+        assertEquals('\u0000', stream.readChar())
+        stream.readChar()
+        assertEquals('\u0000', stream.readChar())
+
     }
 }
