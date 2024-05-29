@@ -36,7 +36,11 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
             savedChar = '\u0000'
         }
         else{
-            c = stream.read().toChar()
+            val isEof = stream.read()
+            // if isEof is -1 it means that the end of the file has been reached and return '\u0000'
+            c = if(isEof != -1){
+                isEof.toChar()
+            }else '\u0000'
         }
         savedLocation = location.copy()
         updatePos(c)
@@ -50,5 +54,23 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         assert(savedChar == '\u0000')
         savedChar = c
         location = savedLocation.copy()
+    }
+
+    private val WHITESPACE = " \t\n\r"
+
+    fun skipWhiteSpace(){
+        var c = readChar()
+        while(c in WHITESPACE || c == '%'){ // '%' is the comment character
+            if(c == '%'){
+                while(readChar() !in listOf('\u0000', '\n', '\r')){
+                    continue
+                }
+            }
+            c = readChar()
+            if(c == '\u0000'){
+                return
+            }
+        }
+        unreadChar(c)
     }
 }

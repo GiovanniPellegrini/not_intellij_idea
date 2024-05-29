@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/compiler/InputStreamTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/compiler/InputStreamTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/compiler/InputStreamTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +112,8 @@
     "Gradle.HomMatrixTest.isCloseTest.executor": "Run",
     "Gradle.HomMatrixTest.productTest.executor": "Run",
     "Gradle.ImageTracerTest.testOrientation.executor": "Run",
+    "Gradle.InputStreamTest.executor": "Run",
+    "Gradle.InputStreamTest.testEndOfFile.executor": "Run",
     "Gradle.InputStreamTest.testInputFile.executor": "Run",
     "Gradle.NormalTest.executor": "Run",
     "Gradle.PointTest.testPoint.executor": "Run",
@@ -177,7 +180,55 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.InputStreamTest.testInputFile">
+  <component name="RunManager" selected="Gradle.InputStreamTest">
+    <configuration name="InputStreamTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;compiler.InputStreamTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="InputStreamTest.testEndOfFile" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;compiler.InputStreamTest.testEndOfFile&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="InputStreamTest.testInputFile" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -192,30 +243,6 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;compiler.InputStreamTest.testInputFile&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="TriangleMeshTest.testRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testRayIntersection&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -274,37 +301,13 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.kramerRuleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;TriangleTest.kramerRuleTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.InputStreamTest" />
+        <item itemvalue="Gradle.InputStreamTest.testEndOfFile" />
         <item itemvalue="Gradle.InputStreamTest.testInputFile" />
         <item itemvalue="Gradle.TriangleMeshTest.testRotation" />
         <item itemvalue="Gradle.TriangleMeshTest.testTransformation" />
-        <item itemvalue="Gradle.TriangleMeshTest.testRayIntersection" />
-        <item itemvalue="Gradle.TriangleTest.kramerRuleTest" />
       </list>
     </recent_temporary>
   </component>
