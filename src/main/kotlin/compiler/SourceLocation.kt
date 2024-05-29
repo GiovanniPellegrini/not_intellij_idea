@@ -7,4 +7,4 @@ package compiler
  * @property lineNumber The line number.
  * @property columnNumber The column number.
  */
-data class SourceLocation(val fileName: String = "", val lineNumber: Int = 0, val columnNumber: Int = 0){}
+data class SourceLocation(var fileName: String = "", var lineNumber: Int = 0, var columnNumber: Int = 0){}
