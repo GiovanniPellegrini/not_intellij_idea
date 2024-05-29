@@ -1,5 +1,3 @@
 package compiler
 
-class GrammarError {
-
-}
+class GrammarError(location: SourceLocation,message:String):RuntimeException(message)
