@@ -11,10 +11,9 @@ interface Token{
 }
 
 /**
- * Used to identify any KeyWord, aas 'Float,Sphere,Plane...'
+ * Used to identify any KeyWord, as 'Float,Sphere,Plane...'
  */
-enum class KeyWordToken(override var location: SourceLocation):Token{
-
+class KeyWordToken(override var location: SourceLocation): Token{
 }
 
 /**

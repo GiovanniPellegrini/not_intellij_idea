@@ -1,6 +1,6 @@
 package compiler
 import java.io.InputStream
-import javax.lang.model.type.UnionType
+import java.security.KeyException
 import kotlin.Char as Char
 
 class InputStream(val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
@@ -79,9 +79,9 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
 
 
 
-    private val symbol = "()*="
+    private val symbols = "()<>,*="
     fun readToken():Token {
-
+        this.skipWhiteSpace()
         val c = this.readChar()
         // if char is equal to '' we are at the end of the file
         if (c == '\u0000') return StopToken(location = location)
@@ -90,17 +90,18 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         val tokenLocation = this.location.copy()
 
         //if char is equal to Symbol, return SymbolToken
-        if (c in symbol) return SymbolToken(c, tokenLocation)
+        if (c in symbols) return SymbolToken(c, tokenLocation)
 
         //if char is '"', it means that is the starting of a filename
         else if (c == '"') return parseStringToken(tokenLocation)
-
 
         //if char is a number or an operation return that number
         else if (c.isDigit() || c in charArrayOf('+', '-', '.')) return parseFloatToken(c, tokenLocation)
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
-        else if (c.isLetter()) TODO()
+        else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c, tokenLocation)
+
+        else throw GrammarError(tokenLocation, "invalid character $c")
     }
 
 
@@ -145,18 +146,23 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
     }
 
 
-    fun parseWordToken(c: Char,tokenLocation: SourceLocation):Token{
-        var string=c.toString()
-        while (true){
-            val c=readChar()
-            if(!c.isLetterOrDigit()){
+    fun parseWordOrKeyToken(c: Char,tokenLocation: SourceLocation): Token{
+        var token = c.toString()
+        while(true){
+            var c = this.readChar()
+            if(!c.isLetterOrDigit() || c == '_'){
                 this.unreadChar(c)
                 break
             }
-            string+=c
+
+            token+=c
         }
-        TODO("string in KEYWORD return KeyWordTokentokenLocation")
-        return IdentifierToken(string,tokenLocation)
+
+        return try {
+            KeyWordToken(tokenLocation)
+        }catch(e: KeyException){
+            IdentifierToken(token, tokenLocation)
+        }
     }
 
 
