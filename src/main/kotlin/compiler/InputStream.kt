@@ -44,8 +44,6 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
             c = if(isEof != -1){
                 isEof.toChar()
             }else '\u0000'
-        } else {
-            c = stream.read().toChar()
         }
         savedLocation = location.copy()
         updatePos(c)
@@ -78,7 +76,7 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         }
         unreadChar(c)
     }
-}
+
 
 
     private val symbol = "()*="
@@ -102,7 +100,7 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         else if (c.isDigit() || c in charArrayOf('+', '-', '.')) return parseFloatToken(c, tokenLocation)
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
-        else if (c.isLetter()) return TODO()
+        else if (c.isLetter()) TODO()
     }
 
 
@@ -112,7 +110,7 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
     fun parseStringToken(tokenLocation: SourceLocation): LiteralStringToken {
         var string = ""
         while (true) {
-            val c = readChar()
+            val c = this.readChar()
 
             if (c == '"') break
             if (c == '\u0000') throw GrammarError(tokenLocation, "string without end")
