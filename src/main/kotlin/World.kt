@@ -41,7 +41,7 @@ class World(var shapes: Array<Shape> = emptyArray<Shape>(),
 
         val ray = Ray(origin = obsPos,dir = dir, tMin = 1e-2f/dirNorm, tMax = 1f )
         for (shape in shapes){
-            if(!shape.quickRayIntersection(ray)){
+            if(shape.quickRayIntersection(ray)){
                 return false
             }
         }

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="" />
+    <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/World.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/World.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -136,6 +140,9 @@
     "Gradle.TriangleTest.testTriangle.executor": "Run",
     "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
     "Gradle.VectorTest.testVectors.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersection.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionPlane.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionTriangle.executor": "Run",
     "Kotlin.MainKt.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -171,31 +178,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TriangleMeshTest.testRotation">
-    <configuration name="TriangleMeshTest.testRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testRayIntersection&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Gradle.WorldTest.testQuickRayIntersectionPlane">
     <configuration name="TriangleMeshTest.testRotation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -244,7 +227,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.kramerRuleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="WorldTest.testQuickRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -257,7 +240,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleTest.kramerRuleTest&quot;" />
+            <option value="&quot;WorldTest.testQuickRayIntersection&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -268,7 +251,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.testDeterminant3x3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="WorldTest.testQuickRayIntersectionPlane" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -281,7 +264,31 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleTest.testDeterminant3x3&quot;" />
+            <option value="&quot;WorldTest.testQuickRayIntersectionPlane&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="WorldTest.testQuickRayIntersectionTriangle" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;WorldTest.testQuickRayIntersectionTriangle&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -294,11 +301,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionPlane" />
+        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionTriangle" />
+        <item itemvalue="Gradle.WorldTest.testQuickRayIntersection" />
         <item itemvalue="Gradle.TriangleMeshTest.testRotation" />
         <item itemvalue="Gradle.TriangleMeshTest.testTransformation" />
-        <item itemvalue="Gradle.TriangleMeshTest.testRayIntersection" />
-        <item itemvalue="Gradle.TriangleTest.kramerRuleTest" />
-        <item itemvalue="Gradle.TriangleTest.testDeterminant3x3" />
       </list>
     </recent_temporary>
   </component>
