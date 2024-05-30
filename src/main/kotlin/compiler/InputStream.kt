@@ -152,13 +152,8 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
             token+=c
         }
 
-        return try {
-            KeyWordToken(tokenLocation)
-        }catch(e: KeyException){
-            IdentifierToken(token, tokenLocation)
-        }
+        return if(KEYWORDS.containsKey(token)) KeyWordToken(KEYWORDS[token]!!,tokenLocation)
+        else IdentifierToken(token, tokenLocation)
     }
-
-
 }
 
