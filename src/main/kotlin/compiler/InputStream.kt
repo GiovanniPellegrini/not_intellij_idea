@@ -19,13 +19,9 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
                 location.columnNumber = 1
             }
 
-            '\t' -> {
-                location.columnNumber += tabulation
-            }
+            '\t' -> location.columnNumber += tabulation
 
-            else -> {
-                location.columnNumber++
-            }
+            else -> location.columnNumber++
         }
     }
 
@@ -77,8 +73,6 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         unreadChar(c)
     }
 
-
-
     private val symbols = "()<>,*="
     fun readToken():Token {
         this.skipWhiteSpace()
@@ -99,7 +93,7 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         else if (c.isDigit() || c in charArrayOf('+', '-', '.')) return parseFloatToken(c, tokenLocation)
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
-        else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c, tokenLocation)
+        else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c.toString(), tokenLocation)
 
         else throw GrammarError(tokenLocation, "invalid character $c")
     }
@@ -112,7 +106,6 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         var string = ""
         while (true) {
             val c = this.readChar()
-
             if (c == '"') break
             if (c == '\u0000') throw GrammarError(tokenLocation, "string without end")
 
@@ -145,11 +138,12 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         return LiteralNumberToken(string.toFloat(), tokenLocation)
     }
 
-
-    fun parseWordOrKeyToken(c: Char,tokenLocation: SourceLocation): Token{
-        var token = c.toString()
+    fun parseWordOrKeyToken(firstC: String,tokenLocation: SourceLocation): Token{
+        var token = firstC
+        var c: Char
         while(true){
-            var c = this.readChar()
+            c = this.readChar()
+            if(c == '\u0000') break
             if(!c.isLetterOrDigit() || c == '_'){
                 this.unreadChar(c)
                 break
