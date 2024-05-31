@@ -3,12 +3,15 @@ package compiler
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.io.InputStreamReader
+import kotlin.io.path.fileVisitor
 
 class InputStreamTest(){
 
     @Test
     fun testInputFile(){
-        val stream = InputStream(ByteArrayInputStream("abc   \nd\nef".toByteArray()))
+        val stream = InStream(ByteArrayInputStream("abc   \nd\nef".toByteArray()))
         assertEquals(stream.location.lineNumber,1)
         assertEquals(stream.location.columnNumber, 1)
 
@@ -56,7 +59,7 @@ class InputStreamTest(){
 
     @Test
     fun testEndOfFile(){
-        val stream = InputStream(ByteArrayInputStream("a\u0000".toByteArray()))
+        val stream = InStream(ByteArrayInputStream("a\u0000".toByteArray()))
         assertEquals('a', stream.readChar())
         assertEquals('\u0000', stream.readChar())
         assertEquals('\u0000', stream.readChar())
@@ -64,4 +67,81 @@ class InputStreamTest(){
         assertEquals('\u0000', stream.readChar())
 
     }
+
+    @Test
+    fun readToken(){
+        val file=ByteArrayInputStream("""
+        % This is a comment
+        % This is another comment
+        new material skyMaterial(
+            diffuse(image("my file.pfm")),
+            <5.0, 500.0, 300.0 >
+        ) % Comment at the end of the line
+        """.toByteArray())
+
+        val stream=InStream(stream = file)
+
+        var token = stream.readToken()
+        assert(token is KeyWordToken)
+        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.NEW)
+
+        token = stream.readToken()
+        assert(token is KeyWordToken)
+        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.MATERIAL)
+
+        token = stream.readToken()
+        assert(token is IdentifierToken)
+        if (token is IdentifierToken) assert(token.string == "skyMaterial")
+
+        token = stream.readToken()
+        assert(token is SymbolToken)
+        if (token is SymbolToken) assert(token.char == '(')
+
+        token = stream.readToken()
+        assert(token is KeyWordToken)
+        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.DIFFUSE)
+
+        token = stream.readToken()
+        assert(token is SymbolToken)
+        if (token is SymbolToken) assert(token.char == '(')
+
+        token = stream.readToken()
+        assert(token is KeyWordToken)
+        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.IMAGE)
+
+        token = stream.readToken()
+        assert(token is SymbolToken)
+        if (token is SymbolToken) assert(token.char == '(')
+
+        token = stream.readToken()
+        assert(token is LiteralStringToken)
+        if (token is LiteralStringToken) assert(token.string=="my file.pfm")
+
+        token = stream.readToken()
+        assert(token is SymbolToken)
+        if (token is SymbolToken) assert(token.char == ')')
+
+        token = stream.readToken()
+        assert(token is SymbolToken)
+        if (token is SymbolToken) assert(token.char == ')')
+
+        token=stream.readToken()
+        assert(token is SymbolToken)
+        if(token is SymbolToken) assert(token.char==',')
+
+        token=stream.readToken()
+        assert(token is SymbolToken)
+        if(token is SymbolToken) assert(token.char=='<')
+
+        token=stream.readToken()
+        assert(token is LiteralNumberToken)
+        if(token is LiteralNumberToken) assert(token.number==5.0f)
+
+       for(i in 1..7 ) {
+            token=stream.readToken()
+       }
+        assertTrue(token is StopToken)
+    }
 }
+
+

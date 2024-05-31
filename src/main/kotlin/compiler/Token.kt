@@ -13,7 +13,7 @@ interface Token{
 /**
  * Used to identify any KeyWord, as 'Float,Sphere,Plane...'
  */
-class KeyWordToken(var keyWordEnum: KeyWordEnum,override var location: SourceLocation): Token{
+class KeyWordToken(var keywordEnum: KeyWordEnum,override var location: SourceLocation): Token{
 }
 
 /**

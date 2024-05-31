@@ -1,11 +1,13 @@
 package compiler
 import java.io.InputStream
-import java.security.KeyException
+import java.io.InputStreamReader
 import kotlin.Char as Char
 
-class InputStream(val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
-                  var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
-                  var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location) {
+private val symbols = "()<>,*="
+class InStream(
+    val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
+    var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
+    var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location) {
 
     /**
      * update the position of the lexer after reading a character from the stream, '\u0000' is the null character
@@ -73,7 +75,10 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         unreadChar(c)
     }
 
-    private val symbols = "()<>,*="
+
+    /**
+     * Reads the stream and returns a specific type of token. When it reaches the end of the file it returns StopToken
+     */
     fun readToken():Token {
         this.skipWhiteSpace()
         val c = this.readChar()
@@ -116,14 +121,14 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
     }
 
     /**
-     * reads an Float number
+     * reads a Float number until it finds something different from a number, char '.' or chars 'E,e'
      */
     fun parseFloatToken(c: Char, tokenLocation: SourceLocation): LiteralNumberToken {
         var string: String = c.toString()
         while (true) {
             val ch = readChar()
 
-            if (!ch.isDigit() || ch != '.' || ch !in charArrayOf('E', 'e')) {
+            if (!ch.isDigit() && ch != '.' && ch !in charArrayOf('E', 'e')) {
                 this.unreadChar(ch)
                 break
             }
@@ -138,6 +143,9 @@ class InputStream(val stream: InputStream, val fileName: String = "", val tabula
         return LiteralNumberToken(string.toFloat(), tokenLocation)
     }
 
+    /**
+     * Reads a word and returns a KeyWordToken if that word is inside KeyWordEnum, else returns IdentifierToken
+     */
     fun parseWordOrKeyToken(firstC: String,tokenLocation: SourceLocation): Token{
         var token = firstC
         var c: Char
