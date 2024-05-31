@@ -48,6 +48,23 @@ class CSGDifference(val shape1:Shape, val shape2:Shape,val transformation: Trans
     }
 
     override fun quickRayIntersection(ray: Ray): Boolean {
-        TODO("Not yet implemented")
+        val invRay=ray.transformation(transformation.inverse())
+        val hit1=shape1.rayIntersectionList(invRay)
+        val hit2=shape2.rayIntersectionList(invRay)
+
+        if(hit1!=null){
+            for(h in hit1){
+                if(!shape2.pointInternal(h.worldPoint)) return true
+            }
+        }
+
+        if(hit2!=null){
+            for(h in hit2){
+                if(shape1.pointInternal(h.worldPoint)) return true
+            }
+        }
+
+        return false
+
     }
 }

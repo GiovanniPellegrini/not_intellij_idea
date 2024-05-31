@@ -91,8 +91,8 @@ class Box(val transformation: Transformation = Transformation(),
         }else {
             val t = t0
             val dir = minDir
-            val hit = invRay.at(t0)
-            val normal = getNormal(invRay, minDir)
+            val hit = invRay.at(t)
+            val normal = getNormal(invRay, dir)
             return HitRecord(
                 worldPoint = transformation * hit,
                 normal = transformation * normal,

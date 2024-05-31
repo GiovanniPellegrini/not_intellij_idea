@@ -47,7 +47,23 @@ class CSGIntersection (var shape1:Shape, var shape2:Shape,val transformation: Tr
     }
 
     override fun quickRayIntersection(ray: Ray): Boolean {
-        TODO("Not yet implemented")
+        val invRay=ray.transformation(transformation.inverse())
+        val hit1=shape1.rayIntersectionList(invRay)
+        val hit2=shape2.rayIntersectionList(invRay)
+
+        if(hit1!=null){
+            for(h in hit1){
+                if(shape2.pointInternal(h.worldPoint)) return true
+            }
+        }
+
+        if(hit2!=null){
+            for(h in hit2){
+                if(shape1.pointInternal(h.worldPoint)) return true
+            }
+        }
+
+        return false
     }
 }
 

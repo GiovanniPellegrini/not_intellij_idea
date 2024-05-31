@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/World.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/World.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGDifference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGDifference.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGIntersection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGIntersection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGUnion.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGUnion.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/CSGTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/CSGTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,6 +99,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Build not_intellij_idea.executor": "Run",
+    "Gradle.CSGDifferenceTest.quickRayIntersectionTest.executor": "Run",
+    "Gradle.CSGIntersectionTest.quickRayIntersectionTest.executor": "Run",
+    "Gradle.CSGUnionTest.quickRayIntersection.executor": "Run",
     "Gradle.ColorTest.equal.executor": "Run",
     "Gradle.ColorTest.executor": "Run",
     "Gradle.ColorTest.luminosity.executor": "Run",
@@ -140,9 +148,14 @@
     "Gradle.TriangleTest.testTriangle.executor": "Run",
     "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
     "Gradle.VectorTest.testVectors.executor": "Run",
+    "Gradle.WorldTest.executor": "Run",
     "Gradle.WorldTest.testQuickRayIntersection.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionBox.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionDifference.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionInt.executor": "Run",
     "Gradle.WorldTest.testQuickRayIntersectionPlane.executor": "Run",
     "Gradle.WorldTest.testQuickRayIntersectionTriangle.executor": "Run",
+    "Gradle.WorldTest.testQuickRayIntersectionUnion.executor": "Run",
     "Kotlin.MainKt.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -178,8 +191,8 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.WorldTest.testQuickRayIntersectionPlane">
-    <configuration name="TriangleMeshTest.testRotation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.CSGIntersectionTest.quickRayIntersectionTest">
+    <configuration name="CSGDifferenceTest.quickRayIntersectionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -192,7 +205,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testRotation&quot;" />
+            <option value="&quot;CSGDifferenceTest.quickRayIntersectionTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -203,7 +216,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleMeshTest.testTransformation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CSGIntersectionTest.quickRayIntersectionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -216,7 +229,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testTransformation&quot;" />
+            <option value="&quot;CSGIntersectionTest.quickRayIntersectionTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -227,7 +240,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="WorldTest.testQuickRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CSGUnionTest.quickRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -240,7 +253,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;WorldTest.testQuickRayIntersection&quot;" />
+            <option value="&quot;CSGUnionTest.quickRayIntersection&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -251,7 +264,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="WorldTest.testQuickRayIntersectionPlane" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="WorldTest.testQuickRayIntersectionDifference" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -264,7 +277,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;WorldTest.testQuickRayIntersectionPlane&quot;" />
+            <option value="&quot;WorldTest.testQuickRayIntersectionDifference&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -275,7 +288,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="WorldTest.testQuickRayIntersectionTriangle" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="WorldTest.testQuickRayIntersectionInt" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -288,7 +301,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;WorldTest.testQuickRayIntersectionTriangle&quot;" />
+            <option value="&quot;WorldTest.testQuickRayIntersectionInt&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -301,11 +314,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionPlane" />
-        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionTriangle" />
-        <item itemvalue="Gradle.WorldTest.testQuickRayIntersection" />
-        <item itemvalue="Gradle.TriangleMeshTest.testRotation" />
-        <item itemvalue="Gradle.TriangleMeshTest.testTransformation" />
+        <item itemvalue="Gradle.CSGIntersectionTest.quickRayIntersectionTest" />
+        <item itemvalue="Gradle.CSGDifferenceTest.quickRayIntersectionTest" />
+        <item itemvalue="Gradle.CSGUnionTest.quickRayIntersection" />
+        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionInt" />
+        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionDifference" />
       </list>
     </recent_temporary>
   </component>

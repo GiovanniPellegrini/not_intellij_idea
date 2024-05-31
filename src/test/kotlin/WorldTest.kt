@@ -76,4 +76,79 @@ class WorldTest{
 
     }
 
+    @Test
+    fun testQuickRayIntersectionBox(){
+        val world = World()
+        val box = Box(Pmax = Point(1f,1f,2f), Pmin = Point(-1f,-1f,-2f))
+        world.addShape(box)
+
+        assert(!world.isPointVisible(point = Point(0f, 0f, 1f),
+                                     obsPos = Point(0f, 0f, -1f)))
+
+        assert(!world.isPointVisible(point = Point(0f, 0f, 2f),
+                                    obsPos = Point(0f, 0f, 0f)))
+
+        assert(world.isPointVisible(point = Point(0f, 0f, 2f),
+                                    obsPos = Point(0f, 3f, 0f)))
+
+    }
+
+    @Test
+    fun testQuickRayIntersectionUnion(){
+        val world = World()
+        val sphere1 = Sphere(transformation = Translation(Vector(1f,0f,0f) * 0.5f))
+        val sphere2 = Sphere(transformation = Translation(Vector(-1f,0f,0f) * 0.5f))
+        val union = CSGUnion(sphere1, sphere2)
+
+        world.addShape(union)
+
+        assert(!world.isPointVisible(point = Point(3f, 0f, 0f),
+                                     obsPos = Point(-2f, 0f, 0f)))
+
+        assert(!world.isPointVisible(point = Point(-1.3f, 0f, 2f),
+                                    obsPos = Point(-1.3f, 0f, -2f)))
+
+        assert(world.isPointVisible(point = Point(0f, 0f, 4f),
+                                    obsPos = Point(2f, 0f, 0f)))
+    }
+
+    @Test
+    fun testQuickRayIntersectionDifference(){
+        val world = World()
+        val sphere1 = Sphere()
+        val sphere2 = Sphere(transformation = Translation(Vector(-1f,0f,0f) * 0.5f))
+        val difference = CSGDifference(sphere1, sphere2)
+
+        world.addShape(difference)
+
+        assert(!world.isPointVisible(point = Point(3f, 0f, 0f),
+            obsPos = Point(-2f, 0f, 0f)))
+
+        assert(world.isPointVisible(point = Point(-0.1f, 0f, 0f),
+            obsPos = Point(2f, 0.3f, 0f)))
+
+        assert(world.isPointVisible(point = Point(-0.6f, 0f, 1f),
+                                    obsPos = Point(-0.6f, 0f, -1f)))
+    }
+
+    @Test
+    fun testQuickRayIntersectionInt(){
+        val world = World()
+        val sphere1 = Sphere(transformation = Translation(Vector(0f,-1f,0f) * 0.5f))
+        val sphere2 = Sphere(transformation = Translation(Vector(0f,1f,0f) * 0.5f))
+        val difference = CSGIntersection(sphere1, sphere2)
+
+        world.addShape(difference)
+
+        assert(!world.isPointVisible(point = Point(3f, 0f, 0f),
+            obsPos = Point(-2f, 0f, 0f)))
+
+        assert(world.isPointVisible(point = Point(0f, 0f, 2f),
+            obsPos = Point(-2.2f, 0f, 0f)))
+
+        //this assertion fails
+        assert(world.isPointVisible(point = Point(0f, -0.7f, 1f),
+                                    obsPos = Point(0f, -0.7f, -1f)))
+    }
+
 }

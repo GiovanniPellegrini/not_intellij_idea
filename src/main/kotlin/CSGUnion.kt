@@ -63,6 +63,9 @@
      }
 
     override fun quickRayIntersection(ray: Ray): Boolean {
-        TODO("Not yet implemented")
+        val invRay=ray.transformation(transformation.inverse())
+        if(shape1.rayIntersectionList(invRay)!=null) return true
+        if(shape2.rayIntersectionList(invRay)!=null) return true
+        return false
     }
 }
