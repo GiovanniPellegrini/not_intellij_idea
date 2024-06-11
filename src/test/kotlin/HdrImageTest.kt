@@ -16,6 +16,8 @@ class HdrImageTest {
     fun getSetPixelTest(){
         val img = HdrImage(7,4)
         val referenceCol = Color(1f,2f,3f)
+        assert(img.validCoordinates(6, 3))
+        assert(!img.validCoordinates(-1, 0))
         img.setPixel(3,2,referenceCol)
         assert(referenceCol.areClose(img.getPixel(3,2)))
     }

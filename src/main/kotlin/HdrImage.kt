@@ -11,18 +11,23 @@ fun clamp(x:Float):Float{
 }
 
 /**
- * Class of HDR image
+ * HDR image Class
+ *
+ * @property width: image width
+ * @property height: image height
+ * @property pixels: array of colors
+ *
+ * @default constructor: Create empty Hdr image
  */
-class HdrImage (var width: Int = 0, var height: Int = 0) {
-    /**
-     * Initialize image with dimension width*height
-     */
-    var pixels = Array(size = width * height) {Color()}
+data class HdrImage (var width: Int = 0,
+                     var height: Int = 0,
+                     var pixels: Array<Color> = Array(size = width * height) {Color()}){
 
     /**
      * Get color of a pixel
      */
     fun getPixel(x: Int, y: Int): Color {
+        assert(validCoordinates(x,y)){"Error: invalid coordinates"}
         return pixels[y * width + x]
     }
 
@@ -30,9 +35,13 @@ class HdrImage (var width: Int = 0, var height: Int = 0) {
      * Set Color of a pixel
      */
     fun setPixel(x: Int, y: Int, newColor: Color) {
+        assert(validCoordinates(x,y)){"Error: invalid coordinates"}
         pixels[y * width + x] = newColor
     }
 
+    /**
+     * Check if coordinates are valid
+     */
     fun validCoordinates(x:Int, y:Int): Boolean{
         return ((x>=0) and (x<width) and (y>=0) and (y<height))
     }
@@ -52,7 +61,6 @@ class HdrImage (var width: Int = 0, var height: Int = 0) {
     /**
      * write a PFM file from a pixel array
      */
-
     fun writePFM(stream: OutputStream, order: ByteOrder){
         val endiannessStr = if (order == ByteOrder.LITTLE_ENDIAN) "-1.0" else "1.0"
         val header = "PF\n${this.width} ${this.height}\n$endiannessStr\n"
