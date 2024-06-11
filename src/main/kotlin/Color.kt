@@ -1,6 +1,6 @@
 /**
  *Color Class: Represents a color with RGB components
- * 
+ *
  *@param r: red component
  *@param g: green component
  *@param b: blue component
@@ -36,7 +36,6 @@ data class Color(var r: Float = 0f, var g: Float = 0f, var b: Float = 0f) {
                 areClose(b, other.b))
     }
 
-
     /**
      * Product each component with a scalar
      */
@@ -66,7 +65,7 @@ data class Color(var r: Float = 0f, var g: Float = 0f, var b: Float = 0f) {
     }
 
     /**
-     * Evaluate luminosity of a color with Shirley & Morley formula
+     * Evaluates luminosity of a color with Shirley & Morley formula
      */
     fun luminosity(): Float {
         return (maxOf(r, g, b) + minOf(r, g, b)) / 2f

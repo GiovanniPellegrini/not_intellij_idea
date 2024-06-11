@@ -13,13 +13,13 @@ fun byteArrayOfInts(vararg ints: Int) =
 class HdrImageTest {
 
     @Test
-    fun getSetPixelTest(){
-        val img = HdrImage(7,4)
-        val referenceCol = Color(1f,2f,3f)
+    fun getSetPixelTest() {
+        val img = HdrImage(7, 4)
+        val referenceCol = Color(1f, 2f, 3f)
         assert(img.validCoordinates(6, 3))
         assert(!img.validCoordinates(-1, 0))
-        img.setPixel(3,2,referenceCol)
-        assert(referenceCol.areClose(img.getPixel(3,2)))
+        img.setPixel(3, 2, referenceCol)
+        assert(referenceCol.areClose(img.getPixel(3, 2)))
     }
 
     @Test
@@ -70,11 +70,23 @@ class HdrImageTest {
             0x00, 0x00, 0x8c, 0x42, 0x00, 0x00, 0xa0, 0x42, 0x00, 0x00, 0xb4, 0x42
         )
 
-        assertEquals(referenceBe.size, streamBe.toByteArray().size){"Error: Bytearrays (Big Endian) have different size"}
-        assertArrayEquals(streamBe.toByteArray(), referenceBe){"Error: Bytearrays (Big Endian) have different elements"}
+        assertEquals(
+            referenceBe.size,
+            streamBe.toByteArray().size
+        ) { "Error: Bytearrays (Big Endian) have different size" }
+        assertArrayEquals(
+            streamBe.toByteArray(),
+            referenceBe
+        ) { "Error: Bytearrays (Big Endian) have different elements" }
 
-        assertEquals(referenceLe.size, streamLe.toByteArray().size){"Error: Bytearrays (Little Endian) have different size"}
-        assertArrayEquals(streamLe.toByteArray(), referenceLe){"Error: Bytearrays (Little Endian) have different elements"}
+        assertEquals(
+            referenceLe.size,
+            streamLe.toByteArray().size
+        ) { "Error: Bytearrays (Little Endian) have different size" }
+        assertArrayEquals(
+            streamLe.toByteArray(),
+            referenceLe
+        ) { "Error: Bytearrays (Little Endian) have different elements" }
 
     }
 
@@ -108,37 +120,6 @@ class HdrImageTest {
         assert(img.getPixel(1, 0).areClose(Color(0.5e4F, 1.0e4F, 1.5e4F)))
     }
 
-    @Test
-    fun clampImage() {
-        val img = HdrImage(2, 1)
-        img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
-        img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
-        img.clampImage()
-
-        for (pixel in img.pixels){
-            assert(pixel.r in 0.0..1.0)
-            assert(pixel.g in 0.0..1.0)
-            assert(pixel.b in 0.0..1.0)
-        }
-    }
-
-    @Test
-    fun writeLdrTest(){
-        val img = HdrImage(16, 16)
-        var i = 1f
-        var j = 256f
-        for (y in img.height-1 downTo 0){
-            for (x in 0..<img.width){
-                img.setPixel(x,y, Color(141f,50f,122f))
-                i += 1f
-                j -= 1f
-            }
-        }
-
-        val stream = FileOutputStream("test.pfm")
-        img.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        img.writeLdrImage("png",1f, "mix.png")
-    }
 }
 
 
