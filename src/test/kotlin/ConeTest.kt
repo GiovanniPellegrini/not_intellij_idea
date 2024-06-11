@@ -1,15 +1,29 @@
 import org.junit.jupiter.api.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
-class ConeTest{
+
+class ConeTest {
     @Test
-    fun pointInternalTest(){
-        val cone = Cone(transformation = Translation(Vector(1f,0f,3f)), height = 1f, radius = 1f)
-        assert(cone.pointInternal(Point(1f,0f,3f)))
-        assert(!cone.pointInternal(Point(1f,2f,4f)))
+    fun pointInternal() {
+        val cone = Cone()
+        assertTrue(cone.pointInternal(Point(0f, 0f, 1f)))
+        assertTrue(cone.pointInternal(Point(0.25f, 0.25f, 0f)))
+        assertFalse(cone.pointInternal(Point(0.5f, 0.5f, 1f)))
+    }
 
-        val cone2 = Cone(transformation = Rotation(Vector(1f,0f,0f),180f), height = 1f, radius = 1f)
-        assert(cone2.pointInternal(Point(1f,0f,3f)))
-        assert(!cone2.pointInternal(Point(1f,2f,4f)))
+    @Test
+    fun rayIntersection(){
+        TODO()
+    }
 
+    @Test
+    fun rayIntersectionList(){
+
+    }
+
+    @Test
+    fun transformation(){
+        
     }
 }
