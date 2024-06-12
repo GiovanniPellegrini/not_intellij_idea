@@ -9,24 +9,31 @@ import World
 import Camera
 import CheckeredPigment
 import Vector
+import Box
 import Color
+import Plane
 import ImagePigment
+import OrthogonalCamera
+import PerspectiveCamera
 import Pigment
 import Transformation
+import Point
+import DiffusionBRDF
+import SpecularBRDF
 import scalingTransformation
 import UniformPigment
 import readPfmImage
 import java.io.FileInputStream
-
+import java.io.InputStream
 
 
 // to be developed
 class Scene(
-    val materials: MutableMap<String, Material>,
+    val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
-    val camera: Camera? = null,
-    val floatVariables: MutableMap<String, Float>,
-    val overriddenVariables: MutableSet<String>
+    var camera: Camera? = null,
+    var floatVariables: MutableMap<String, Float> = mutableMapOf(),
+    var overriddenVariables: MutableSet<String> = mutableSetOf()
 ) {
     /**
      * Reads a token and checks if it is a symbol
@@ -120,28 +127,40 @@ class Scene(
         return Color(r, g, b)
     }
 
-    fun parsePigment(inStream: InStream): Pigment {
+    fun parsePoint(inputStream: InStream): Point {
+        expectSymbol(inputStream, "(")
+        val x = expectNumber(inputStream)
+        expectSymbol(inputStream, ",")
+        val y = expectNumber(inputStream)
+        expectSymbol(inputStream, ",")
+        val z = expectNumber(inputStream)
+        expectSymbol(inputStream, ")")
+
+        return Point(x, y, z)
+    }
+
+    fun parsePigment(inputStream: InStream): Pigment {
         val keyWord =
-            expectKeyWords(inStream, listOf(KeyWordEnum.UNIFORM, KeyWordEnum.CHECKERED, KeyWordEnum.IMAGE))
-        expectSymbol(inStream, "(")
+            expectKeyWords(inputStream, listOf(KeyWordEnum.UNIFORM, KeyWordEnum.CHECKERED, KeyWordEnum.IMAGE))
+        expectSymbol(inputStream, "(")
 
         val result: Pigment = when (keyWord) {
             KeyWordEnum.UNIFORM -> {
-                val color = parseColor(inStream)
+                val color = parseColor(inputStream)
                 UniformPigment(color)
             }
 
             KeyWordEnum.CHECKERED -> {
-                val color1 = parseColor(inStream)
-                expectSymbol(inStream, ",")
-                val color2 = parseColor(inStream)
-                expectSymbol(inStream, ",")
-                val numberOfSteps = expectNumber(inStream)
+                val color1 = parseColor(inputStream)
+                expectSymbol(inputStream, ",")
+                val color2 = parseColor(inputStream)
+                expectSymbol(inputStream, ",")
+                val numberOfSteps = expectNumber(inputStream)
                 CheckeredPigment(color1, color2, numberOfSteps.toInt())
             }
 
             KeyWordEnum.IMAGE -> {
-                val string = expectString(inStream)
+                val string = expectString(inputStream)
                 val stream = FileInputStream(string)
                 val image = readPfmImage(stream)
                 ImagePigment(image)
@@ -150,75 +169,250 @@ class Scene(
             else -> throw Error("no clear definition of Pigment")
         }
 
-        expectSymbol(inStream, ")")
+        expectSymbol(inputStream, ")")
         return result
     }
 
-    fun parseBrdf(inStream: InStream):BRDF{
-        TODO()
+    fun parseBrdf(inputStream: InStream): BRDF {
+        val kw = expectKeyWords(inputStream, listOf(KeyWordEnum.DIFFUSE, KeyWordEnum.SPECULAR))
+        expectSymbol(inputStream, "(")
+        val pigment = parsePigment(inputStream)
+        expectSymbol(inputStream, ")")
+        return when (kw) {
+            KeyWordEnum.DIFFUSE -> DiffusionBRDF(pigment)
+            KeyWordEnum.SPECULAR -> SpecularBRDF(pigment)
+            else -> throw GrammarError(inputStream.location, "no clear definition of BRDF")
+        }
     }
 
-    fun parseMaterial(inStream: InStream): Map<String, Material>{
-        val materialName = expectIdentifier(inStream)
-        expectSymbol(inStream, "(")
-        val brdf = parseBrdf(inStream)
-        expectSymbol(inStream, ",")
-        val emittedRad = parsePigment(inStream)
-        expectSymbol(inStream, ")")
+    fun parseMaterial(inputStream: InStream): Map<String, Material> {
+        val materialName = expectIdentifier(inputStream)
+        expectSymbol(inputStream, "(")
+        val brdf = parseBrdf(inputStream)
+        expectSymbol(inputStream, ",")
+        val emittedRad = parsePigment(inputStream)
+        expectSymbol(inputStream, ")")
 
         return mapOf(materialName to Material(brdf, emittedRad))
     }
 
-    fun parseTransformation(inStream: InStream){
-        var result = Transformation()
-        while(true){
-            val transformationKw = expectKeyWords(inStream,listOf(
-                 KeyWordEnum.IDENTITY,
-                 KeyWordEnum.TRANSLATION,
-                 KeyWordEnum.ROTATION_X,
-                 KeyWordEnum.ROTATION_Y,
-                 KeyWordEnum.ROTATION_Z,))
+    fun parseSphere(inStream: InStream): Sphere {
+        expectSymbol(inStream, "(")
+        val materialName = expectIdentifier(inStream)
+        if (materialName !in materials.keys) {
+            throw GrammarError(inStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inStream, ",")
+        val transformation = parseTransformation(inStream)
+        expectSymbol(inStream, ")")
 
-            when(transformationKw){
+        return Sphere(transformation = transformation, material = materials[materialName]!!)
+    }
+
+    fun parsePlane(inStream: InStream): Plane {
+        expectSymbol(inStream, "(")
+        val materialName = expectIdentifier(inStream)
+        if (materialName !in materials.keys) {
+            throw GrammarError(inStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inStream, ",")
+        val transformation = parseTransformation(inStream)
+        expectSymbol(inStream, ")")
+
+        return Plane(transformation = transformation, material = materials[materialName]!!)
+    }
+
+    fun parseBox(inputStream: InStream): Box {
+        expectSymbol(inputStream, "(")
+        val Pmin = parsePoint(inputStream)
+        expectSymbol(inputStream, ",")
+        val PMax = parsePoint(inputStream)
+        expectSymbol(inputStream, ")")
+        val materialName = expectIdentifier(inputStream)
+        if (materialName !in materials) {
+            throw GrammarError(inputStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inputStream, ",")
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ")")
+
+        return Box(Pmax = PMax, Pmin = Pmin, transformation = transformation, material = materials[materialName]!!)
+
+    }
+
+    fun parseTransformation(inputStream: InStream): Transformation {
+        var result = Transformation()
+        while (true) {
+            val transformationKw = expectKeyWords(
+                inputStream, listOf(
+                    KeyWordEnum.IDENTITY,
+                    KeyWordEnum.TRANSLATION,
+                    KeyWordEnum.ROTATION_X,
+                    KeyWordEnum.ROTATION_Y,
+                    KeyWordEnum.ROTATION_Z
+                )
+            )
+
+            when (transformationKw) {
                 KeyWordEnum.IDENTITY -> {
-                    continue
+                    //do nothing
                 }
+
                 KeyWordEnum.TRANSLATION -> {
-                    expectSymbol(inStream,"(")
-                    result *= Translation(parseVector(inStream))
-                    expectSymbol(inStream,")")
+                    expectSymbol(inputStream, "(")
+                    result *= Translation(parseVector(inputStream))
+                    expectSymbol(inputStream, ")")
                 }
+
                 KeyWordEnum.ROTATION_X -> {
-                    expectSymbol(inStream,"(")
-                    val angle = expectNumber(inStream)
-                    result *= Rotation((Vector(1f,0f,0f)),angle)
-                    expectSymbol(inStream,")")
+                    expectSymbol(inputStream, "(")
+                    val angle = expectNumber(inputStream)
+                    result *= Rotation((Vector(1f, 0f, 0f)), angle)
+                    expectSymbol(inputStream, ")")
                 }
+
                 KeyWordEnum.ROTATION_Y -> {
-                    expectSymbol(inStream,"(")
-                    val angle = expectNumber(inStream)
-                    result *= Rotation((Vector(0f,1f,0f)),angle)
-                    expectSymbol(inStream,")")
+                    expectSymbol(inputStream, "(")
+                    val angle = expectNumber(inputStream)
+                    result *= Rotation((Vector(0f, 1f, 0f)), angle)
+                    expectSymbol(inputStream, ")")
                 }
+
                 KeyWordEnum.ROTATION_Z -> {
-                    expectSymbol(inStream,"(")
-                    val angle = expectNumber(inStream)
-                    result *= Rotation((Vector(0f,0f,1f)),angle)
-                    expectSymbol(inStream,")")
+                    expectSymbol(inputStream, "(")
+                    val angle = expectNumber(inputStream)
+                    result *= Rotation((Vector(0f, 0f, 1f)), angle)
+                    expectSymbol(inputStream, ")")
                 }
+
                 KeyWordEnum.SCALING -> {
-                    expectSymbol(inStream,"(")
-                    val scaling = parseVector(inStream)
+                    expectSymbol(inputStream, "(")
+                    val scaling = parseVector(inputStream)
                     result *= scalingTransformation(scaling)
-                    expectSymbol(inStream,")")
+                    expectSymbol(inputStream, ")")
                 }
-                else -> throw Error("no clear definition of Transformation")
+
+                else -> throw RuntimeException("no clear definition of Transformation")
             }
-                TODO()
+            // read next token to check if there is another transformation chained
+            val nextKw = inputStream.readToken()
+            if (nextKw !is SymbolToken || nextKw.char != '*') {
+                inputStream.unreadToken(nextKw)
+                break
+            }
+        }
+        return result
+    }
+
+    fun parseCamera(inputStream: InStream): Camera {
+        expectSymbol(inputStream, "(")
+        val typeKw = expectKeyWords(inputStream, listOf(KeyWordEnum.ORTHOGONAL, KeyWordEnum.PERSPECTIVE))
+        expectSymbol(inputStream, ",")
+
+
+        //if not defined, other arguments are assigned to default values
+
+        val transformation = try {
+            parseTransformation(inputStream)
+        } catch (e: GrammarError) {
+            Transformation()
+        }
+
+        expectSymbol(inputStream, ",")
+
+        val aspectRatio = try {
+            expectNumber(inputStream)
+        } catch (e: GrammarError) {
+            1f
+        }
+
+        expectSymbol(inputStream, ",")
+
+        val distance = try {
+            expectNumber(inputStream)
+        } catch (e: GrammarError) {
+            1f
+        }
+
+        expectSymbol(inputStream, ")")
+
+        return when (typeKw) {
+            KeyWordEnum.ORTHOGONAL -> {
+                OrthogonalCamera(aspectRatio, transformation)
+            }
+
+            KeyWordEnum.PERSPECTIVE -> {
+                PerspectiveCamera(distance, aspectRatio, transformation)
+            }
+
+            else -> {
+                throw GrammarError(inputStream.location, "no clear definition of Camera")
+            }
         }
     }
 
+    /**
+     * Reads a scene description from the input stream and returns a Scene object
+     */
+    fun parseScene(inputStream: InStream, variables: MutableMap<String, Float> = mutableMapOf()): Scene {
+        val scene = Scene()
+        scene.floatVariables = variables
+        scene.overriddenVariables = variables.keys
 
+        while (true) {
+            val what = inputStream.readToken()
+            if (what is StopToken) {
+                break
+            }
+            if (what !is KeyWordToken) {
+                throw GrammarError(what.location, "Expected a keyword, but got $what")
+            }
+            when (what.keywordEnum) {
+                KeyWordEnum.FLOAT -> {
+                    val variableName = expectIdentifier(inputStream)
+                    val variableLocation = inputStream.location
+
+                    expectSymbol(inputStream, "(")
+                    val varValue = expectNumber(inputStream)
+                    expectSymbol(inputStream, ")")
+                    // Error if VariableName already defined
+                    if (variableName in scene.overriddenVariables && variableName !in scene.overriddenVariables) {
+                        throw GrammarError(variableLocation, "Variable '$variableName' cannot be redefined")
+                    }
+                    // Define variable if not already defined before
+                    if (variableName !in scene.overriddenVariables) {
+                        scene.floatVariables[variableName] = varValue
+                    }
+
+
+                }
+
+                KeyWordEnum.SPHERE -> {
+                    scene.world.add(parseSphere(inputStream))
+                }
+
+                KeyWordEnum.PLANE -> {
+                    scene.world.add(parsePlane(inputStream))
+                }
+
+                KeyWordEnum.CAMERA -> {
+                    if (camera != null) {
+                        throw GrammarError(what.location, "Camera already defined")
+                    }
+                    camera = parseCamera(inputStream)
+                }
+
+                KeyWordEnum.MATERIAL -> {
+                    scene.materials.putAll(parseMaterial(inputStream))
+                }
+
+                else -> {
+                    throw GrammarError(what.location, "Unexpected token ${what}")
+                }
+            }
+        }
+        return scene
+    }
 }
 
 

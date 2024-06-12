@@ -172,7 +172,7 @@ class InputStreamTest{
         camera(perspective, rotation_z(30) * translation(<-4, 0, 1>), 1.0, 2.0)
         """.toByteArray())
 
-        TODO("parse_scene function not implemented")
+        //TODO("parse_scene function not implemented")
 
     }
 }
