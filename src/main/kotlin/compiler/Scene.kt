@@ -1,24 +1,31 @@
 package compiler
 
 import BRDF
-import Sphere
+import CSGDifference
+import CSGIntersection
 import Translation
 import Rotation
+import CSGUnion
 import Material
 import World
 import Camera
 import CheckeredPigment
 import Vector
 import Color
+import DiffusionBRDF
 import ImagePigment
+import OrthogonalCamera
+import PerspectiveCamera
 import Pigment
+import SpecularBRDF
 import Transformation
 import scalingTransformation
 import UniformPigment
 import readPfmImage
 import java.io.FileInputStream
-
-
+import Sphere
+import Plane
+import Shape
 
 // to be developed
 class Scene(
@@ -26,6 +33,7 @@ class Scene(
     val world: World = World(),
     val camera: Camera? = null,
     val floatVariables: MutableMap<String, Float>,
+    val shapeVariables: MutableMap<String,Shape>,
     val overriddenVariables: MutableSet<String>
 ) {
     /**
@@ -95,6 +103,22 @@ class Scene(
         }
         throw GrammarError(token.location, "Expected an identifier, but got $token")
     }
+    /**
+     * Reads a token and check if it is the identifier of a shape
+     * @return the shape that was read
+     */
+    fun expectShape(inputFile: InStream):Shape{
+        val token=inputFile.readToken()
+        if(token is IdentifierToken){
+            val identifier=token.identifier
+            if(identifier !in this.shapeVariables ){
+                throw GrammarError(token.location, "Unknown variable $identifier")
+            }
+        return this.shapeVariables[identifier]!!
+        }
+        throw GrammarError(token.location, "Expected a shape, but got $token")
+    }
+
 
     fun parseVector(inStream: InStream): Vector {
         expectSymbol(inStream, "<")
@@ -147,17 +171,32 @@ class Scene(
                 ImagePigment(image)
             }
 
-            else -> throw Error("no clear definition of Pigment")
+            else -> throw GrammarError(inStream.location, "no clear definition of Pigment")
         }
 
         expectSymbol(inStream, ")")
         return result
     }
 
-    fun parseBrdf(inStream: InStream):BRDF{
-        TODO()
-    }
+    fun parseBrdf(inStream: InStream): BRDF {
+        val brdfKeyWord = expectKeyWords(inStream, listOf(KeyWordEnum.DIFFUSE, KeyWordEnum.SPECULAR))
+        expectSymbol(inStream, "(")
+        val pigment = parsePigment(inStream)
 
+        val result: BRDF = when (brdfKeyWord) {
+            KeyWordEnum.DIFFUSE -> {
+                DiffusionBRDF(pigment)
+            }
+
+            KeyWordEnum.SPECULAR -> {
+                SpecularBRDF(pigment)
+            }
+
+            else -> throw GrammarError(inStream.location, "No clear definition of brdf")
+
+        }
+        return result
+    }
     fun parseMaterial(inStream: InStream): Map<String, Material>{
         val materialName = expectIdentifier(inStream)
         expectSymbol(inStream, "(")
@@ -169,15 +208,15 @@ class Scene(
         return mapOf(materialName to Material(brdf, emittedRad))
     }
 
-    fun parseTransformation(inStream: InStream){
+    fun parseTransformation(inStream: InStream):Transformation{
         var result = Transformation()
         while(true){
             val transformationKw = expectKeyWords(inStream,listOf(
-                 KeyWordEnum.IDENTITY,
-                 KeyWordEnum.TRANSLATION,
-                 KeyWordEnum.ROTATION_X,
-                 KeyWordEnum.ROTATION_Y,
-                 KeyWordEnum.ROTATION_Z,))
+                KeyWordEnum.IDENTITY,
+                KeyWordEnum.TRANSLATION,
+                KeyWordEnum.ROTATION_X,
+                KeyWordEnum.ROTATION_Y,
+                KeyWordEnum.ROTATION_Z,))
 
             when(transformationKw){
                 KeyWordEnum.IDENTITY -> {
@@ -214,9 +253,126 @@ class Scene(
                 }
                 else -> throw Error("no clear definition of Transformation")
             }
-                TODO()
         }
     }
+
+    fun parseSphere(inputFile: InStream): Sphere {
+        expectSymbol(inputFile, "(")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+        return Sphere(transformation = transformation, material = materials[materialName]!!)
+    }
+
+    fun parsePlane(inputFile: InStream): Plane {
+        expectSymbol(inputFile, "(")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+        return Plane(transformation = transformation, material = materials[materialName]!!)
+    }
+
+    fun parseCamera(inputFile: InStream): Camera {
+        expectSymbol(inputFile, "(")
+        val cameraKeyWord = expectKeyWords(inputFile, listOf(KeyWordEnum.PERSPECTIVE, KeyWordEnum.ORTHOGONAL))
+        expectSymbol(inputFile, ",")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val aspectRatio = expectNumber(inputFile)
+        expectSymbol(inputFile, ",")
+        val distance = expectNumber(inputFile)
+
+        val result: Camera = when (cameraKeyWord) {
+            KeyWordEnum.PERSPECTIVE -> {
+                PerspectiveCamera(distance, aspectRatio, transformation)
+            }
+
+            KeyWordEnum.ORTHOGONAL -> {
+                OrthogonalCamera(aspectRatio, transformation)
+            }
+
+            else -> throw GrammarError(inputFile.location, "Invalid type of camera")
+        }
+        return result
+    }
+
+
+
+
+    fun parseCSGUnion(inputFile: InStream):CSGUnion{
+        expectSymbol(inputFile,"(")
+        val shape1=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val shape2=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val transformation=parseTransformation(inputFile)
+        expectSymbol(inputFile,",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        return CSGUnion(shape1,shape2,transformation, materials[materialName]!! )
+    }
+    fun parseCSGDifference(inputFile: InStream):CSGDifference{
+        expectSymbol(inputFile,"(")
+        val shape1=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val shape2=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val transformation=parseTransformation(inputFile)
+        expectSymbol(inputFile,",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        return CSGDifference(shape1,shape2,transformation, materials[materialName]!! )
+    }
+
+    fun parseCSGIntersection(inputFile: InStream):CSGIntersection{
+        expectSymbol(inputFile,"(")
+        val shape1=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val shape2=expectShape(inputFile)
+        expectSymbol(inputFile,",")
+        val transformation=parseTransformation(inputFile)
+        expectSymbol(inputFile,",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        return CSGIntersection(shape1,shape2,transformation, materials[materialName]!! )
+    }
+
+    //da aggiornare
+    private val shapeToParse: Map<KeyWordEnum, (InStream) -> Any> = mapOf(
+        KeyWordEnum.SPHERE to ::parseSphere,
+        KeyWordEnum.PLANE to ::parsePlane,
+        KeyWordEnum.CSGUNION to:: parseCSGUnion,
+        KeyWordEnum.CSGDIFFERENCE to:: parseCSGDifference,
+        KeyWordEnum.CSGINTERSECTION to:: parseCSGIntersection
+        
+    )
+
+}
+
+
+
+
+
 
 
 }
