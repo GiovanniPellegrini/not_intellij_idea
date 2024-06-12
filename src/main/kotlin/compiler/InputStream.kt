@@ -1,13 +1,17 @@
 package compiler
+
 import java.io.InputStream
 import java.io.InputStreamReader
 import kotlin.Char as Char
 
 private val symbols = "()<>,*="
+
 class InStream(
     val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
     var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
-    var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location) {
+    var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location,
+    var saveToken: Token? = null
+) {
 
     /**
      * update the position of the lexer after reading a character from the stream, '\u0000' is the null character
@@ -35,13 +39,12 @@ class InStream(
         if (savedChar != '\u0000') {
             c = savedChar
             savedChar = '\u0000'
-        }
-        else{
+        } else {
             val isEof = stream.read()
             // if isEof is -1 it means that the end of the file has been reached and return '\u0000'
-            c = if(isEof != -1){
+            c = if (isEof != -1) {
                 isEof.toChar()
-            }else '\u0000'
+            } else '\u0000'
         }
         savedLocation = location.copy()
         updatePos(c)
@@ -59,16 +62,16 @@ class InStream(
 
     private val WHITESPACE = " \t\n\r"
 
-    fun skipWhiteSpace(){
+    fun skipWhiteSpace() {
         var c = readChar()
-        while(c in WHITESPACE || c == '%'){ // '%' is the comment character
-            if(c == '%'){
-                while(readChar() !in listOf('\u0000', '\n', '\r')){
+        while (c in WHITESPACE || c == '%') { // '%' is the comment character
+            if (c == '%') {
+                while (readChar() !in listOf('\u0000', '\n', '\r')) {
                     continue
                 }
             }
             c = readChar()
-            if(c == '\u0000'){
+            if (c == '\u0000') {
                 return
             }
         }
@@ -79,7 +82,14 @@ class InStream(
     /**
      * Reads the stream and returns a specific type of token. When it reaches the end of the file it returns StopToken
      */
-    fun readToken():Token {
+    fun readToken(): Token {
+
+        if (saveToken != null) {
+            val result = saveToken
+            saveToken = null
+            return result!!
+        }
+
         this.skipWhiteSpace()
         val c = this.readChar()
         // if char is equal to '' we are at the end of the file
@@ -99,10 +109,16 @@ class InStream(
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
         else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c.toString(), tokenLocation)
-
         else throw GrammarError(tokenLocation, "invalid character $c")
     }
 
+    /**
+     * Unread a token saving it in saveToken
+     */
+    fun unreadToken(token: Token) {
+        assert(saveToken == null)
+        saveToken = token
+    }
 
     /**
      * reads an entire string contained between the quotation marks “ ”
@@ -146,21 +162,21 @@ class InStream(
     /**
      * Reads a word and returns a KeyWordToken if that word is inside KeyWordEnum, else returns IdentifierToken
      */
-    fun parseWordOrKeyToken(firstC: String,tokenLocation: SourceLocation): Token{
+    fun parseWordOrKeyToken(firstC: String, tokenLocation: SourceLocation): Token {
         var token = firstC
         var c: Char
-        while(true){
+        while (true) {
             c = this.readChar()
-            if(c == '\u0000') break
-            if(!c.isLetterOrDigit() || c == '_'){
+            if (c == '\u0000') break
+            if (!c.isLetterOrDigit() || c == '_') {
                 this.unreadChar(c)
                 break
             }
 
-            token+=c
+            token += c
         }
 
-        return if(KEYWORDS.containsKey(token)) KeyWordToken(KEYWORDS[token]!!,tokenLocation)
+        return if (KEYWORDS.containsKey(token)) KeyWordToken(KEYWORDS[token]!!, tokenLocation)
         else IdentifierToken(token, tokenLocation)
     }
 }
