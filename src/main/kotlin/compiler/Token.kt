@@ -19,7 +19,7 @@ class KeyWordToken(var keywordEnum: KeyWordEnum,override var location: SourceLoc
 /**
  * Used to identify any name which is not a KeyWord
  */
-class IdentifierToken(var string: String, override var location: SourceLocation):Token{
+class IdentifierToken(var identifier: String, override var location: SourceLocation):Token{
 }
 
 /**

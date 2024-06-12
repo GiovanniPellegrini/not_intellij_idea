@@ -40,17 +40,43 @@ class Scene(
      * Reads a token and checks if it is a literal number or a variable
      * @return the number that was read
      */
-    fun expectNumber(inputFile: InStream, scene: Scene): Float {
+    fun expectNumber(inputFile: InStream): Float {
         val token = inputFile.readToken()
         if(token is LiteralNumberToken){
             return token.number
         }else if(token is IdentifierToken){
-            val variableName = token.string
-            if(variableName !in scene.floatVariables){
+            val variableName = token.identifier
+            if(variableName !in this.floatVariables){
                 throw GrammarError(token.location, "Unknown variable $variableName")
             }
-            return scene.floatVariables[variableName]!!
+            return this.floatVariables[variableName]!!
         }
         throw GrammarError(token.location, "Expected a number, but got $token")
     }
+
+    /**
+     * Reads a token and checks if it is a literal string
+     * @return the string that was read
+     */
+    fun expectString(inputFile: InStream): String {
+        val token = inputFile.readToken()
+        if(token is LiteralStringToken){
+            return token.string
+        }
+        throw GrammarError(token.location, "Expected a string, but got $token")
+    }
+
+    /**
+     * Reads a token and checks if it is an identifier
+     * @return the identifier that was read
+     */
+    fun expectIdentifier(inputFile: InStream): String {
+        val token = inputFile.readToken()
+        if(token is IdentifierToken){
+            return token.identifier
+        }
+        throw GrammarError(token.location, "Expected an identifier, but got $token")
+    }
+
+
 }
