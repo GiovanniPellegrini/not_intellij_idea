@@ -1,10 +1,10 @@
 package compiler
 
 import java.io.InputStream
-import java.io.InputStreamReader
 import kotlin.Char as Char
 
-private val symbols = "()<>,*="
+private const val symbols = "()<>,*="
+private const val WHITESPACE = " \t\n\r"
 
 class InStream(
     val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
@@ -60,7 +60,7 @@ class InStream(
         location = savedLocation.copy()
     }
 
-    private val WHITESPACE = " \t\n\r"
+
 
     fun skipWhiteSpace() {
         var c = readChar()

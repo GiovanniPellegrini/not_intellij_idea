@@ -3,11 +3,9 @@ package compiler
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.io.InputStreamReader
-import kotlin.io.path.fileVisitor
 
-class InputStreamTest(){
+
+class InputStreamTest{
 
     @Test
     fun testInputFile(){
@@ -69,7 +67,7 @@ class InputStreamTest(){
     }
 
     @Test
-    fun readToken(){
+    fun readTokenTest(){
         val file=ByteArrayInputStream("""
         % This is a comment
         % This is another comment
@@ -91,7 +89,7 @@ class InputStreamTest(){
 
         token = stream.readToken()
         assert(token is IdentifierToken)
-        if (token is IdentifierToken) assert(token.string == "skyMaterial")
+        if (token is IdentifierToken) assert(token.identifier == "skyMaterial")
 
         token = stream.readToken()
         assert(token is SymbolToken)
@@ -141,6 +139,41 @@ class InputStreamTest(){
             token=stream.readToken()
        }
         assertTrue(token is StopToken)
+    }
+
+    @Test
+    fun TestParser(){
+        val stream = ByteArrayInputStream("""
+        float clock(150)
+    
+        material sky_material(
+            diffuse(uniform(<0, 0, 0>)),
+            uniform(<0.7, 0.5, 1>)
+        )
+    
+        % Here is a comment
+    
+        material ground_material(
+            diffuse(checkered(<0.3, 0.5, 0.1>,
+                              <0.1, 0.2, 0.5>, 4)),
+            uniform(<0, 0, 0>)
+        )
+    
+        material sphere_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+    
+        plane (sky_material, translation(<0, 0, 100>) * rotation_y(clock))
+        plane (ground_material, identity)
+    
+        sphere(sphere_material, translation(<0, 0, 1>))
+    
+        camera(perspective, rotation_z(30) * translation(<-4, 0, 1>), 1.0, 2.0)
+        """.toByteArray())
+
+        TODO("parse_scene function not implemented")
+
     }
 }
 

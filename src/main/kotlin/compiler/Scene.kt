@@ -1,6 +1,9 @@
 package compiler
 
 import BRDF
+import Sphere
+import Translation
+import Rotation
 import Material
 import World
 import Camera
@@ -9,11 +12,12 @@ import Vector
 import Color
 import ImagePigment
 import Pigment
+import Transformation
+import scalingTransformation
 import UniformPigment
 import readPfmImage
 import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
+
 
 
 // to be developed
@@ -116,7 +120,7 @@ class Scene(
         return Color(r, g, b)
     }
 
-    fun parsePigment(inStream: InStream, scene: Scene): Pigment {
+    fun parsePigment(inStream: InStream): Pigment {
         val keyWord =
             expectKeyWords(inStream, listOf(KeyWordEnum.UNIFORM, KeyWordEnum.CHECKERED, KeyWordEnum.IMAGE))
         expectSymbol(inStream, "(")
@@ -153,6 +157,68 @@ class Scene(
     fun parseBrdf(inStream: InStream):BRDF{
         TODO()
     }
+
+    fun parseMaterial(inStream: InStream): Map<String, Material>{
+        val materialName = expectIdentifier(inStream)
+        expectSymbol(inStream, "(")
+        val brdf = parseBrdf(inStream)
+        expectSymbol(inStream, ",")
+        val emittedRad = parsePigment(inStream)
+        expectSymbol(inStream, ")")
+
+        return mapOf(materialName to Material(brdf, emittedRad))
+    }
+
+    fun parseTransformation(inStream: InStream){
+        var result = Transformation()
+        while(true){
+            val transformationKw = expectKeyWords(inStream,listOf(
+                 KeyWordEnum.IDENTITY,
+                 KeyWordEnum.TRANSLATION,
+                 KeyWordEnum.ROTATION_X,
+                 KeyWordEnum.ROTATION_Y,
+                 KeyWordEnum.ROTATION_Z,))
+
+            when(transformationKw){
+                KeyWordEnum.IDENTITY -> {
+                    continue
+                }
+                KeyWordEnum.TRANSLATION -> {
+                    expectSymbol(inStream,"(")
+                    result *= Translation(parseVector(inStream))
+                    expectSymbol(inStream,")")
+                }
+                KeyWordEnum.ROTATION_X -> {
+                    expectSymbol(inStream,"(")
+                    val angle = expectNumber(inStream)
+                    result *= Rotation((Vector(1f,0f,0f)),angle)
+                    expectSymbol(inStream,")")
+                }
+                KeyWordEnum.ROTATION_Y -> {
+                    expectSymbol(inStream,"(")
+                    val angle = expectNumber(inStream)
+                    result *= Rotation((Vector(0f,1f,0f)),angle)
+                    expectSymbol(inStream,")")
+                }
+                KeyWordEnum.ROTATION_Z -> {
+                    expectSymbol(inStream,"(")
+                    val angle = expectNumber(inStream)
+                    result *= Rotation((Vector(0f,0f,1f)),angle)
+                    expectSymbol(inStream,")")
+                }
+                KeyWordEnum.SCALING -> {
+                    expectSymbol(inStream,"(")
+                    val scaling = parseVector(inStream)
+                    result *= scalingTransformation(scaling)
+                    expectSymbol(inStream,")")
+                }
+                else -> throw Error("no clear definition of Transformation")
+            }
+                TODO()
+        }
+    }
+
+
 }
 
 
