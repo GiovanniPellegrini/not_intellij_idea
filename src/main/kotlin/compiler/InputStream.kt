@@ -7,16 +7,16 @@ private const val symbols = "()<>,*="
 private const val WHITESPACE = " \t\n\r"
 
 class InStream(
-    val stream: InputStream, val fileName: String = "", val tabulation: Int = 8,
+    val stream: InputStream, private val fileName: String = "", private val tabulation: Int = 8,
     var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
-    var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location,
+    private var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location,
     var saveToken: Token? = null
 ) {
 
     /**
      * update the position of the lexer after reading a character from the stream, '\u0000' is the null character
      */
-    fun updatePos(c: Char) {
+    private fun updatePos(c: Char) {
         // in kotlin char must be written between single quotes
         when (c) {
             '\u0000' -> return
@@ -61,7 +61,6 @@ class InStream(
     }
 
 
-
     fun skipWhiteSpace() {
         var c = readChar()
         while (c in WHITESPACE || c == '%') { // '%' is the comment character
@@ -99,17 +98,16 @@ class InStream(
         val tokenLocation = this.location.copy()
 
         //if char is equal to Symbol, return SymbolToken
-        if (c in symbols) return SymbolToken(c, tokenLocation)
+        return if (c in symbols) SymbolToken(c, tokenLocation)
 
         //if char is '"', it means that is the starting of a filename
-        else if (c == '"') return parseStringToken(tokenLocation)
+        else if (c == '"') parseStringToken(tokenLocation)
 
         //if char is a number or an operation return that number
-        else if (c.isDigit() || c in charArrayOf('+', '-', '.')) return parseFloatToken(c, tokenLocation)
+        else if (c.isDigit() || c in charArrayOf('+', '-', '.')) parseFloatToken(c, tokenLocation)
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
-        else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c.toString(), tokenLocation)
-
+        else if (c.isLetter() || c == '_') parseWordOrKeyToken(c.toString(), tokenLocation)
         else throw GrammarError(tokenLocation, "invalid character $c")
     }
 
@@ -124,7 +122,7 @@ class InStream(
     /**
      * reads an entire string contained between the quotation marks “ ”
      */
-    fun parseStringToken(tokenLocation: SourceLocation): LiteralStringToken {
+    private fun parseStringToken(tokenLocation: SourceLocation): LiteralStringToken {
         var string = ""
         while (true) {
             val c = this.readChar()
@@ -140,7 +138,7 @@ class InStream(
     /**
      * reads a Float number until it finds something different from a number, char '.' or chars 'E,e'
      */
-    fun parseFloatToken(c: Char, tokenLocation: SourceLocation): LiteralNumberToken {
+    private fun parseFloatToken(c: Char, tokenLocation: SourceLocation): LiteralNumberToken {
         var string: String = c.toString()
         while (true) {
             val ch = readChar()
@@ -163,7 +161,7 @@ class InStream(
     /**
      * Reads a word and returns a KeyWordToken if that word is inside KeyWordEnum, else returns IdentifierToken
      */
-    fun parseWordOrKeyToken(firstC: String, tokenLocation: SourceLocation): Token {
+    private fun parseWordOrKeyToken(firstC: String, tokenLocation: SourceLocation): Token {
         var token = firstC
         var c: Char
         while (true) {
