@@ -4,6 +4,7 @@
 interface Shape {
 
     val material: Material
+    val transformation: Transformation
     fun rayIntersection(ray:Ray): HitRecord?
     fun rayIntersectionList(ray: Ray):List<HitRecord>?
 

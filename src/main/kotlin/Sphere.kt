@@ -3,7 +3,7 @@ import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class Sphere(val transformation: Transformation = Transformation(),
+class Sphere(override val transformation: Transformation = Transformation(),
              override val material: Material = Material()): Shape{
 
     /**

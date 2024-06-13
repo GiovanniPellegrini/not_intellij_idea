@@ -1,7 +1,7 @@
 import kotlin.math.abs
 import kotlin.math.floor
 
-class Plane(val transformation: Transformation = Transformation(),
+class Plane(override val transformation: Transformation = Transformation(),
             override val material: Material=Material()): Shape{
 
 
