@@ -1,13 +1,14 @@
 package compiler
 
 import java.io.InputStream
+import java.io.InputStreamReader
 import kotlin.Char as Char
 
 private const val symbols = "()<>,*="
 private const val WHITESPACE = " \t\n\r"
 
 class InStream(
-    val stream: InputStream, private val fileName: String = "", private val tabulation: Int = 8,
+    val stream: InputStreamReader, private val fileName: String = "", private val tabulation: Int = 8,
     var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
     private var savedChar: Char = '\u0000', var savedLocation: SourceLocation = location,
     var saveToken: Token? = null

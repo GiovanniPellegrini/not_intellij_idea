@@ -1,0 +1,22 @@
+material sphere_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+
+sphere(sphere_material, translation(<1, 1, 1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<1, 1, -1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<1, -1, 1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<-1, 1, 1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<-1, -1, -1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<-1, -1, 1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<-1, 1, -1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<1, -1, -1>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<1, 1, 0>) * scaling(<0.1,0.1,0.1>))
+sphere(sphere_material, translation(<0, -1, -1>) * scaling(<0.1,0.1,0.1>))
+
+
+
+
+
+
+

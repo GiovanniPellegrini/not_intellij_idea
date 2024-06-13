@@ -2,7 +2,7 @@ package compiler
 
 
 // The numeration starts with 0 (NEW=0)
-enum class KeyWordEnum() {
+enum class KeyWordEnum {
     NEW,
     MATERIAL,
     SHAPE,

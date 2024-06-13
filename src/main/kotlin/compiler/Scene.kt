@@ -291,13 +291,13 @@ class Scene(
         val pMin = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
         val pMax = parsePoint(inputStream)
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ",")
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ",")
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ",")
-        val transformation = parseTransformation(inputStream)
         expectSymbol(inputStream, ")")
 
         return Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!)
@@ -376,7 +376,8 @@ class Scene(
                     KeyWordEnum.TRANSLATION,
                     KeyWordEnum.ROTATION_X,
                     KeyWordEnum.ROTATION_Y,
-                    KeyWordEnum.ROTATION_Z
+                    KeyWordEnum.ROTATION_Z,
+                    KeyWordEnum.SCALING
                 )
             )
 
@@ -524,6 +525,10 @@ class Scene(
 
                 KeyWordEnum.TRIANGLEMESH -> {
                     this.world.add(parseTriangleMesh(inputStream))
+                }
+
+                KeyWordEnum.BOX -> {
+                    this.world.add(parseBox(inputStream))
                 }
 
                 KeyWordEnum.CAMERA -> {
