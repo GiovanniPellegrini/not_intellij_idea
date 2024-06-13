@@ -85,9 +85,9 @@ class InStream(
     fun readToken(): Token {
 
         if (saveToken != null) {
-            val result = saveToken
+            val result: Token = saveToken!!
             saveToken = null
-            return result!!
+            return result
         }
 
         this.skipWhiteSpace()
@@ -109,6 +109,7 @@ class InStream(
 
         //if char is a letter, it can be a KeyWord or a name. So it returns KeyWordToken/IdentifierToken
         else if (c.isLetter() || c == '_') return parseWordOrKeyToken(c.toString(), tokenLocation)
+
         else throw GrammarError(tokenLocation, "invalid character $c")
     }
 
@@ -168,7 +169,7 @@ class InStream(
         while (true) {
             c = this.readChar()
             if (c == '\u0000') break
-            if (!c.isLetterOrDigit() || c == '_') {
+            if (!(c.isLetterOrDigit() || c == '_')) {
                 this.unreadChar(c)
                 break
             }

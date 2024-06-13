@@ -16,7 +16,7 @@ import java.io.FileReader
  **/
 
 class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<MutableList<Int>>,
-                   val transformation: Transformation = Transformation(),
+                   override val transformation: Transformation = Transformation(),
                    override val material: Material = Material(),
                    var boundingBox: Box = Box())
     : Shape {

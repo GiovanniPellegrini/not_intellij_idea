@@ -26,8 +26,6 @@ import readPfmImage
 import java.io.FileInputStream
 import java.io.InputStream
 
-
-// to be developed
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
@@ -212,7 +210,7 @@ class Scene(
     fun parsePlane(inStream: InStream): Plane {
         expectSymbol(inStream, "(")
         val materialName = expectIdentifier(inStream)
-        if (materialName !in materials.keys) {
+        if (materialName !in materials) {
             throw GrammarError(inStream.location, "unknown material $materialName")
         }
         expectSymbol(inStream, ",")
@@ -354,11 +352,7 @@ class Scene(
     /**
      * Reads a scene description from the input stream and returns a Scene object
      */
-    fun parseScene(inputStream: InStream, variables: MutableMap<String, Float> = mutableMapOf()): Scene {
-        val scene = Scene()
-        scene.floatVariables = variables
-        scene.overriddenVariables = variables.keys
-
+    fun parseScene(inputStream: InStream, variables: MutableMap<String, Float> = mutableMapOf()) {
         while (true) {
             val what = inputStream.readToken()
             if (what is StopToken) {
@@ -376,23 +370,23 @@ class Scene(
                     val varValue = expectNumber(inputStream)
                     expectSymbol(inputStream, ")")
                     // Error if VariableName already defined
-                    if (variableName in scene.overriddenVariables && variableName !in scene.overriddenVariables) {
+                    if (variableName in this.floatVariables && variableName !in this.overriddenVariables) {
                         throw GrammarError(variableLocation, "Variable '$variableName' cannot be redefined")
                     }
                     // Define variable if not already defined before
-                    if (variableName !in scene.overriddenVariables) {
-                        scene.floatVariables[variableName] = varValue
+                    if (variableName !in this.overriddenVariables) {
+                        this.floatVariables[variableName] = varValue
                     }
 
 
                 }
 
                 KeyWordEnum.SPHERE -> {
-                    scene.world.add(parseSphere(inputStream))
+                    this.world.add(parseSphere(inputStream))
                 }
 
                 KeyWordEnum.PLANE -> {
-                    scene.world.add(parsePlane(inputStream))
+                    this.world.add(parsePlane(inputStream))
                 }
 
                 KeyWordEnum.CAMERA -> {
@@ -403,15 +397,15 @@ class Scene(
                 }
 
                 KeyWordEnum.MATERIAL -> {
-                    scene.materials.putAll(parseMaterial(inputStream))
+                    val materials = parseMaterial(inputStream)
+                    this.materials.putAll(materials)
                 }
 
                 else -> {
-                    throw GrammarError(what.location, "Unexpected token ${what}")
+                    throw GrammarError(what.location, "Unexpected token $what")
                 }
             }
         }
-        return scene
     }
 }
 
