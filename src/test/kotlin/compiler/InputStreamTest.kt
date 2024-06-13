@@ -295,22 +295,6 @@ class InputStreamTest {
                   ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation(<-4, 0, 1>), triangle_mesh_material)
             """.toByteArray()
         )
-        val mesh = TriangleMesh(
-            mutableListOf(
-                Point(1.0f, 1.0f, 1.0f), Point(2.0f, 2.0f, 2.0f),
-                Point(3.0f, 3.0f, 3.0f), Point(4.0f, 1.0f, 1.0f), Point(5.0f, 2.0f, 2.0f), Point(6.0f, 3.0f, 3.0f)
-            ),
-            mutableListOf(
-                mutableListOf(1, 2, 3),
-                mutableListOf(4, 5, 6),
-                mutableListOf(2, 3, 6),
-                mutableListOf(1, 3, 5)
-            ), transformation = Translation(Vector(-4f, 0f, 1f)),
-            Material(
-                brdf = DiffusionBRDF(p = UniformPigment(Color(0.7f, 0.8f, 0.2f))),
-                emittedRad = UniformPigment(Color(0.4f, 0f, 0f))
-            )
-        )
         scene.parseScene(InStream(stream))
         assert(scene.world.shapes[0] is Triangle)
         assert(
@@ -320,7 +304,6 @@ class InputStreamTest {
         )
         assert(scene.world.shapes[1] is TriangleMesh)
         assert(scene.world.shapes[1].material.brdf is DiffusionBRDF)
-
     }
 }
 
