@@ -16,6 +16,7 @@ import Rotation
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
+import kotlin.test.assertFailsWith
 
 
 class InputStreamTest {
@@ -157,8 +158,7 @@ class InputStreamTest {
     }
 
     @Test
-    fun TestParser() {
-        val b = 3
+    fun testParser() {
         val stream = ByteArrayInputStream(
             """
         float clock(150)
@@ -240,6 +240,36 @@ class InputStreamTest {
         assert(scene.world.shapes[2].transformation.isClose(Translation(Vector(0.0f, 0.0f, 1.0f))))
 
         assert(scene.camera is PerspectiveCamera)
+
+    }
+
+    @Test
+    fun parserUndefMaterialTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        plane(this_material_does_not_exist, identity)
+        """.toByteArray()
+        )
+
+        assertFailsWith<GrammarError> {
+            scene.parseScene(InStream(stream))
+        }
+    }
+
+    @Test
+    fun parseDoubleCam() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        camera(perspective, rotation_z(30) * translation([-4, 0, 1]), 1.0, 1.0)
+        camera(orthogonal, identity, 1.0, 1.0)
+        """.toByteArray()
+        )
+
+        assertFailsWith<GrammarError> {
+            scene.parseScene(InStream(stream))
+        }
 
     }
 }

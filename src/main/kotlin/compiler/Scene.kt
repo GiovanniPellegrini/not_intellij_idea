@@ -24,7 +24,6 @@ import scalingTransformation
 import UniformPigment
 import readPfmImage
 import java.io.FileInputStream
-import java.io.InputStream
 
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
@@ -36,7 +35,7 @@ class Scene(
     /**
      * Reads a token and checks if it is a symbol
      */
-    fun expectSymbol(inputFile: InStream, symbol: String) {
+    private fun expectSymbol(inputFile: InStream, symbol: String) {
         val token = inputFile.readToken()
         if (token !is SymbolToken) {
             throw GrammarError(token.location, "Expected symbol $symbol, but got $token")
@@ -47,7 +46,7 @@ class Scene(
      * Reads a token and checks if it is a keyword,
      * @return the keyword that was read as a KeyWordEnum
      */
-    fun expectKeyWords(inputFile: InStream, keywords: List<KeyWordEnum>): KeyWordEnum {
+    private fun expectKeyWords(inputFile: InStream, keywords: List<KeyWordEnum>): KeyWordEnum {
         val token = inputFile.readToken()
         if (token !is KeyWordToken) {
             throw GrammarError(token.location, "Expected a keyword, but got $token")
@@ -62,7 +61,7 @@ class Scene(
      * Reads a token and checks if it is a literal number or a variable
      * @return the number that was read
      */
-    fun expectNumber(inputFile: InStream): Float {
+    private fun expectNumber(inputFile: InStream): Float {
         val token = inputFile.readToken()
         if (token is LiteralNumberToken) {
             return token.number
@@ -81,7 +80,7 @@ class Scene(
      * Reads a token and checks if it is a literal string
      * @return the string that was read
      */
-    fun expectString(inputFile: InStream): String {
+    private fun expectString(inputFile: InStream): String {
         val token = inputFile.readToken()
         if (token is LiteralStringToken) {
             return token.string
@@ -93,7 +92,7 @@ class Scene(
      * Reads a token and checks if it is an identifier
      * @return the identifier that was read
      */
-    fun expectIdentifier(inputFile: InStream): String {
+    private fun expectIdentifier(inputFile: InStream): String {
         val token = inputFile.readToken()
         if (token is IdentifierToken) {
             return token.identifier
@@ -101,7 +100,7 @@ class Scene(
         throw GrammarError(token.location, "Expected an identifier, but got $token")
     }
 
-    fun parseVector(inStream: InStream): Vector {
+    private fun parseVector(inStream: InStream): Vector {
         expectSymbol(inStream, "<")
         val x = expectNumber(inStream)
         expectSymbol(inStream, ",")
@@ -113,7 +112,7 @@ class Scene(
         return Vector(x, y, z)
     }
 
-    fun parseColor(inStream: InStream): Color {
+    private fun parseColor(inStream: InStream): Color {
         expectSymbol(inStream, "<")
         val r = expectNumber(inStream)
         expectSymbol(inStream, ",")
@@ -125,7 +124,7 @@ class Scene(
         return Color(r, g, b)
     }
 
-    fun parsePoint(inputStream: InStream): Point {
+    private fun parsePoint(inputStream: InStream): Point {
         expectSymbol(inputStream, "(")
         val x = expectNumber(inputStream)
         expectSymbol(inputStream, ",")
@@ -137,7 +136,7 @@ class Scene(
         return Point(x, y, z)
     }
 
-    fun parsePigment(inputStream: InStream): Pigment {
+    private fun parsePigment(inputStream: InStream): Pigment {
         val keyWord =
             expectKeyWords(inputStream, listOf(KeyWordEnum.UNIFORM, KeyWordEnum.CHECKERED, KeyWordEnum.IMAGE))
         expectSymbol(inputStream, "(")
@@ -171,7 +170,7 @@ class Scene(
         return result
     }
 
-    fun parseBrdf(inputStream: InStream): BRDF {
+    private fun parseBrdf(inputStream: InStream): BRDF {
         val kw = expectKeyWords(inputStream, listOf(KeyWordEnum.DIFFUSE, KeyWordEnum.SPECULAR))
         expectSymbol(inputStream, "(")
         val pigment = parsePigment(inputStream)
@@ -183,7 +182,7 @@ class Scene(
         }
     }
 
-    fun parseMaterial(inputStream: InStream): Map<String, Material> {
+    private fun parseMaterial(inputStream: InStream): Map<String, Material> {
         val materialName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val brdf = parseBrdf(inputStream)
@@ -194,7 +193,7 @@ class Scene(
         return mapOf(materialName to Material(brdf, emittedRad))
     }
 
-    fun parseSphere(inStream: InStream): Sphere {
+    private fun parseSphere(inStream: InStream): Sphere {
         expectSymbol(inStream, "(")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials.keys) {
@@ -207,7 +206,7 @@ class Scene(
         return Sphere(transformation = transformation, material = materials[materialName]!!)
     }
 
-    fun parsePlane(inStream: InStream): Plane {
+    private fun parsePlane(inStream: InStream): Plane {
         expectSymbol(inStream, "(")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials) {
@@ -222,9 +221,9 @@ class Scene(
 
     fun parseBox(inputStream: InStream): Box {
         expectSymbol(inputStream, "(")
-        val Pmin = parsePoint(inputStream)
+        val pMin = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
-        val PMax = parsePoint(inputStream)
+        val pMax = parsePoint(inputStream)
         expectSymbol(inputStream, ")")
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
@@ -234,11 +233,11 @@ class Scene(
         val transformation = parseTransformation(inputStream)
         expectSymbol(inputStream, ")")
 
-        return Box(Pmax = PMax, Pmin = Pmin, transformation = transformation, material = materials[materialName]!!)
+        return Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!)
 
     }
 
-    fun parseTransformation(inputStream: InStream): Transformation {
+    private fun parseTransformation(inputStream: InStream): Transformation {
         var result = Transformation()
         while (true) {
             val transformationKw = expectKeyWords(
@@ -302,7 +301,7 @@ class Scene(
         return result
     }
 
-    fun parseCamera(inputStream: InStream): Camera {
+    private fun parseCamera(inputStream: InStream): Camera {
         expectSymbol(inputStream, "(")
         val typeKw = expectKeyWords(inputStream, listOf(KeyWordEnum.ORTHOGONAL, KeyWordEnum.PERSPECTIVE))
         expectSymbol(inputStream, ",")
@@ -352,7 +351,7 @@ class Scene(
     /**
      * Reads a scene description from the input stream and returns a Scene object
      */
-    fun parseScene(inputStream: InStream, variables: MutableMap<String, Float> = mutableMapOf()) {
+    fun parseScene(inputStream: InStream) {
         while (true) {
             val what = inputStream.readToken()
             if (what is StopToken) {
