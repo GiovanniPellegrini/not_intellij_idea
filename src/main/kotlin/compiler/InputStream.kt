@@ -161,7 +161,7 @@ class InStream(
     /**
      * Reads a word and returns a KeyWordToken if that word is inside KeyWordEnum, else returns IdentifierToken
      */
-    private fun parseWordOrKeyToken(firstC: String, tokenLocation: SourceLocation): Token {
+    fun parseWordOrKeyToken(firstC: String, tokenLocation: SourceLocation): Token {
         var token = firstC
         var c: Char
         while (true) {

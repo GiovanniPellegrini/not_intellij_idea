@@ -5,14 +5,18 @@ import DiffusionBRDF
 import SpecularBRDF
 import UniformPigment
 import Plane
+import Triangle
 import PerspectiveCamera
 import Transformation
 import Sphere
 import Translation
 import Vector
 import Vec2d
+import Point
 import Color
+import Material
 import Rotation
+import TriangleMesh
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
@@ -230,8 +234,7 @@ class InputStreamTest {
         assert(scene.world.shapes[0] is Plane)
         assert(
             scene.world.shapes[0].transformation.isClose(
-                Translation(Vector(0.0f, 0.0f, 100.0f))
-                        * Rotation(Vector(0f, 1f, 0f), 150.0f)
+                Translation(Vector(0.0f, 0.0f, 100.0f)) * Rotation(Vector(0f, 1f, 0f), 150.0f)
             )
         )
         assert(scene.world.shapes[1] is Plane)
@@ -270,6 +273,53 @@ class InputStreamTest {
         assertFailsWith<GrammarError> {
             scene.parseScene(InStream(stream))
         }
+
+    }
+
+    @Test
+    fun parseTrianglesTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        material triangle_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+        
+        material triangle_mesh_material(
+            diffuse(uniform(<0.7, 0.8, 0.2>)),
+            uniform(<0.4, 0, 0>)
+        )
+                Triangle((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0), rotation_x(23), triangle_material)
+                TriangleMesh(((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0),(4.0,1.0,1.0), (5.0,2.0,2.0), (6.0,3.0,3.0)),
+                  ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation(<-4, 0, 1>), triangle_mesh_material)
+            """.toByteArray()
+        )
+        val mesh = TriangleMesh(
+            mutableListOf(
+                Point(1.0f, 1.0f, 1.0f), Point(2.0f, 2.0f, 2.0f),
+                Point(3.0f, 3.0f, 3.0f), Point(4.0f, 1.0f, 1.0f), Point(5.0f, 2.0f, 2.0f), Point(6.0f, 3.0f, 3.0f)
+            ),
+            mutableListOf(
+                mutableListOf(1, 2, 3),
+                mutableListOf(4, 5, 6),
+                mutableListOf(2, 3, 6),
+                mutableListOf(1, 3, 5)
+            ), transformation = Translation(Vector(-4f, 0f, 1f)),
+            Material(
+                brdf = DiffusionBRDF(p = UniformPigment(Color(0.7f, 0.8f, 0.2f))),
+                emittedRad = UniformPigment(Color(0.4f, 0f, 0f))
+            )
+        )
+        scene.parseScene(InStream(stream))
+        assert(scene.world.shapes[0] is Triangle)
+        assert(
+            scene.world.shapes[0].transformation.isClose(
+                Rotation(Vector(1f, 0f, 0f), 23.0f)
+            )
+        )
+        assert(scene.world.shapes[1] is TriangleMesh)
+        assert(scene.world.shapes[1].material.brdf is DiffusionBRDF)
 
     }
 }
