@@ -23,6 +23,8 @@ import Transformation
 import Point
 import DiffusionBRDF
 import SpecularBRDF
+import Triangle
+import TriangleMesh
 import scalingTransformation
 import UniformPigment
 import readPfmImage
@@ -33,13 +35,20 @@ import Plane
 import Shape
 
 // to be developed
+/**
+ * Scene class, contains all variables included in a scene file
+ * @param materials: Dict of "materialName" -> `Material`
+ * @param world: Container of all shapes
+ * @param camera: Observer camera
+ * @param floatVariables: floating point variable declared in the file
+ * @param overriddenVariables: overridden floating point variable declared in the file
+ */
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
-    val camera: Camera? = null,
-    val floatVariables: MutableMap<String, Float>,
-    val shapeVariables: MutableMap<String,Shape>,
-    val overriddenVariables: MutableSet<String>
+    var camera: Camera? = null,
+    var floatVariables: MutableMap<String, Float> = mutableMapOf(),
+    private var overriddenVariables: MutableSet<String> = mutableSetOf()
 ) {
     /**
      * Reads a token and checks if it is a symbol
@@ -125,6 +134,8 @@ class Scene(
     }
 
 
+    // Parsing Functions for all the possible objects in the scene
+
     private fun parseVector(inStream: InStream): Vector {
         expectSymbol(inStream, "<")
         val x = expectNumber(inStream)
@@ -159,6 +170,61 @@ class Scene(
         expectSymbol(inputStream, ")")
 
         return Point(x, y, z)
+    }
+
+    private fun parseListOfPoints(inputStream: InStream): MutableList<Point> {
+        val points = mutableListOf<Point>()
+        while (true) {
+            points.add(parsePoint(inputStream)) // Parse each point
+
+            val nextToken = inputStream.readToken()
+            if (nextToken is SymbolToken && nextToken.char == ')') {
+                break // End of the list
+            } else if (nextToken is SymbolToken && nextToken.char == ',') {
+                continue // Next point
+            } else {
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+            }
+        }
+
+        return points
+    }
+
+    private fun parseListOfInt(inputStream: InStream): MutableList<Int> {
+        val numbers = mutableListOf<Int>()
+
+        expectSymbol(inputStream, "(") // Lists starts with "["
+
+        while (true) {
+            numbers.add(expectNumber(inputStream).toInt())
+            val nextToken = inputStream.readToken()
+            if (nextToken is SymbolToken && nextToken.char == ')') {
+                break // End of the list
+            } else if (nextToken is SymbolToken && nextToken.char == ',') {
+                continue // Next point
+            } else {
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+            }
+        }
+
+        return numbers
+    }
+
+    private fun parseListOfList(inputStream: InStream): MutableList<MutableList<Int>> {
+        val listOfList: MutableList<MutableList<Int>> = mutableListOf(mutableListOf())
+        expectSymbol(inputStream, "(")
+        while (true) {
+            listOfList.add(parseListOfInt(inputStream))
+            val nextToken = inputStream.readToken()
+            if (nextToken is SymbolToken && nextToken.char == ')') {
+                break // End of the list
+            } else if (nextToken is SymbolToken && nextToken.char == ',') {
+                continue // Next point
+            } else {
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+            }
+        }
+        return listOfList
     }
 
     private fun parsePigment(inputStream: InStream): Pigment {
@@ -249,16 +315,79 @@ class Scene(
         val pMin = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
         val pMax = parsePoint(inputStream)
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ",")
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ",")
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ",")
-        val transformation = parseTransformation(inputStream)
         expectSymbol(inputStream, ")")
 
         return Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!)
+
+    }
+
+    // triangle is declared as "Triangle(a,b,c,transformation, material)
+    fun parseTriangle(inputStream: InStream): Triangle {
+        expectSymbol(inputStream, "(")
+        val a = parsePoint(inputStream)
+        expectSymbol(inputStream, ",")
+        val b = parsePoint(inputStream)
+        expectSymbol(inputStream, ",")
+        val c = parsePoint(inputStream)
+        expectSymbol(inputStream, ",")
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ",")
+        val materialName = expectIdentifier(inputStream)
+        if (materialName !in materials) {
+            throw GrammarError(inputStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inputStream, ")")
+
+        return Triangle(transformation, a, b, c, materials[materialName]!!)
+    }
+
+    fun parseTriangleMesh(inputStream: InStream): TriangleMesh {
+        expectSymbol(inputStream, "(")
+        val token = inputStream.readToken()
+        var filename: String? = null
+        val points: MutableList<Point>?
+        var indices: MutableList<MutableList<Int>> = mutableListOf(mutableListOf())
+        when (token) {
+            is LiteralStringToken -> {
+                filename = token.string
+                points = null
+            }
+
+            is SymbolToken -> {
+                points = parseListOfPoints(inputStream)
+                expectSymbol(inputStream, ",")
+                indices = parseListOfList(inputStream)
+            }
+
+            else -> {
+                throw GrammarError(token.location, "Unexpected token $token for TriangleMesh")
+            }
+        }
+        expectSymbol(inputStream, ",")
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ",")
+        val materialName = expectIdentifier(inputStream)
+        if (materialName !in materials) {
+            throw GrammarError(inputStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inputStream, ")")
+        return if (points == null) {
+            TriangleMesh(filename = filename!!, transformation = transformation, material = materials[materialName]!!)
+        } else {
+            TriangleMesh(
+                vertices = points,
+                indices = indices,
+                transformation = transformation,
+                material = materials[materialName]!!
+            )
+        }
 
     }
 
@@ -271,7 +400,8 @@ class Scene(
                     KeyWordEnum.TRANSLATION,
                     KeyWordEnum.ROTATION_X,
                     KeyWordEnum.ROTATION_Y,
-                    KeyWordEnum.ROTATION_Z
+                    KeyWordEnum.ROTATION_Z,
+                    KeyWordEnum.SCALING
                 )
             )
 
@@ -481,6 +611,18 @@ class Scene(
 
                 KeyWordEnum.PLANE -> {
                     this.world.add(parsePlane(inputStream))
+                }
+
+                KeyWordEnum.TRIANGLE -> {
+                    this.world.add(parseTriangle(inputStream))
+                }
+
+                KeyWordEnum.TRIANGLEMESH -> {
+                    this.world.add(parseTriangleMesh(inputStream))
+                }
+
+                KeyWordEnum.BOX -> {
+                    this.world.add(parseBox(inputStream))
                 }
 
                 KeyWordEnum.CAMERA -> {

@@ -5,17 +5,21 @@ import DiffusionBRDF
 import SpecularBRDF
 import UniformPigment
 import Plane
+import Triangle
 import PerspectiveCamera
 import Transformation
 import Sphere
 import Translation
+import Box
 import Vector
 import Vec2d
 import Color
 import Rotation
+import TriangleMesh
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
+import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
 
 
@@ -23,7 +27,7 @@ class InputStreamTest {
 
     @Test
     fun testInputFile() {
-        val stream = InStream(ByteArrayInputStream("abc   \nd\nef".toByteArray()))
+        val stream = InStream(InputStreamReader(ByteArrayInputStream("abc   \nd\nef".toByteArray())))
         assertEquals(stream.location.lineNumber, 1)
         assertEquals(stream.location.columnNumber, 1)
 
@@ -71,7 +75,7 @@ class InputStreamTest {
 
     @Test
     fun testEndOfFile() {
-        val stream = InStream(ByteArrayInputStream("a\u0000".toByteArray()))
+        val stream = InStream(InputStreamReader(ByteArrayInputStream("a\u0000".toByteArray())))
         assertEquals('a', stream.readChar())
         assertEquals('\u0000', stream.readChar())
         assertEquals('\u0000', stream.readChar())
@@ -82,7 +86,7 @@ class InputStreamTest {
 
     @Test
     fun readTokenTest() {
-        val file = ByteArrayInputStream(
+        val byteArrayStream = ByteArrayInputStream(
             """
         % This is a comment
         % This is another comment
@@ -92,8 +96,8 @@ class InputStreamTest {
         ) % Comment at the end of the line
         """.toByteArray()
         )
-
-        val stream = InStream(stream = file)
+        val streamReader = InputStreamReader(byteArrayStream)
+        val stream = InStream(streamReader)
 
         var token = stream.readToken()
         assert(token is KeyWordToken)
@@ -159,7 +163,7 @@ class InputStreamTest {
 
     @Test
     fun testParser() {
-        val stream = ByteArrayInputStream(
+        val byteArrayStream = ByteArrayInputStream(
             """
         float clock(150)
     
@@ -189,9 +193,9 @@ class InputStreamTest {
         camera(perspective, rotation_z(30) * translation(<-4, 0, 1>), 1.0, 2.0)
         """.toByteArray()
         )
-
+        val streamReader = InputStreamReader(byteArrayStream)
         val scene = Scene()
-        scene.parseScene(InStream(stream))
+        scene.parseScene(InStream(streamReader))
 
         assertEquals(scene.floatVariables.size, 1)
         assert("clock" in scene.floatVariables.keys)
@@ -230,8 +234,7 @@ class InputStreamTest {
         assert(scene.world.shapes[0] is Plane)
         assert(
             scene.world.shapes[0].transformation.isClose(
-                Translation(Vector(0.0f, 0.0f, 100.0f))
-                        * Rotation(Vector(0f, 1f, 0f), 150.0f)
+                Translation(Vector(0.0f, 0.0f, 100.0f)) * Rotation(Vector(0f, 1f, 0f), 150.0f)
             )
         )
         assert(scene.world.shapes[1] is Plane)
@@ -246,31 +249,82 @@ class InputStreamTest {
     @Test
     fun parserUndefMaterialTest() {
         val scene = Scene()
-        val stream = ByteArrayInputStream(
+        val byteArrayStream = ByteArrayInputStream(
             """
         plane(this_material_does_not_exist, identity)
         """.toByteArray()
         )
-
+        val streamReader = InputStreamReader(byteArrayStream)
         assertFailsWith<GrammarError> {
-            scene.parseScene(InStream(stream))
+            scene.parseScene(InStream(streamReader))
         }
     }
 
     @Test
     fun parseDoubleCam() {
         val scene = Scene()
-        val stream = ByteArrayInputStream(
+        val byteArrayStream = ByteArrayInputStream(
             """
         camera(perspective, rotation_z(30) * translation([-4, 0, 1]), 1.0, 1.0)
         camera(orthogonal, identity, 1.0, 1.0)
         """.toByteArray()
         )
-
+        val streamReader = InputStreamReader(byteArrayStream)
         assertFailsWith<GrammarError> {
-            scene.parseScene(InStream(stream))
+            scene.parseScene(InStream(streamReader))
         }
 
+    }
+
+    @Test
+    fun parseTrianglesTest() {
+        val scene = Scene()
+        val byteArrayStream = ByteArrayInputStream(
+            """
+        material triangle_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+        
+        material triangle_mesh_material(
+            diffuse(uniform(<0.7, 0.8, 0.2>)),
+            uniform(<0.4, 0, 0>)
+        )
+                Triangle((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0), rotation_x(23), triangle_material)
+                TriangleMesh(((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0),(4.0,1.0,1.0), (5.0,2.0,2.0), (6.0,3.0,3.0)),
+                  ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation(<-4, 0, 1>), triangle_mesh_material)
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(byteArrayStream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.world.shapes[0] is Triangle)
+        assert(
+            scene.world.shapes[0].transformation.isClose(
+                Rotation(Vector(1f, 0f, 0f), 23.0f)
+            )
+        )
+        assert(scene.world.shapes[1] is TriangleMesh)
+        assert(scene.world.shapes[1].material.brdf is DiffusionBRDF)
+    }
+
+    @Test
+    fun parseBoxTest(){
+        val scene = Scene()
+        val byteArrayStream = ByteArrayInputStream(
+            """
+        material box_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+        
+        Box((1.0,1.0,1.0), (-2.0,-2.0,-2.0), rotation_z(123), box_material)
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(byteArrayStream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.world.shapes[0] is Box)
+        assert(scene.world.shapes[0].transformation == Rotation(Vector(0f,0f,1f), 123f))
+        assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
     }
 }
 

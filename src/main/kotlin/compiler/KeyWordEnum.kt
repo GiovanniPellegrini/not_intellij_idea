@@ -1,8 +1,8 @@
 package compiler
 
 
-// The numeration starts with 0 (NEW=0) // da aggiornare
-enum class KeyWordEnum() {
+// The numeration starts with 0 (NEW=0)
+enum class KeyWordEnum {
     NEW,
     MATERIAL,
     SHAPE,
