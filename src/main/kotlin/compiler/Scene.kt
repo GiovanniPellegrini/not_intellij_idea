@@ -30,7 +30,6 @@ import java.io.FileInputStream
 import Sphere
 import Plane
 import Shape
-// to be developed
 /**
  * Scene class, contains all variables included in a scene file
  * @param materials: Dict of "materialName" -> `Material`
@@ -44,7 +43,7 @@ class Scene(
     val world: World = World(),
     var camera: Camera? = null,
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
-    var overriddenVariables: MutableSet<String> = mutableSetOf(),
+    private var overriddenVariables: MutableSet<String> = mutableSetOf(),
     var shapes: MutableMap<String, Shape> = mutableMapOf()
 ) {
     /**
@@ -299,7 +298,7 @@ class Scene(
         return mapOf(shapeName to Plane(transformation = transformation, material = materials[materialName]!!))
     }
 
-    fun parseBox(inputStream: InStream): Map<String, Shape> {
+    private fun parseBox(inputStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val pMin = parsePoint(inputStream)
@@ -319,7 +318,7 @@ class Scene(
     }
 
     // triangle is declared as "Triangle(a,b,c,transformation, material)
-    fun parseTriangle(inputStream: InStream): Map<String,Triangle> {
+    private fun parseTriangle(inputStream: InStream): Map<String,Triangle> {
         val triangleName=expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val a = parsePoint(inputStream)
@@ -339,7 +338,7 @@ class Scene(
         return mapOf(triangleName to Triangle(transformation, a, b, c, materials[materialName]!!))
     }
 
-    fun parseTriangleMesh(inputStream: InStream): Map<String,TriangleMesh> {
+    private fun parseTriangleMesh(inputStream: InStream): Map<String,TriangleMesh> {
         val triangleMeshName=expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val token = inputStream.readToken()
@@ -493,7 +492,7 @@ class Scene(
         }
     }
 
-    fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
+    private fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
         expectSymbol(inputFile, "(")
         val shape1 = expectIdentifier(inputFile)
@@ -519,7 +518,7 @@ class Scene(
         return mapOf(shapeCSGName to csgUnion)
     }
 
-    fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
+    private fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
         expectSymbol(inputFile, "(")
         val shape1 = expectIdentifier(inputFile)
@@ -548,7 +547,7 @@ class Scene(
         )
     }
 
-    fun parseCSGDifference(inputFile: InStream): Map<String, Shape> {
+    private fun parseCSGDifference(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
         expectSymbol(inputFile, "(")
         val shape1 = expectIdentifier(inputFile)

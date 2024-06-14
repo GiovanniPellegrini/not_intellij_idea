@@ -80,7 +80,8 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
         help = "- rotation angle of the camera (Float) \n" +
                 "- .pfm filename Output \n" +
                 "- Output .png filename (default a=1 gamma=1) \n" +
-                "- Type of camera (Perspective or Orthogonal)"
+                "- Type of camera (Perspective or Orthogonal) \n" +
+                "- save .pfm Output (optional, true or false) \n"
     ).multiple()
 
     override fun run() {
@@ -121,9 +122,10 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()
-        val outputStream = FileOutputStream(args[1])
-        // do not write also pfm so that the writing time is better (very simple image)
-        //image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
+        if(args[4] == "true") {
+            val outputStream = FileOutputStream(args[1])
+            image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
+        }
         image.writeLdrImage("png", 1f, args[2])
 
     }
