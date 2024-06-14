@@ -3,7 +3,7 @@ import java.security.cert.PolicyNode
 /**
  * Box class, inherited from shape, represents a box in 3D space identified by two vertex points Pmin and Pmax
  */
-class Box(val transformation: Transformation = Transformation(),
+class Box(override val transformation: Transformation = Transformation(),
           val Pmin: Point = Point(0f,0f,0f),
           val Pmax: Point = Point(0f,0f,0f), override val material: Material=Material()): Shape{
 

@@ -119,24 +119,6 @@ class HdrImageTest {
             assert(pixel.b in 0.0..1.0)
         }
     }
-
-    @Test
-    fun writeLdrTest(){
-        val img = HdrImage(16, 16)
-        var i = 1f
-        var j = 256f
-        for (y in img.height-1 downTo 0){
-            for (x in 0..<img.width){
-                img.setPixel(x,y, Color(141f,50f,122f))
-                i += 1f
-                j -= 1f
-            }
-        }
-
-        val stream = FileOutputStream("test.pfm")
-        img.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        img.writeLdrImage("png",1f, "mix.png")
-    }
 }
 
 

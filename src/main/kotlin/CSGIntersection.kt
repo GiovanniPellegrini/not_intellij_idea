@@ -6,7 +6,7 @@
  * It's useful to understand the code to consult  the slides #5 (for @rayIntersection) and #16 (for @rayListIntersection)
  * at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
  */
-class CSGIntersection (var shape1:Shape, var shape2:Shape,val transformation: Transformation=Transformation(), override var material: Material=Material()):Shape {
+class CSGIntersection (var shape1:Shape, var shape2:Shape, override val transformation: Transformation=Transformation(), override var material: Material=Material()):Shape {
 
     override fun pointInternal(point: Point): Boolean {
         return shape1.pointInternal(transformation.inverse()*point) && shape2.pointInternal(transformation.inverse()*point)

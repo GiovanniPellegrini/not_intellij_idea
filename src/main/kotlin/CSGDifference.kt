@@ -8,7 +8,7 @@
  * at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
 */
 
-class CSGDifference(val shape1:Shape, val shape2:Shape,val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
+class CSGDifference(val shape1:Shape, val shape2:Shape,override val transformation: Transformation=Transformation(), override val material: Material=Material()):Shape {
 
     override fun pointInternal(point: Point): Boolean {
         if(shape1.pointInternal(transformation*point) && !shape2.pointInternal(transformation*point)) return true

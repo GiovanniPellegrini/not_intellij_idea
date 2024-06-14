@@ -4,7 +4,7 @@
  * The intersection between a ray and a triangle is calculated using the Kramer's rule.
  */
 
-class Triangle(val transformation: Transformation = Transformation(),
+class Triangle(override val transformation: Transformation = Transformation(),
                val a: Point = Point(0f,0f,0f),
                val b: Point = Point(0f,0f,0f),
                val c: Point = Point(0f,0f,0f),override val material: Material=Material()): Shape {

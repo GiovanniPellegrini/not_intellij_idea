@@ -11,7 +11,7 @@ interface Pigment {
 /**
  * uniform pigment, return the same color for all points
  */
-class UniformPigment(private val color: Color) : Pigment {
+class UniformPigment(val color: Color) : Pigment {
 
     constructor(): this(Color())
 
@@ -22,7 +22,7 @@ class UniformPigment(private val color: Color) : Pigment {
 /**
  * checkered pigment, return one of two colors depending on the position of the point
  */
-class CheckeredPigment(private val color1: Color, private val color2: Color, private val steps: Int) : Pigment {
+class CheckeredPigment(val color1: Color, val color2: Color, val steps: Int) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
         val u = floor(vec2d.u * steps).toInt()
         val v = floor(vec2d.v * steps).toInt()

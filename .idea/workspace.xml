@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGDifference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGDifference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGIntersection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGIntersection.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CSGUnion.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CSGUnion.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spheres-perspective.mp4" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Transformation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/CSGTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/CSGTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/WorldTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,15 +34,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="geometry" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -82,7 +79,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -96,90 +93,89 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build not_intellij_idea.executor": "Run",
-    "Gradle.CSGDifferenceTest.quickRayIntersectionTest.executor": "Run",
-    "Gradle.CSGIntersectionTest.quickRayIntersectionTest.executor": "Run",
-    "Gradle.CSGUnionTest.quickRayIntersection.executor": "Run",
-    "Gradle.ColorTest.equal.executor": "Run",
-    "Gradle.ColorTest.executor": "Run",
-    "Gradle.ColorTest.luminosity.executor": "Run",
-    "Gradle.HdrImageTest.averageLuminosity.executor": "Run",
-    "Gradle.HdrImageTest.clampImage.executor": "Run",
-    "Gradle.HdrImageTest.executor": "Run",
-    "Gradle.HdrImageTest.getSetPixelTest.executor": "Run",
-    "Gradle.HdrImageTest.imageCreationTest.executor": "Run",
-    "Gradle.HdrImageTest.luminosity.executor": "Run",
-    "Gradle.HdrImageTest.normalizeImage.executor": "Run",
-    "Gradle.HdrImageTest.writeLdrTest.executor": "Run",
-    "Gradle.HdrImageTest.writePFM.executor": "Run",
-    "Gradle.HomMatrixTest.executor": "Run",
-    "Gradle.HomMatrixTest.getSetTests.executor": "Run",
-    "Gradle.HomMatrixTest.isCloseTest.executor": "Run",
-    "Gradle.HomMatrixTest.productTest.executor": "Run",
-    "Gradle.ImageTracerTest.testOrientation.executor": "Run",
-    "Gradle.NormalTest.executor": "Run",
-    "Gradle.PointTest.testPoint.executor": "Run",
-    "Gradle.PointTest.testPointOperations.executor": "Run",
-    "Gradle.RayTest.atTest.executor": "Run",
-    "Gradle.RayTest.isCloseTest.executor": "Run",
-    "Gradle.SphereTest.testHit.executor": "Run",
-    "Gradle.SphereTest.testInnerHit.executor": "Run",
-    "Gradle.SphereTest.testNormal.executor": "Run",
-    "Gradle.SphereTest.testNormalDirection.executor": "Run",
-    "Gradle.SphereTest.testTransformation.executor": "Run",
-    "Gradle.TransformationTest.Test_rotation.executor": "Run",
-    "Gradle.TransformationTest.executor": "Run",
-    "Gradle.TransformationTest.inverse.executor": "Run",
-    "Gradle.TransformationTest.isCloseTest.executor": "Run",
-    "Gradle.TransformationTest.isConsistent.executor": "Run",
-    "Gradle.TransformationTest.scalingSphereTest.executor": "Run",
-    "Gradle.TransformationTest.scalingTest2.executor": "Run",
-    "Gradle.TransformationTest.translationTest.executor": "Run",
-    "Gradle.TriangleMeshTest.testRayIntersection.executor": "Run",
-    "Gradle.TriangleMeshTest.testRotation.executor": "Run",
-    "Gradle.TriangleMeshTest.testTransformation.executor": "Run",
-    "Gradle.TriangleTest.executor": "Run",
-    "Gradle.TriangleTest.kramerRuleTest.executor": "Run",
-    "Gradle.TriangleTest.testDeterminant3x3.executor": "Run",
-    "Gradle.TriangleTest.testMatrix.executor": "Run",
-    "Gradle.TriangleTest.testReplaceAndPrintMatrix.executor": "Run",
-    "Gradle.TriangleTest.testTriangle.executor": "Run",
-    "Gradle.VectorTest.VectorsOperationsTest.executor": "Run",
-    "Gradle.VectorTest.testVectors.executor": "Run",
-    "Gradle.WorldTest.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersection.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionBox.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionDifference.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionInt.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionPlane.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionTriangle.executor": "Run",
-    "Gradle.WorldTest.testQuickRayIntersectionUnion.executor": "Run",
-    "Kotlin.MainKt.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "#17 on pointLight",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Diff & Merge",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build not_intellij_idea.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ColorTest.equal.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ColorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ColorTest.luminosity.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.averageLuminosity.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.clampImage.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.getSetPixelTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.imageCreationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.luminosity.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.normalizeImage.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.writeLdrTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HdrImageTest.writePFM.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HomMatrixTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HomMatrixTest.getSetTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HomMatrixTest.isCloseTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HomMatrixTest.productTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ImageTracerTest.testOrientation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.TestParser.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.parseBoxTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.parseDoubleCam.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.parseTrianglesTest.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.InputStreamTest.parserUndefMaterialTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.readTokenTest.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.InputStreamTest.testEndOfFile.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.InputStreamTest.testInputFile.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.NormalTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PointTest.testPoint.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PointTest.testPointOperations.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.RayTest.atTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.RayTest.isCloseTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SphereTest.testHit.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SphereTest.testInnerHit.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SphereTest.testNormal.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SphereTest.testNormalDirection.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SphereTest.testTransformation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.Test_rotation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.inverse.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.isCloseTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.isConsistent.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.scalingSphereTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.scalingTest2.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TransformationTest.translationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleMeshTest.testRayIntersection.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleMeshTest.testRotation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleMeshTest.testTransformation.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.kramerRuleTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.testDeterminant3x3.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.testMatrix.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.testReplaceAndPrintMatrix.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.TriangleTest.testTriangle.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.VectorTest.VectorsOperationsTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.VectorTest.testVectors.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.MainKt.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#18 on scenefiles&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Diff &amp; Merge&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "kotlin-gradle-user-dirs": [
-      "/Users/lorenzoesposito/.gradle"
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;/Users/lorenzoesposito/.gradle&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -188,11 +184,12 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="compiler" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CSGIntersectionTest.quickRayIntersectionTest">
-    <configuration name="CSGDifferenceTest.quickRayIntersectionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.InputStreamTest">
+    <configuration name="InputStreamTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -205,7 +202,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;CSGDifferenceTest.quickRayIntersectionTest&quot;" />
+            <option value="&quot;compiler.InputStreamTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -216,7 +213,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CSGIntersectionTest.quickRayIntersectionTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseBoxTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -229,7 +226,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;CSGIntersectionTest.quickRayIntersectionTest&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseBoxTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -240,7 +237,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CSGUnionTest.quickRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseDoubleCam" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -253,7 +250,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;CSGUnionTest.quickRayIntersection&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseDoubleCam&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -264,7 +261,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="WorldTest.testQuickRayIntersectionDifference" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseTrianglesTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -277,7 +274,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;WorldTest.testQuickRayIntersectionDifference&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseTrianglesTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -288,7 +285,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="WorldTest.testQuickRayIntersectionInt" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.testInputFile" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -301,7 +298,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;WorldTest.testQuickRayIntersectionInt&quot;" />
+            <option value="&quot;compiler.InputStreamTest.testInputFile&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -314,19 +311,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.CSGIntersectionTest.quickRayIntersectionTest" />
-        <item itemvalue="Gradle.CSGDifferenceTest.quickRayIntersectionTest" />
-        <item itemvalue="Gradle.CSGUnionTest.quickRayIntersection" />
-        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionInt" />
-        <item itemvalue="Gradle.WorldTest.testQuickRayIntersectionDifference" />
+        <item itemvalue="Gradle.InputStreamTest" />
+        <item itemvalue="Gradle.InputStreamTest.parseBoxTest" />
+        <item itemvalue="Gradle.InputStreamTest.parseTrianglesTest" />
+        <item itemvalue="Gradle.InputStreamTest.testInputFile" />
+        <item itemvalue="Gradle.InputStreamTest.parseDoubleCam" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17890.1" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17890.1" />
       </set>
     </attachedChunks>
   </component>
@@ -365,7 +362,10 @@
       <workItem from="1716284974731" duration="1646000" />
       <workItem from="1716294212465" duration="8599000" />
       <workItem from="1716539453538" duration="610000" />
-      <workItem from="1716821765139" duration="4431000" />
+      <workItem from="1717063730406" duration="306000" />
+      <workItem from="1718203942634" duration="9163000" />
+      <workItem from="1718262587778" duration="30237000" />
+      <workItem from="1718371379911" duration="446000" />
     </task>
     <servers />
   </component>
