@@ -11,6 +11,9 @@ import Transformation
 import Sphere
 import Translation
 import Box
+import CSGDifference
+import CSGIntersection
+import CSGUnion
 import Vector
 import Vec2d
 import Color
@@ -185,10 +188,10 @@ class InputStreamTest {
             uniform(<0, 0, 0>)
         )
     
-        plane (sky_material, translation(<0, 0, 100>) * rotation_y(clock))
-        plane (ground_material, identity)
+        plane plane1 (translation(<0, 0, 100>) * rotation_y(clock),sky_material)
+        plane plane2 (identity,ground_material)
     
-        sphere(sphere_material, translation(<0, 0, 1>))
+        sphere sphere1 ( translation(<0, 0, 1>),sphere_material)
     
         camera(perspective, rotation_z(30) * translation(<-4, 0, 1>), 1.0, 2.0)
         """.toByteArray()
@@ -230,8 +233,8 @@ class InputStreamTest {
         assert(sphereMaterial?.emittedRad is UniformPigment)
         assert(sphereMaterial?.emittedRad?.getColor(Vec2d(0.0f, 0.0f)) == Color(0.0f, 0.0f, 0.0f))
 
-        assert(scene.world.shapes.size == 3)
         assert(scene.world.shapes[0] is Plane)
+        println(scene.world.shapes.size)
         assert(
             scene.world.shapes[0].transformation.isClose(
                 Translation(Vector(0.0f, 0.0f, 100.0f)) * Rotation(Vector(0f, 1f, 0f), 150.0f)
@@ -243,7 +246,6 @@ class InputStreamTest {
         assert(scene.world.shapes[2].transformation.isClose(Translation(Vector(0.0f, 0.0f, 1.0f))))
 
         assert(scene.camera is PerspectiveCamera)
-
     }
 
     @Test
@@ -258,6 +260,30 @@ class InputStreamTest {
         assertFailsWith<GrammarError> {
             scene.parseScene(InStream(streamReader))
         }
+    }
+
+    @Test
+    fun parseShape(){
+        val stream = ByteArrayInputStream(
+            """
+      material sky_material(
+            diffuse(uniform(<0, 0, 0>)),
+            uniform(<0.7, 0.5, 1>)
+        )
+        
+        
+        sphere sphere1 (identity,sky_material)  
+        plane plane1 (identity,sky_material)  
+        sphere sphere2(translation(<0, 0, 100>),sky_material)
+        """.toByteArray()
+        )
+        val scene=Scene()
+        val streamReader=InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
+
+        assert(scene.shapes.size==3)
+        assert(scene.world.shapes[0] is Sphere)
+        assert(scene.world.shapes[0].material.brdf is DiffusionBRDF)
     }
 
     @Test
@@ -290,8 +316,8 @@ class InputStreamTest {
             diffuse(uniform(<0.7, 0.8, 0.2>)),
             uniform(<0.4, 0, 0>)
         )
-                Triangle((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0), rotation_x(23), triangle_material)
-                TriangleMesh(((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0),(4.0,1.0,1.0), (5.0,2.0,2.0), (6.0,3.0,3.0)),
+                Triangle triangle1 ((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0), rotation_x(23), triangle_material)
+                TriangleMesh trianglemesh1 (((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0),(4.0,1.0,1.0), (5.0,2.0,2.0), (6.0,3.0,3.0)),
                   ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation(<-4, 0, 1>), triangle_mesh_material)
             """.toByteArray()
         )
@@ -308,24 +334,103 @@ class InputStreamTest {
     }
 
     @Test
-    fun parseBoxTest(){
-        val scene = Scene()
-        val byteArrayStream = ByteArrayInputStream(
+    fun parseCSGUnionTest(){
+        val scene=Scene()
+        val stream=ByteArrayInputStream(
             """
-        material box_material(
+        material ciao_material(
             specular(uniform(<0.5, 0.5, 0.5>)),
             uniform(<0, 0, 0>)
         )
         
-        Box((1.0,1.0,1.0), (-2.0,-2.0,-2.0), rotation_z(123), box_material)
+        material sky_material(
+            diffuse(uniform(<0, 0, 0>)),
+            uniform(<0.7, 0.5, 1>)
+        )
+        
+        sphere sphere1(identity,sky_material)
+        plane plane1(rotation_z(30),sky_material)
+        
+        CSGUnion csg1(sphere1,plane1,rotation_y(30),ciao_material)
+            
             """.toByteArray()
         )
-        val streamReader = InputStreamReader(byteArrayStream)
+        val streamReader=InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
-        assert(scene.world.shapes[0] is Box)
-        assert(scene.world.shapes[0].transformation == Rotation(Vector(0f,0f,1f), 123f))
+
+        assert(scene.world.shapes.size==1)
+        assert(scene.world.shapes[0] is CSGUnion)
+        val rotation=Rotation(Vector(0f,1f,0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation==rotation)
+        assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+
+    }
+     @Test
+    fun parseCSGIntersectionTest() {
+         val scene = Scene()
+         val stream = ByteArrayInputStream(
+             """
+        material ciao_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+        
+        material sky_material(
+            diffuse(uniform(<0, 0, 0>)),
+            uniform(<0.7, 0.5, 1>)
+        )
+        
+        sphere sphere1(identity,sky_material)
+        plane plane1(rotation_z(30),sky_material)
+        
+        CSGIntersection csg1(sphere1,plane1,rotation_y(30),ciao_material)
+            
+            """.toByteArray()
+         )
+         val streamReader = InputStreamReader(stream)
+         scene.parseScene(InStream(streamReader))
+
+         assert(scene.world.shapes.size == 1)
+         assert(scene.world.shapes[0] is CSGIntersection)
+         val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+         assert(scene.world.shapes[0].transformation == rotation)
+         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+    }
+
+    @Test
+    fun parseCSGDifferenceTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        material ciao_material(
+            specular(uniform(<0.5, 0.5, 0.5>)),
+            uniform(<0, 0, 0>)
+        )
+        
+        material sky_material(
+            diffuse(uniform(<0, 0, 0>)),
+            uniform(<0.7, 0.5, 1>)
+        )
+        
+        sphere sphere1(identity,sky_material)
+        plane plane1(rotation_z(30),sky_material)
+        
+        CSGDifference csg1(sphere1,plane1,rotation_y(30),ciao_material)
+            
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
+
+        assert(scene.world.shapes.size == 1)
+        assert(scene.world.shapes[0] is CSGDifference)
+        val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation == rotation)
         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
     }
+
+
 }
+
 
 

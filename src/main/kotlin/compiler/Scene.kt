@@ -13,12 +13,10 @@ import CheckeredPigment
 import Vector
 import Box
 import Color
-import DiffusionBRDF
 import ImagePigment
 import OrthogonalCamera
 import PerspectiveCamera
 import Pigment
-import SpecularBRDF
 import Transformation
 import Point
 import DiffusionBRDF
@@ -29,11 +27,9 @@ import scalingTransformation
 import UniformPigment
 import readPfmImage
 import java.io.FileInputStream
-
 import Sphere
 import Plane
 import Shape
-
 // to be developed
 /**
  * Scene class, contains all variables included in a scene file
@@ -48,7 +44,8 @@ class Scene(
     val world: World = World(),
     var camera: Camera? = null,
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
-    private var overriddenVariables: MutableSet<String> = mutableSetOf()
+    var overriddenVariables: MutableSet<String> = mutableSetOf(),
+    var shapes: MutableMap<String, Shape> = mutableMapOf()
 ) {
     /**
      * Reads a token and checks if it is a symbol
@@ -117,21 +114,11 @@ class Scene(
         }
         throw GrammarError(token.location, "Expected an identifier, but got $token")
     }
+
     /**
      * Reads a token and check if it is the identifier of a shape
      * @return the shape that was read
      */
-    fun expectShape(inputFile: InStream):Shape{
-        val token=inputFile.readToken()
-        if(token is IdentifierToken){
-            val identifier=token.identifier
-            if(identifier !in this.shapeVariables ){
-                throw GrammarError(token.location, "Unknown variable $identifier")
-            }
-        return this.shapeVariables[identifier]!!
-        }
-        throw GrammarError(token.location, "Expected a shape, but got $token")
-    }
 
 
     // Parsing Functions for all the possible objects in the scene
@@ -284,33 +271,36 @@ class Scene(
         return mapOf(materialName to Material(brdf, emittedRad))
     }
 
-    private fun parseSphere(inStream: InStream): Sphere {
+    private fun parseSphere(inStream: InStream): Map<String, Shape> {
+        val shapeName = expectIdentifier(inStream)
         expectSymbol(inStream, "(")
+        val transformation = parseTransformation(inStream)
+        expectSymbol(inStream,",")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials.keys) {
             throw GrammarError(inStream.location, "unknown material $materialName")
         }
-        expectSymbol(inStream, ",")
-        val transformation = parseTransformation(inStream)
         expectSymbol(inStream, ")")
 
-        return Sphere(transformation = transformation, material = materials[materialName]!!)
+        return mapOf(shapeName to Sphere(transformation = transformation, material = materials[materialName]!!))
     }
 
-    private fun parsePlane(inStream: InStream): Plane {
+    private fun parsePlane(inStream: InStream): Map<String, Shape> {
+        val shapeName = expectIdentifier(inStream)
         expectSymbol(inStream, "(")
+        val transformation = parseTransformation(inStream)
+        expectSymbol(inStream,",")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials) {
             throw GrammarError(inStream.location, "unknown material $materialName")
         }
-        expectSymbol(inStream, ",")
-        val transformation = parseTransformation(inStream)
         expectSymbol(inStream, ")")
 
-        return Plane(transformation = transformation, material = materials[materialName]!!)
+        return mapOf(shapeName to Plane(transformation = transformation, material = materials[materialName]!!))
     }
 
-    fun parseBox(inputStream: InStream): Box {
+    fun parseBox(inputStream: InStream): Map<String, Shape> {
+        val shapeName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val pMin = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
@@ -324,12 +314,13 @@ class Scene(
         }
         expectSymbol(inputStream, ")")
 
-        return Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!)
+        return mapOf(shapeName to Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!))
 
     }
 
     // triangle is declared as "Triangle(a,b,c,transformation, material)
-    fun parseTriangle(inputStream: InStream): Triangle {
+    fun parseTriangle(inputStream: InStream): Map<String,Triangle> {
+        val triangleName=expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val a = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
@@ -345,10 +336,11 @@ class Scene(
         }
         expectSymbol(inputStream, ")")
 
-        return Triangle(transformation, a, b, c, materials[materialName]!!)
+        return mapOf(triangleName to Triangle(transformation, a, b, c, materials[materialName]!!))
     }
 
-    fun parseTriangleMesh(inputStream: InStream): TriangleMesh {
+    fun parseTriangleMesh(inputStream: InStream): Map<String,TriangleMesh> {
+        val triangleMeshName=expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val token = inputStream.readToken()
         var filename: String? = null
@@ -379,14 +371,14 @@ class Scene(
         }
         expectSymbol(inputStream, ")")
         return if (points == null) {
-            TriangleMesh(filename = filename!!, transformation = transformation, material = materials[materialName]!!)
+            mapOf(triangleMeshName to TriangleMesh(filename = filename!!, transformation = transformation, material = materials[materialName]!!))
         } else {
-            TriangleMesh(
+            mapOf(triangleMeshName to  TriangleMesh(
                 vertices = points,
                 indices = indices,
                 transformation = transformation,
                 material = materials[materialName]!!
-            )
+            ))
         }
 
     }
@@ -497,80 +489,92 @@ class Scene(
                 PerspectiveCamera(distance, aspectRatio, transformation)
             }
 
-
-
-
-    fun parseCSGUnion(inputFile: InStream):CSGUnion{
-        expectSymbol(inputFile,"(")
-        val shape1=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val shape2=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val transformation=parseTransformation(inputFile)
-        expectSymbol(inputFile,",")
-        val materialName = expectIdentifier(inputFile)
-        if (materialName !in materials)
-            throw GrammarError(inputFile.location, "unknown material $materialName")
-
-        expectSymbol(inputFile, ")")
-
-        return CSGUnion(shape1,shape2,transformation, materials[materialName]!! )
-    }
-    fun parseCSGDifference(inputFile: InStream):CSGDifference{
-        expectSymbol(inputFile,"(")
-        val shape1=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val shape2=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val transformation=parseTransformation(inputFile)
-        expectSymbol(inputFile,",")
-        val materialName = expectIdentifier(inputFile)
-        if (materialName !in materials)
-            throw GrammarError(inputFile.location, "unknown material $materialName")
-
-        expectSymbol(inputFile, ")")
-
-        return CSGDifference(shape1,shape2,transformation, materials[materialName]!! )
-    }
-
-    fun parseCSGIntersection(inputFile: InStream):CSGIntersection{
-        expectSymbol(inputFile,"(")
-        val shape1=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val shape2=expectShape(inputFile)
-        expectSymbol(inputFile,",")
-        val transformation=parseTransformation(inputFile)
-        expectSymbol(inputFile,",")
-        val materialName = expectIdentifier(inputFile)
-        if (materialName !in materials)
-            throw GrammarError(inputFile.location, "unknown material $materialName")
-
-        expectSymbol(inputFile, ")")
-
-        return CSGIntersection(shape1,shape2,transformation, materials[materialName]!! )
-    }
-
-    //da aggiornare
-    private val shapeToParse: Map<KeyWordEnum, (InStream) -> Any> = mapOf(
-        KeyWordEnum.SPHERE to ::parseSphere,
-        KeyWordEnum.PLANE to ::parsePlane,
-        KeyWordEnum.CSGUNION to:: parseCSGUnion,
-        KeyWordEnum.CSGDIFFERENCE to:: parseCSGDifference,
-        KeyWordEnum.CSGINTERSECTION to:: parseCSGIntersection
-
-    )
-
-}
-
-
-
-
-
-
-            else -> {
-                throw GrammarError(inputStream.location, "no clear definition of Camera")
-            }
+            else -> throw GrammarError(inputStream.location, "no clear definition of BRDF")
         }
+    }
+
+    fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
+        val shapeCSGName = expectIdentifier(inputFile)
+        expectSymbol(inputFile, "(")
+        val shape1 = expectIdentifier(inputFile)
+        if (shape1 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape1")
+        expectSymbol(inputFile, ",")
+        val shape2 = expectIdentifier(inputFile)
+        if (shape2 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape2")
+        expectSymbol(inputFile, ",")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        val csgUnion = CSGUnion(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
+        this.shapes.remove(shape1)
+        this.shapes.remove(shape2)
+
+        return mapOf(shapeCSGName to csgUnion)
+    }
+
+    fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
+        val shapeCSGName = expectIdentifier(inputFile)
+        expectSymbol(inputFile, "(")
+        val shape1 = expectIdentifier(inputFile)
+        if (shape1 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape1")
+        expectSymbol(inputFile, ",")
+        val shape2 = expectIdentifier(inputFile)
+        if (shape2 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape2")
+        expectSymbol(inputFile, ",")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        val csgIntersection = CSGIntersection(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
+        this.shapes.remove(shape1)
+        this.shapes.remove(shape2)
+
+
+        return mapOf(
+            shapeCSGName to csgIntersection
+        )
+    }
+
+    fun parseCSGDifference(inputFile: InStream): Map<String, Shape> {
+        val shapeCSGName = expectIdentifier(inputFile)
+        expectSymbol(inputFile, "(")
+        val shape1 = expectIdentifier(inputFile)
+        if (shape1 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape1")
+        expectSymbol(inputFile, ",")
+        val shape2 = expectIdentifier(inputFile)
+        if (shape2 !in shapes)
+            throw GrammarError(inputFile.location, "unknown shape $shape2")
+        expectSymbol(inputFile, ",")
+        val transformation = parseTransformation(inputFile)
+        expectSymbol(inputFile, ",")
+        val materialName = expectIdentifier(inputFile)
+        if (materialName !in materials)
+            throw GrammarError(inputFile.location, "unknown material $materialName")
+
+        expectSymbol(inputFile, ")")
+
+        val csgDifference = CSGDifference(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
+        this.shapes.remove(shape1)
+        this.shapes.remove(shape2)
+
+
+        return mapOf(
+            shapeCSGName to csgDifference
+        )
     }
 
     /**
@@ -606,23 +610,28 @@ class Scene(
                 }
 
                 KeyWordEnum.SPHERE -> {
-                    this.world.add(parseSphere(inputStream))
+                    val spheres = parseSphere(inputStream)
+                    this.shapes.putAll(spheres)
                 }
 
                 KeyWordEnum.PLANE -> {
-                    this.world.add(parsePlane(inputStream))
+                    val planes = parsePlane(inputStream)
+                    this.shapes.putAll(planes)
                 }
 
                 KeyWordEnum.TRIANGLE -> {
-                    this.world.add(parseTriangle(inputStream))
+                    val triangles=parseTriangle(inputStream)
+                    this.shapes.putAll(triangles)
                 }
 
                 KeyWordEnum.TRIANGLEMESH -> {
-                    this.world.add(parseTriangleMesh(inputStream))
+                    val triangleMeshes=parseTriangleMesh(inputStream)
+                    this.shapes.putAll(triangleMeshes)
                 }
 
                 KeyWordEnum.BOX -> {
-                    this.world.add(parseBox(inputStream))
+                    val boxes=parseBox(inputStream)
+                    this.shapes.putAll(boxes)
                 }
 
                 KeyWordEnum.CAMERA -> {
@@ -637,10 +646,28 @@ class Scene(
                     this.materials.putAll(materials)
                 }
 
+                KeyWordEnum.CSGUNION -> {
+                    val csgUnions = parseCSGUnion(inputStream)
+                    this.shapes.putAll(csgUnions)
+                }
+
+                KeyWordEnum.CSGINTERSECTION -> {
+                    val csgIntersections = parseCSGIntersection(inputStream)
+                    this.shapes.putAll(csgIntersections)
+                }
+
+                KeyWordEnum.CSGDIFFERENCE -> {
+                    val csgDifferences = parseCSGDifference(inputStream)
+                    this.shapes.putAll(csgDifferences)
+                }
+
                 else -> {
                     throw GrammarError(what.location, "Unexpected token $what")
                 }
             }
+        }
+        for(shape in shapes.values){
+            this.world.add(shape)
         }
     }
 }
