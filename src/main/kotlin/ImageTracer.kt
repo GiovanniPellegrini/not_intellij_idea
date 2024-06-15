@@ -39,7 +39,7 @@ class ImageTracer(private val image: HdrImage, private val camera: Camera, priva
     fun fireAllRays(func: (Ray) -> Color,pcg:PCG=PCG(),raysForSide: Int){
         for(row in 0 until image.height) {
             for(col in 0 until image.width) {
-                if(raysForSide==1) throw Error("number of ray must be greater than 0")
+                if(raysForSide<=1) throw Error("number of ray must be greater than 1")
 
                 var cum=Color()
                 for(i in 0 until raysForSide){
@@ -52,6 +52,10 @@ class ImageTracer(private val image: HdrImage, private val camera: Camera, priva
                 }
                 image.setPixel(col, row, cum*(1f/(raysForSide*raysForSide)))
             }
+            val progress = (row.toFloat() / image.height.toFloat()) * 100
+            val status = "#".repeat(progress.toInt())
+            val remaining = " ".repeat(99 - progress.toInt())
+            print("Ray tracing progress: [${status}${remaining}] ${round(progress)}% \r")
         }
     }
 

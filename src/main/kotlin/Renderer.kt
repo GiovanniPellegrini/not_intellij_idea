@@ -49,7 +49,7 @@ class PathTracer(world: World, backgroundColor: Color=Color(),
     }
 }
 
-class PointLightRenderer(world: World, backgroundColor: Color = Color(), val ambientColor: Color = Color(0.1f, 0.1f, 0.1f)):
+class PointLightRenderer(world: World, backgroundColor: Color = Color(), private val ambientColor: Color = Color(0f, 0f, 0f)):
                         Renderer(world = world, backgroundColor = backgroundColor){
 
     override fun render(ray: Ray): Color {

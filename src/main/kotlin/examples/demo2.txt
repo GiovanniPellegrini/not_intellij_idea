@@ -1,0 +1,14 @@
+material spaceMat(diffuse(uniform(<0.1,0.1,0.1>)), uniform(<0,0,0>))
+material spheremat(diffuse(uniform(<0.1,0.1,0.1>)), uniform(<0,0,0>))
+material pMat(diffuse(checkered(<0.4,1,0.1>,<0,0.7,0.3>,10)),uniform(<0,0,0>))
+sphere sfera1(translation(<6,0,0>), spheremat)
+sphere sfera2(scaling(<50,50,50>), spaceMat)
+%pointlight(<-2, 0, 40>, <1, 0.178, 0.963>, 1)
+
+pointlight( <4, 0, 20>, <1, 0.78, 0.063>, 1)
+pointlight( <4, 20, 0>, <1, 0.878, 0.063>, 1)
+pointlight( <4, 20, 20>, <1, 0.878, 0.963>, 1)
+
+plane piano1(translation(<0,0,-1>), pMat)
+
+camera(perspective, translation(<0,0,1>) * rotation_y(-10), 1.0, 1.0)

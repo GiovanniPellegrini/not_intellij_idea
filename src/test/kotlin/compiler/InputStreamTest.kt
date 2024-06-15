@@ -1,5 +1,6 @@
 package compiler
 
+import Box
 import CheckeredPigment
 import DiffusionBRDF
 import SpecularBRDF
@@ -10,15 +11,16 @@ import PerspectiveCamera
 import Transformation
 import Sphere
 import Translation
-import Box
 import CSGDifference
 import CSGIntersection
 import CSGUnion
 import Vector
 import Vec2d
 import Color
+import Point
 import Rotation
 import TriangleMesh
+import areClose
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
@@ -263,7 +265,7 @@ class InputStreamTest {
     }
 
     @Test
-    fun parseShape(){
+    fun parseShape() {
         val stream = ByteArrayInputStream(
             """
       material sky_material(
@@ -277,11 +279,11 @@ class InputStreamTest {
         sphere sphere2(translation(<0, 0, 100>),sky_material)
         """.toByteArray()
         )
-        val scene=Scene()
-        val streamReader=InputStreamReader(stream)
+        val scene = Scene()
+        val streamReader = InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
 
-        assert(scene.shapes.size==3)
+        assert(scene.shapes.size == 3)
         assert(scene.world.shapes[0] is Sphere)
         assert(scene.world.shapes[0].material.brdf is DiffusionBRDF)
     }
@@ -300,6 +302,35 @@ class InputStreamTest {
             scene.parseScene(InStream(streamReader))
         }
 
+    }
+
+    @Test
+    fun parseBoxTest() {
+        val scene = Scene()
+        val byteArrayStream = ByteArrayInputStream(
+            """
+        
+        material box_material(
+            diffuse(uniform(<0.7, 0.2, 0.2>)),
+            uniform(<0.4, 0, 1>)
+        )
+        
+        box laMiaBox((1,2,3),(-2,-3,-4), translation(<-4, 0, 1>), box_material)      
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(byteArrayStream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.world.shapes[0] is Box)
+        assert(
+            scene.world.shapes[0].transformation.isClose(
+                Translation(Vector(-4f, 0f, 1f))
+            )
+        )
+        assertEquals(
+            scene.world.shapes[0].material.brdf.p.getColor(Vec2d(0.0f, 0.0f)),
+            Color(0.7f, 0.2f, 0.2f)
+        )
+        assert(scene.shapes.keys.contains("laMiaBox"))
     }
 
     @Test
@@ -334,9 +365,9 @@ class InputStreamTest {
     }
 
     @Test
-    fun parseCSGUnionTest(){
-        val scene=Scene()
-        val stream=ByteArrayInputStream(
+    fun parseCSGUnionTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
             """
         material ciao_material(
             specular(uniform(<0.5, 0.5, 0.5>)),
@@ -355,21 +386,22 @@ class InputStreamTest {
             
             """.toByteArray()
         )
-        val streamReader=InputStreamReader(stream)
+        val streamReader = InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
 
-        assert(scene.world.shapes.size==1)
+        assert(scene.world.shapes.size == 1)
         assert(scene.world.shapes[0] is CSGUnion)
-        val rotation=Rotation(Vector(0f,1f,0f), theta = 30f)
-        assert(scene.world.shapes[0].transformation==rotation)
+        val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation == rotation)
         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
 
     }
-     @Test
+
+    @Test
     fun parseCSGIntersectionTest() {
-         val scene = Scene()
-         val stream = ByteArrayInputStream(
-             """
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
         material ciao_material(
             specular(uniform(<0.5, 0.5, 0.5>)),
             uniform(<0, 0, 0>)
@@ -386,15 +418,15 @@ class InputStreamTest {
         CSGIntersection csg1(sphere1,plane1,rotation_y(30),ciao_material)
             
             """.toByteArray()
-         )
-         val streamReader = InputStreamReader(stream)
-         scene.parseScene(InStream(streamReader))
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
 
-         assert(scene.world.shapes.size == 1)
-         assert(scene.world.shapes[0] is CSGIntersection)
-         val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
-         assert(scene.world.shapes[0].transformation == rotation)
-         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+        assert(scene.world.shapes.size == 1)
+        assert(scene.world.shapes[0] is CSGIntersection)
+        val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation == rotation)
+        assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
     }
 
     @Test
@@ -427,6 +459,25 @@ class InputStreamTest {
         val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
         assert(scene.world.shapes[0].transformation == rotation)
         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+    }
+
+    @Test
+    fun parsePointLightTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+            PointLight((1,2,3), <0.3,0.6,2>, 1)
+            
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
+
+        assert(scene.world.pointLights.size == 1)
+        assert(scene.world.pointLights[0].position == Point(1f, 2f, 3f))
+        assert(scene.world.pointLights[0].color == Color(0.3f, 0.6f, 2f))
+        assert(areClose(scene.world.pointLights[0].linearRadius, 1f))
+
     }
 
 

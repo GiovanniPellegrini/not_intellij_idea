@@ -29,7 +29,9 @@ import readPfmImage
 import java.io.FileInputStream
 import Sphere
 import Plane
+import PointLight
 import Shape
+
 /**
  * Scene class, contains all variables included in a scene file
  * @param materials: Dict of "materialName" -> `Material`
@@ -274,7 +276,7 @@ class Scene(
         val shapeName = expectIdentifier(inStream)
         expectSymbol(inStream, "(")
         val transformation = parseTransformation(inStream)
-        expectSymbol(inStream,",")
+        expectSymbol(inStream, ",")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials.keys) {
             throw GrammarError(inStream.location, "unknown material $materialName")
@@ -288,7 +290,7 @@ class Scene(
         val shapeName = expectIdentifier(inStream)
         expectSymbol(inStream, "(")
         val transformation = parseTransformation(inStream)
-        expectSymbol(inStream,",")
+        expectSymbol(inStream, ",")
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials) {
             throw GrammarError(inStream.location, "unknown material $materialName")
@@ -298,6 +300,7 @@ class Scene(
         return mapOf(shapeName to Plane(transformation = transformation, material = materials[materialName]!!))
     }
 
+    // Box defined as box myBox(pMax, pMin, transformation, material)
     private fun parseBox(inputStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
@@ -313,13 +316,20 @@ class Scene(
         }
         expectSymbol(inputStream, ")")
 
-        return mapOf(shapeName to Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!))
+        return mapOf(
+            shapeName to Box(
+                Pmax = pMax,
+                Pmin = pMin,
+                transformation = transformation,
+                material = materials[materialName]!!
+            )
+        )
 
     }
 
-    // triangle is declared as "Triangle(a,b,c,transformation, material)
-    private fun parseTriangle(inputStream: InStream): Map<String,Triangle> {
-        val triangleName=expectIdentifier(inputStream)
+    // triangle is declared as triangle triangleName(a,b,c,transformation, material)
+    private fun parseTriangle(inputStream: InStream): Map<String, Triangle> {
+        val triangleName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val a = parsePoint(inputStream)
         expectSymbol(inputStream, ",")
@@ -338,8 +348,8 @@ class Scene(
         return mapOf(triangleName to Triangle(transformation, a, b, c, materials[materialName]!!))
     }
 
-    private fun parseTriangleMesh(inputStream: InStream): Map<String,TriangleMesh> {
-        val triangleMeshName=expectIdentifier(inputStream)
+    private fun parseTriangleMesh(inputStream: InStream): Map<String, TriangleMesh> {
+        val triangleMeshName = expectIdentifier(inputStream)
         expectSymbol(inputStream, "(")
         val token = inputStream.readToken()
         var filename: String? = null
@@ -370,14 +380,22 @@ class Scene(
         }
         expectSymbol(inputStream, ")")
         return if (points == null) {
-            mapOf(triangleMeshName to TriangleMesh(filename = filename!!, transformation = transformation, material = materials[materialName]!!))
+            mapOf(
+                triangleMeshName to TriangleMesh(
+                    filename = filename!!,
+                    transformation = transformation,
+                    material = materials[materialName]!!
+                )
+            )
         } else {
-            mapOf(triangleMeshName to  TriangleMesh(
-                vertices = points,
-                indices = indices,
-                transformation = transformation,
-                material = materials[materialName]!!
-            ))
+            mapOf(
+                triangleMeshName to TriangleMesh(
+                    vertices = points,
+                    indices = indices,
+                    transformation = transformation,
+                    material = materials[materialName]!!
+                )
+            )
         }
 
     }
@@ -537,7 +555,8 @@ class Scene(
 
         expectSymbol(inputFile, ")")
 
-        val csgIntersection = CSGIntersection(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
+        val csgIntersection =
+            CSGIntersection(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
         this.shapes.remove(shape1)
         this.shapes.remove(shape2)
 
@@ -574,6 +593,19 @@ class Scene(
         return mapOf(
             shapeCSGName to csgDifference
         )
+    }
+
+    // PointLight is defined as PointLight(Point, Color, radius: Float)
+    private fun parsePointLight(inputStream: InStream): PointLight {
+        expectSymbol(inputStream, "(")
+        val position = parsePoint(inputStream)
+        expectSymbol(inputStream, ",")
+        val color = parseColor(inputStream)
+        expectSymbol(inputStream, ",")
+        val radius = expectNumber(inputStream)
+        expectSymbol(inputStream, ")")
+
+        return PointLight(position, color, radius)
     }
 
     /**
@@ -619,17 +651,17 @@ class Scene(
                 }
 
                 KeyWordEnum.TRIANGLE -> {
-                    val triangles=parseTriangle(inputStream)
+                    val triangles = parseTriangle(inputStream)
                     this.shapes.putAll(triangles)
                 }
 
                 KeyWordEnum.TRIANGLEMESH -> {
-                    val triangleMeshes=parseTriangleMesh(inputStream)
+                    val triangleMeshes = parseTriangleMesh(inputStream)
                     this.shapes.putAll(triangleMeshes)
                 }
 
                 KeyWordEnum.BOX -> {
-                    val boxes=parseBox(inputStream)
+                    val boxes = parseBox(inputStream)
                     this.shapes.putAll(boxes)
                 }
 
@@ -660,13 +692,18 @@ class Scene(
                     this.shapes.putAll(csgDifferences)
                 }
 
+                KeyWordEnum.POINTLIGHT -> {
+                    val pointLight = parsePointLight(inputStream)
+                    this.world.addPointLight(pointLight)
+                }
+
                 else -> {
                     throw GrammarError(what.location, "Unexpected token $what")
                 }
             }
         }
-        for(shape in shapes.values){
-            this.world.add(shape)
+        for (shape in shapes.values) {
+            this.world.addShape(shape)
         }
     }
 }

@@ -1,0 +1,22 @@
+% Cornell Box
+material red_wall(diffuse(uniform(<1,0,0>)),   uniform(<0,0,0>))
+material green_wall(diffuse(uniform(<0,1,0>)), uniform(<0,0,0>))
+material white_mat(diffuse(uniform(<1,1,1>)), uniform(<0,0,0>))
+material light_mat(diffuse(uniform(<0.8, 0.8, 0.8>)), uniform(<1.0, 1.0, 0.784>))
+
+plane plane1(translation(<0 , 2.0 , 0>) * rotation_x(90) ,red_wall)
+plane plane2(translation(<0 , -2.0 , 0>) * rotation_x(90) , green_wall)
+
+box box1((-1.01, -2.01 , 0), (3.0, 2.01, 3.0), identity, white_mat)
+
+% The light
+pointlight(<-1, 0, 1.5>, <1,1,0.784>, 1)
+
+
+% The two boxes
+ box box2((-0.25,-0.5, 0.0),(0.25, 0.5, 1.0), translation(<1.5 , 0.7 , 0.0>) * rotation_z(120), white_mat)
+
+box box3((-0.25,-0.5, 0.0), (0.25, 0.5, 1.0), translation(<1.5 , -0.7 , 0.0>) * rotation_z(60) ,white_mat)
+
+
+camera(perspective, translation(<0, 0, 1.5>), 1.0, 1.0)
