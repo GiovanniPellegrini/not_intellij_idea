@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spheres-perspective.mp4" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/GrammarError.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/GrammarError.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/SourceLocation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/SourceLocation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Token.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/examples/demo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/examples/demo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

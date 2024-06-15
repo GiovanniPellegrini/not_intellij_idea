@@ -3,16 +3,16 @@ material sphere_material(
             uniform(<0, 0, 0>)
         )
 
-sphere(sphere_material, translation(<1, 1, 1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<1, 1, -1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<1, -1, 1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<-1, 1, 1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<-1, -1, -1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<-1, -1, 1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<-1, 1, -1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<1, -1, -1>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<1, 1, 0>) * scaling(<0.1,0.1,0.1>))
-sphere(sphere_material, translation(<0, -1, -1>) * scaling(<0.1,0.1,0.1>))
+sphere sfera1(translation(<1, 1, 1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera2(translation(<1, 1, -1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera3(translation(<1, -1, 1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera4(translation(<-1, 1, 1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera5(translation(<-1, -1, -1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera6(translation(<-1, -1, 1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera7(translation(<-1, 1, -1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera8(translation(<1, -1, -1>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera9(translation(<1, 1, 0>) * scaling(<0.1,0.1,0.1>), sphere_material)
+sphere sfera10(translation(<0, -1, -1>) * scaling(<0.1,0.1,0.1>), sphere_material)
 
 
 

@@ -75,7 +75,7 @@ class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM 
     }
 }
 
-class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo txt") {
+class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo.txt") {
     private val args: List<String> by argument(
         help = "- rotation angle of the camera (Float) \n" +
                 "- .pfm filename Output \n" +
@@ -85,7 +85,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
     ).multiple()
 
     override fun run() {
-        val stream = InStream(stream = FileReader("src/main/kotlin/examples/demo.txt"), fileName = "demo.txt")
+        val stream = InStream(stream = FileReader("src/main/kotlin/examples/demo.txt"), fileName = "src/main/kotlin/examples/demo.txt")
         val scene = Scene()
         scene.parseScene(stream)
 

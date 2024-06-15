@@ -7,4 +7,8 @@ package compiler
  * @property lineNumber The line number.
  * @property columnNumber The column number.
  */
-data class SourceLocation(var fileName: String = "", var lineNumber: Int = 0, var columnNumber: Int = 0){}
+data class SourceLocation(var fileName: String = "", var lineNumber: Int = 0, var columnNumber: Int = 0){
+    override fun toString(): String {
+        return "in file $fileName, line $lineNumber column $columnNumber"
+    }
+}
