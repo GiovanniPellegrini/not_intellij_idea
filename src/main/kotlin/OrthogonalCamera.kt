@@ -10,5 +10,4 @@ class OrthogonalCamera(private val aspectRatio:Float = 1f, private val transform
         val direction=Vector(1f,0f,0f)
         return Ray(origin, direction, tMin=1.0e-5f).transformation(transformation)
     }
-
 }

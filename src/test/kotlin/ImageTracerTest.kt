@@ -9,10 +9,10 @@ class ImageTracerTest {
     @Test
     fun testOrientation() {
         val topLeftRay = tracer.fireRay(0, 0, uPixel = 0.0f, vPixel = 0.0f)
-        assert(Point(0f, 2f, 1f).isClose(topLeftRay.at(1f))){"flipped image bug"}
+        assert(Point(0f, 2f, 1f).isClose(topLeftRay.at(1f))) { "flipped image bug" }
 
         val bottomRightRay = tracer.fireRay(3, 1, uPixel = 1.0f, vPixel = 1.0f)
-        assert(Point(0f, -2f, -1f).isClose(bottomRightRay.at(1f))){"flipped image bug"}
+        assert(Point(0f, -2f, -1f).isClose(bottomRightRay.at(1f))) { "flipped image bug" }
     }
 
     @Test
@@ -22,40 +22,37 @@ class ImageTracerTest {
         assert(ray1.isClose(ray2))
     }
 
-    //define lambda to set constant Color
-    private val sampleColor = { _: Ray -> Color(1.0f,2.0f,3.0f)}
-    //set all pixels with constant Color(1.0f,2.0f,3.0f)
+
+    private val sampleColor = { _: Ray -> Color(1.0f, 2.0f, 3.0f) }
 
     @Test
-    fun testImageCoverage(){
+    fun testImageCoverage() {
         tracer.fireAllRays(sampleColor)
-        for (row in 0 until image.height){
-            for(col in 0 until image.width){
-                assert(image.getPixel (col, row) == Color(1.0f, 2.0f, 3.0f))
+        for (row in 0 until image.height) {
+            for (col in 0 until image.width) {
+                assert(image.getPixel(col, row) == Color(1.0f, 2.0f, 3.0f))
             }
         }
     }
 
     @Test
-    fun stratifiedSampling(){
-        var numOfRay=0
-        val smallImage=HdrImage(1,1)
-        val camera=OrthogonalCamera(1f)
-        val tracer=ImageTracer(smallImage,camera)
+    fun stratifiedSampling() {
+        var numOfRay = 0
+        val smallImage = HdrImage(1, 1)
+        val camera = OrthogonalCamera(1f)
+        val tracer = ImageTracer(smallImage, camera)
 
-        val nullTraceRay:(Ray)->Color={ray->
+        val nullTraceRay: (Ray) -> Color = { ray ->
 
-            val point=ray.at(1f)
-            assert(point.x==0f)
-            assert(point.y>-1f && point.y<1f)
-            assert(point.z>-1f && point.z<1f)
-            numOfRay+=1
+            val point = ray.at(1f)
+            assert(point.x == 0f)
+            assert(point.y > -1f && point.y < 1f)
+            assert(point.z > -1f && point.z < 1f)
+            numOfRay += 1
             Color()
         }
         tracer.fireAllRays(nullTraceRay, raysForSide = 10)
-        assert(numOfRay==100)
-
-
+        assert(numOfRay == 100)
     }
 }
 
