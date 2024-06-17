@@ -21,7 +21,6 @@ class TransformationTest {
     )
     private val transf1 = Transformation(m.copy(), invm.copy())
     private val transf2 = Transformation(invm.copy(), m.copy())
-
     private val transf3 = Transformation(
         HomMatrix(
             floatArrayOf(
@@ -76,6 +75,7 @@ class TransformationTest {
             )
         )
         val expected = Transformation(mArray, invmArray)
+
         assert(transf3.isConsistent())
         assert(expected.isConsistent(10e-4f))
     }
@@ -134,7 +134,6 @@ class TransformationTest {
         val rotx = Rotation(Vector(1f, 0f, 0f), 180f)
         val roty = Rotation(Vector(0f, 1f, 0f), 180f)
         val rotz = Rotation(Vector(0f, 0f, 1f), 180f)
-
         val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = 2f * 180f)
 
         //rotation x PI * null vector
@@ -142,8 +141,6 @@ class TransformationTest {
 
         //rotation x PI * (4,9,11) == (4-9,-11)
         assertTrue((rotx * Vector(4f, 9f, 11f)).isClose(Vector(4f, -9f, -11f)))
-        println("rotx(PI)*${Vector(4f, 9f, 11f)}")
-        println(rotx * Vector(4f, 9f, 11f))
 
         //rotation y PI * null vector
         assertTrue((roty * Vector()).isClose(Vector()))
