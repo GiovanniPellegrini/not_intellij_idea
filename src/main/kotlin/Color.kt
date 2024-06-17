@@ -1,40 +1,34 @@
 /**
-Class Color
-**/
+ *Color Class: Represents a color with RGB components
+ *
+ *@param r: red component
+ *@param g: green component
+ *@param b: blue component
+ *
+ *@Default Constructor: r=0, g=0, b=0
+ **/
 
-data class Color(var r:Float, var g:Float, var b:Float) {
+data class Color(var r: Float = 0f, var g: Float = 0f, var b: Float = 0f) {
     /**
-    Constructor for black color
-     **/
-    constructor() : this(0.0F, 0F, 0.0F)
-
-    /**
-     * Print the 3 components of the color
-     */
-    fun print(){
-        println("Color(r=${this.r}, g=${this.g}, b=${this.b}")
-    }
-    /**
-    Sum of two colors
+     * Sum operator of two colors
      **/
     operator fun plus(other: Color): Color {
         return Color(r + other.r, g + other.g, b + other.b)
     }
-
 
     /**
      * Operator == for Colors. It uses the are_close function
      */
     override fun equals(other: Any?): Boolean {
         if (other is Color) {
-            return (areClose(r,other.r) and (areClose(this.g,other.g)) and (areClose(this.b ,other.b)))
+            return (areClose(r, other.r) and (areClose(this.g, other.g)) and (areClose(this.b, other.b)))
 
         }
         return false
     }
 
     /**
-     * Boolean to understand if two colors are close
+     * Returns Boolean if two colors are close
      */
     fun areClose(other: Color): Boolean {
         return (areClose(r, other.r) &&
@@ -42,18 +36,18 @@ data class Color(var r:Float, var g:Float, var b:Float) {
                 areClose(b, other.b))
     }
 
-
     /**
      * Product each component with a scalar
      */
     fun scalarProduct(scalar: Float): Color {
         return Color(r * scalar, g * scalar, b * scalar)
     }
+
     /**
-     * "*" operator with float parameter
+     * Times operator with float parameter
      */
-    operator fun times(other:Float):Color{
-        return Color(r*other,g*other,b*other)
+    operator fun times(other: Float): Color {
+        return this.scalarProduct(other)
     }
 
     /**
@@ -62,15 +56,16 @@ data class Color(var r:Float, var g:Float, var b:Float) {
     fun colorProduct(other: Color): Color {
         return Color(r * other.r, g * other.g, b * other.b)
     }
+
     /**
-     * "*" operator with float parameter
+     * Times operator with float parameter
      */
-    operator fun times(other:Color):Color{
-        return Color(r*other.r, g*other.g,b*other.b)
+    operator fun times(other: Color): Color {
+        return this.colorProduct(other)
     }
 
     /**
-     * Evaluate luminosity of a color with Shirley & Morley formula
+     * Evaluates luminosity of a color with Shirley & Morley formula
      */
     fun luminosity(): Float {
         return (maxOf(r, g, b) + minOf(r, g, b)) / 2f

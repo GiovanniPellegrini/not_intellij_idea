@@ -21,7 +21,9 @@ class ColorTest{
         val delta=1e-6F
         val color1=Color(1F,2F,3F)
         val color2=Color(1F+delta,2F+delta,3F+delta)
+        val color3=Color(4f,5f,6f)
         assert(color1.areClose(color2))
+        assert(!color1.areClose(color3))
     }
 
     @Test
@@ -49,4 +51,5 @@ class ColorTest{
         assert(areClose(7.0F,col2.luminosity())){"Error: real and evaluated luminosity  of color 2 are different"}
 
     }
+
 }
