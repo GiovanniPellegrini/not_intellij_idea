@@ -123,7 +123,7 @@ class SphereTest{
         val ray = Ray(origin=Point(0.0f, 2.0f, 0.0f), dir=Vector(0.0f, -1.0f,0f))
         val intersection = sphere.rayIntersection(ray)
         if(intersection is HitRecord){
-            assert(intersection.normal.normalize().isClose(Normal(0.0f, -1.0f, 0.0f).normalize())){"Error: normal is not correct" }
+            assert(intersection.normal.normalize().isClose(Normal(0.0f, 1.0f, 0.0f).normalize())){"Error: normal is not correct" }
         }
 
     }
