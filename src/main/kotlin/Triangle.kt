@@ -44,7 +44,7 @@ class Triangle(val transformation: Transformation = Transformation(),
      */
     private fun triangleNormal(point: Point, rayDir: Vector): Normal{
         val result = getNormal()
-        return if (point.toVec()*rayDir>0f){
+        return if (point.toVec()*rayDir<0f){
             result
         } else{
             -result
