@@ -43,7 +43,7 @@ class Sphere(val transformation: Transformation = Transformation(),
 
         val hitPoint = invRay.at(firstHitT)
         return HitRecord(worldPoint = this.transformation * hitPoint,
-                         normal = this.transformation * sphereNormal(hitPoint, ray.dir),
+                         normal = this.transformation * sphereNormal(hitPoint, invRay.dir),
                          surfacePoint = spherePointToUV(hitPoint),
                          t = firstHitT,
                          ray = ray,
@@ -74,7 +74,7 @@ class Sphere(val transformation: Transformation = Transformation(),
         if(invRay.tMin<t1 && t1<invRay.tMax){
             val hitPoint1=invRay.at(t1)
             hits.add(HitRecord(worldPoint = this.transformation * hitPoint1,
-                normal = this.transformation * sphereNormal(hitPoint1, ray.dir),
+                normal = this.transformation * sphereNormal(hitPoint1, invRay.dir),
                 surfacePoint = spherePointToUV(hitPoint1),
                 t = t1,
                 ray = ray,
@@ -83,7 +83,7 @@ class Sphere(val transformation: Transformation = Transformation(),
         if(invRay.tMin<t2 && t2<invRay.tMax){
             val hitPoint2=invRay.at(t2)
             hits.add(HitRecord(worldPoint = this.transformation * hitPoint2,
-                normal = this.transformation * sphereNormal(hitPoint2, ray.dir),
+                normal = this.transformation * sphereNormal(hitPoint2, invRay.dir),
                 surfacePoint = spherePointToUV(hitPoint2),
                 t = t2,
                 ray = ray,

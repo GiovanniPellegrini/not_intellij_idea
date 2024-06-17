@@ -33,6 +33,15 @@ class TriangleTest {
         }
     }
 
+    @Test
+    fun TestNormal(){
+        val triangle = Triangle(a = Point(0f, -0.5f, 0f), b = Point(0f, 0.5f, 0f), c = Point(0f, 0f, 0.5f), transformation = Rotation(Vector(0f,1f,0f),90f))
+        val ray=Ray(Point(0.25f,0f,1f), Vector(0f,0f,-1f))
+
+        assertNotNull(triangle.rayIntersection(ray))
+        assert(Normal(0f,0f,1f).isClose(triangle.rayIntersection(ray)!!.normal))
+    }
+
 
     @Test
     fun kramerRuleTest() {

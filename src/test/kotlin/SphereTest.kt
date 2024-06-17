@@ -119,14 +119,41 @@ class SphereTest{
 
     @Test
     fun testNormalDirection() {
-        //scaling with negative numbers reverse its reference system
         val sphere = Sphere(transformation=scalingTransformation(Vector(-1f, -1f, -1f)))
         val ray = Ray(origin=Point(0.0f, 2.0f, 0.0f), dir=Vector(0.0f, -1.0f,0f))
         val intersection = sphere.rayIntersection(ray)
         if(intersection is HitRecord){
-            assert(intersection.normal.normalize().isClose(Normal(0.0f, -1.0f, 0.0f).normalize())){"Error: normal is not correct" }
+            assert(intersection.normal.normalize().isClose(Normal(0.0f, 1.0f, 0.0f).normalize())){"Error: normal is not correct" }
         }
 
+    }
+
+    @Test
+    fun testUVCoordinates(){
+        val sphere=Sphere()
+        val ray1=Ray(Point(2f,0f,0f), Vector(-1f,0f,0f))
+        assertNotNull(sphere.rayIntersection(ray1))
+        assert(sphere.rayIntersection(ray1)!!.surfacePoint.isClose(Vec2d(0.0f,0.5f)))
+
+        val ray2=Ray(Point(0f,2f,0f), Vector(0f,-1f,0f))
+        assertNotNull(sphere.rayIntersection(ray2))
+        assert(sphere.rayIntersection(ray2)!!.surfacePoint.isClose(Vec2d(0.25f,0.5f)))
+
+        val ray3=Ray(Point(-2f,0f,0f), Vector(1f,0f,0f))
+        assertNotNull(sphere.rayIntersection(ray3))
+        assert(sphere.rayIntersection(ray3)!!.surfacePoint.isClose(Vec2d(0.5f,0.5f)))
+
+        val ray4=Ray(Point(0f,-2f,0f), Vector(0f,1f,0f))
+        assertNotNull(sphere.rayIntersection(ray4))
+        assert(sphere.rayIntersection(ray4)!!.surfacePoint.isClose(Vec2d(0.75f,0.5f)))
+
+        val ray5=Ray(Point(2f,0f,0.5f), Vector(-1f,0f,0f))
+        assertNotNull(sphere.rayIntersection(ray5))
+        assert(sphere.rayIntersection(ray5)!!.surfacePoint.isClose(Vec2d(0f,1/3f)))
+
+        val ray6=Ray(Point(2f,0f,-0.5f), Vector(-1f,0f,0f))
+        assertNotNull(sphere.rayIntersection(ray6))
+        assert(sphere.rayIntersection(ray6)!!.surfacePoint.isClose(Vec2d(0f,2/3f)))
     }
 
     @Test

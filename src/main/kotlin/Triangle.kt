@@ -44,7 +44,7 @@ class Triangle(val transformation: Transformation = Transformation(),
      */
     private fun triangleNormal(point: Point, rayDir: Vector): Normal{
         val result = getNormal()
-        return if (point.toVec()*rayDir>0f){
+        return if (point.toVec()*rayDir<0f){
             result
         } else{
             -result
@@ -103,7 +103,7 @@ class Triangle(val transformation: Transformation = Transformation(),
 
         if(t in (invRay.tMin..invRay.tMax) && isInside(beta,gamma)){
             return HitRecord(worldPoint = this.transformation * invRay.at(t),
-                            normal = this.transformation * this.triangleNormal(invRay.at(t),ray.dir),
+                            normal = this.transformation * this.triangleNormal(invRay.at(t),invRay.dir),
                             surfacePoint = Vec2d(beta, gamma),
                             t = t,
                             ray = ray,

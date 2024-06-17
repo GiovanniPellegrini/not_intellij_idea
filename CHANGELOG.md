@@ -1,7 +1,6 @@
 ## Head
-#### - fixed bug "Normal transformation" related to issue #9
-#### - fixed bug "image upside down" related to issue #3
-#### - added new Geometric Object: with Triangle mesh you can create a 3d object with a list of triangles and a .obj file
+#### - fixed normal bug in Sphere and Triangle related to issue #20
+
 
 ## V 0.3.0
 #### -triangle class and triangle mesh PR #7
