@@ -9,6 +9,14 @@
  **/
 
 data class Color(var r: Float = 0f, var g: Float = 0f, var b: Float = 0f) {
+
+    /**
+     * Returns vector components as a string
+     */
+    override fun toString(): String {
+        return "Color:<r=$r,g=$g,b=$b>"
+    }
+
     /**
      * Sum operator of two colors
      **/

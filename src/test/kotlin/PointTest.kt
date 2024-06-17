@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 
 class PointTest {
     @Test
-    fun testPoint(){
+    fun testPoint() {
         val p1 = Point(1.0f, 2.0f, 3.0f)
         val p2 = Point(4.0f, 6.0f, 8.0f)
         assert(p1 == p1)
@@ -10,7 +10,7 @@ class PointTest {
     }
 
     @Test
-    fun testPointOperations(){
+    fun testPointOperations() {
         val p1 = Point(1.0f, 2.0f, 3.0f)
         val p2 = Point(4.0f, 6.0f, 8.0f)
         val v = Vector(4.0f, 6.0f, 8.0f)
