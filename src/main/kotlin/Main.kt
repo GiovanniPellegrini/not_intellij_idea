@@ -167,7 +167,7 @@ class CheckDemo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a dem
         val tracer = ImageTracer(image, camera)
         val renderer = PathTracer(
             world = world,
-            maxdepth = args[1].toInt(),
+            maxDepth = args[1].toInt(),
             russianRouletteLimit = args[2].toInt(),
             numberOfRays = args[3].toInt()
         )

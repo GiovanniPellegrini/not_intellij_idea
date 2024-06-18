@@ -28,7 +28,7 @@ class PCG(private var initState: ULong = 42u, private var initSeq: ULong = 54u) 
     }
 
     /**
-     * Returns a random float number
+     * Returns a random float number between 0 and 1
      */
     fun randomFloat(): Float {
         return (this.random().toFloat()) / 0xffffffff
