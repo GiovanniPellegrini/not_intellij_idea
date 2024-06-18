@@ -1,7 +1,6 @@
 /**
- * class Triangle implements Triangle (Shape) inherited. It is defined by three points a,b,c representing the vertices of the triangle.
- * The class has a transformation field that is used to transform the triangle.
- * The intersection between a ray and a triangle is calculated using the Kramer's rule.
+ *
+ *
  */
 
 class Triangle(val transformation: Transformation = Transformation(),
@@ -10,7 +9,7 @@ class Triangle(val transformation: Transformation = Transformation(),
                val c: Point = Point(0f,0f,0f),override val material: Material=Material()): Shape {
 
     /**
-     * override PointInternal. However, is not useful for this class because triangle are not used in CSG.
+     *
      */
     override fun pointInternal(point: Point): Boolean {
         return false
@@ -92,7 +91,7 @@ class Triangle(val transformation: Transformation = Transformation(),
     }
 
     /**
-     * evaluates if a ray intersect the triangle and returns the closest intersection to the point of view
+     *
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay = ray.transformation(transformation.inverse())

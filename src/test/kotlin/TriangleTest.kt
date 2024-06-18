@@ -34,12 +34,17 @@ class TriangleTest {
     }
 
     @Test
-    fun TestNormal(){
-        val triangle = Triangle(a = Point(0f, -0.5f, 0f), b = Point(0f, 0.5f, 0f), c = Point(0f, 0f, 0.5f), transformation = Rotation(Vector(0f,1f,0f),90f))
-        val ray=Ray(Point(0.25f,0f,1f), Vector(0f,0f,-1f))
+    fun TestNormal() {
+        val triangle = Triangle(
+            a = Point(0f, -0.5f, 0f),
+            b = Point(0f, 0.5f, 0f),
+            c = Point(0f, 0f, 0.5f),
+            transformation = Rotation(Vector(0f, 1f, 0f), 90f)
+        )
+        val ray = Ray(Point(0.25f, 0f, 1f), Vector(0f, 0f, -1f))
 
         assertNotNull(triangle.rayIntersection(ray))
-        assert(Normal(0f,0f,1f).isClose(triangle.rayIntersection(ray)!!.normal))
+        assert(Normal(0f, 0f, 1f).isClose(triangle.rayIntersection(ray)!!.normal))
     }
 
 
@@ -54,7 +59,7 @@ class TriangleTest {
 
         val det = determinant3x3(matrix)
         print("determinant: $det\n")
-        assert(!areClose(0f, det)){"determinant is not close to 0"}
+        assert(!areClose(0f, det)) { "determinant is not close to 0" }
 
 
         for (j in 0..2) {
@@ -67,17 +72,17 @@ class TriangleTest {
         }
 
         for (j in (0..2)) {
-            assert(areClose(floatArrayOf(3f, 1f, 0f)[j], solution[j])){"solution is not close to expected value"}
+            assert(areClose(floatArrayOf(3f, 1f, 0f)[j], solution[j])) { "solution is not close to expected value" }
         }
 
     }
 
     private fun determinant3x3(matrix: Array<FloatArray>): Float {
-        return matrix[0][0]*matrix[1][1]*matrix[2][2]+
-                matrix[0][1]*matrix[1][2]*matrix[2][0]+
-                matrix[0][2]*matrix[1][0]*matrix[2][1]-
-                matrix[0][2]*matrix[1][1]*matrix[2][0]-
-                matrix[0][1]*matrix[1][0]*matrix[2][2]-
-                matrix[0][0]*matrix[1][2]*matrix[2][1]
+        return matrix[0][0] * matrix[1][1] * matrix[2][2] +
+                matrix[0][1] * matrix[1][2] * matrix[2][0] +
+                matrix[0][2] * matrix[1][0] * matrix[2][1] -
+                matrix[0][2] * matrix[1][1] * matrix[2][0] -
+                matrix[0][1] * matrix[1][0] * matrix[2][2] -
+                matrix[0][0] * matrix[1][2] * matrix[2][1]
     }
 }

@@ -10,16 +10,17 @@ import java.nio.ByteOrder
 import kotlin.io.path.Path
 
 
-class Tracer: CliktCommand() {
+class Tracer : CliktCommand() {
     override fun run() = Unit
 }
 
-class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM file to a PNG image") {
+class Convert : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM file to a PNG image") {
     private val args: List<String> by argument(
         help = "Input .pfm filename,\n- parameter 'a' (Float),\n" +
                 "- parameter 'gamma' (Float),\n" +
                 "- Output .png filename"
     ).multiple()
+
     /** Main arguments:
     1. PFM input file
     2. parameter "a"
@@ -49,7 +50,7 @@ class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM fil
 
             aValue = args[1].toFloat()
             gammaValue = args[2].toFloat()
-            if (aValue <=0f || gammaValue<=0f){
+            if (aValue <= 0f || gammaValue <= 0f) {
                 throw Exception("parameters 'a' and 'gamma' must be strictly positive")
             }
 
@@ -58,11 +59,13 @@ class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM fil
                 throw IllegalArgumentException("Last argument must have .png extension")
             }
         } catch (e: NumberFormatException) {
-            println("Invalid Format parameters, please enter the parameters in the following order : " +
-                    "\n- Input .pfm filename\n" +
-                    "-parameter 'a' (Float)\n" +
-                    "-parameter 'gamma' (Float)\n" +
-                    "- Output .png filename ")
+            println(
+                "Invalid Format parameters, please enter the parameters in the following order : " +
+                        "\n- Input .pfm filename\n" +
+                        "-parameter 'a' (Float)\n" +
+                        "-parameter 'gamma' (Float)\n" +
+                        "- Output .png filename "
+            )
 
             aValue = 1F
             gammaValue = 1F
@@ -77,22 +80,23 @@ class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM fil
     }
 }
 
-class Demo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image with 10 spheres") {
+class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres") {
     private val args: List<String> by argument(
         help = "- rotation angle of the camera (Float), \n" +
                 "- Output .png filename, "
     ).multiple()
+
     override fun run() {
-        val sphere1 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,3.0f)))
-        val sphere2 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,-3.0f)))
-        val sphere3 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,3.0f)))
-        val sphere4 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,3.0f)))
-        val sphere5 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,-3.0f,-3.0f)))
-        val sphere6 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,-3.0f,3.0f)))
-        val sphere7 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,-3.0f)))
-        val sphere8 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,-3.0f)))
-        val sphere9 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,0f)))
-        val sphere10 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(0f,-3.0f,-3.0f)))
+        val sphere1 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(3.0f, 3.0f, 3.0f)))
+        val sphere2 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(3.0f, 3.0f, -3.0f)))
+        val sphere3 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(3.0f, -3.0f, 3.0f)))
+        val sphere4 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(-3.0f, 3.0f, 3.0f)))
+        val sphere5 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(-3.0f, -3.0f, -3.0f)))
+        val sphere6 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(-3.0f, -3.0f, 3.0f)))
+        val sphere7 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(-3.0f, 3.0f, -3.0f)))
+        val sphere8 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(3.0f, -3.0f, -3.0f)))
+        val sphere9 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(3.0f, 3.0f, 0f)))
+        val sphere10 = Sphere(scalingTransformation(Vector(0.1f, 0.1f, 0.1f)) * Translation(Vector(0f, -3.0f, -3.0f)))
 
 
         val world = World()
@@ -106,39 +110,49 @@ class Demo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image 
         world.add(sphere8)
         world.add(sphere9)
         world.add(sphere10)
-        val image = HdrImage(500,500)
+        val image = HdrImage(500, 500)
 
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
-        val tracer = ImageTracer(image,camera)
+        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
+        val tracer = ImageTracer(image, camera)
         val renderer = OnOffRenderer(world)
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(0.1f)
         image.clampImage()
         val stream = FileOutputStream("output.pfm")
         image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        image.writeLdrImage("png",1f, args[1])
+        image.writeLdrImage("png", 1f, args[1])
     }
 }
 
-class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image using pathTracing algorithm") {
-    private val args: List<String> by argument(help = "- camera angle ," +
-            "\n- maxDepth parameter (Int),\n" +
-            "- russianRoulette limit parameter (Int),\n" +
-            "- number of rays parameter (Int),\n" +
-            "- Output .png filename").multiple()
+class CheckDemo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image using pathTracing algorithm") {
+    private val args: List<String> by argument(
+        help = "- camera angle ," +
+                "\n- maxDepth parameter (Int),\n" +
+                "- russianRoulette limit parameter (Int),\n" +
+                "- number of rays parameter (Int),\n" +
+                "- Output .png filename"
+    ).multiple()
+
     override fun run() {
 
         val sphere1 = Sphere(
             scalingTransformation(Vector(0.6f, 0.6f, 0.6f)) * Translation(Vector(0.8f, 1.3f, -0.5f)),
             Material(emittedRad = UniformPigment(Color(230f, 0f, 0f)))
         )
-        val plane1 = Plane(transformation = Translation(Vector(0f, 0f, -1f)),
-            Material(emittedRad = CheckeredPigment(Color(170f, 0f, 255f), color2 = Color(0.1f,0.2f,0.5f), steps = 4))
+        val plane1 = Plane(
+            transformation = Translation(Vector(0f, 0f, -1f)),
+            Material(emittedRad = CheckeredPigment(Color(170f, 0f, 255f), color2 = Color(0.1f, 0.2f, 0.5f), steps = 4))
         )
-        val mirror=Sphere(scalingTransformation(Vector(0.4f,0.4f,0.4f))*Translation(Vector(4f,-1.5f,-2f)),
-            Material(brdf = SpecularBRDF(UniformPigment(Color(0.2f,0.4f,0.6f)))))
-        val sky=Sphere(transformation=scalingTransformation(Vector(200f, 200f, 200f)) * Translation(Vector(0f, 0f, 0.4f)),
-            material = Material(brdf =DiffusionBRDF(UniformPigment(Color(0f,0f,0f))),emittedRad = UniformPigment(Color(0f,255f,255f)))
+        val mirror = Sphere(
+            scalingTransformation(Vector(0.4f, 0.4f, 0.4f)) * Translation(Vector(4f, -1.5f, -2f)),
+            Material(brdf = SpecularBRDF(UniformPigment(Color(0.2f, 0.4f, 0.6f))))
+        )
+        val sky = Sphere(
+            transformation = scalingTransformation(Vector(200f, 200f, 200f)) * Translation(Vector(0f, 0f, 0.4f)),
+            material = Material(
+                brdf = DiffusionBRDF(UniformPigment(Color(0f, 0f, 0f))),
+                emittedRad = UniformPigment(Color(0f, 255f, 255f))
+            )
 
         )
         val world = World()
@@ -151,7 +165,12 @@ class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo i
 
         val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
         val tracer = ImageTracer(image, camera)
-        val renderer = PathTracer(world=world, maxdepth = args[1].toInt(), russianRouletteLimit = args[2].toInt(), numberOfRays = args[3].toInt())
+        val renderer = PathTracer(
+            world = world,
+            maxdepth = args[1].toInt(),
+            russianRouletteLimit = args[2].toInt(),
+            numberOfRays = args[3].toInt()
+        )
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()

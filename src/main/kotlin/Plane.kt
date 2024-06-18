@@ -20,7 +20,7 @@ class Plane(
     }
 
     /**
-     * Evaluates the closest ray intersection with plane
+     * Returns the closest ray intersection with plane
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay = ray.transformation(transformation.inverse())
@@ -44,7 +44,7 @@ class Plane(
     }
 
     /**
-     * Evaluates all the ray intersections with plane
+     * Returns all the ray intersections with plane
      */
     override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
         val hits = ArrayList<HitRecord>()

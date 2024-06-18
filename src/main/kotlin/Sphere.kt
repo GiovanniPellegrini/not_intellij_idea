@@ -25,7 +25,7 @@ class Sphere(
     }
 
     /**
-     * Evaluates the closest ray intersection with sphere using equation t^2*d^2+(2*o*d)*t+o^2-1=0
+     * Returns the closest ray intersection with sphere using equation t^2*d^2+(2*o*d)*t+o^2-1=0
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay = ray.transformation(transformation.inverse())
@@ -61,7 +61,7 @@ class Sphere(
     }
 
     /**
-     * Evaluates all the ray intersections with sphere using equation t^2*d^2+(2*o*d)*t+o^2-1=0
+     * Returns all the ray intersections with sphere using equation t^2*d^2+(2*o*d)*t+o^2-1=0
      */
     override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
         val hits = ArrayList<HitRecord>()
