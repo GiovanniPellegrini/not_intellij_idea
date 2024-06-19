@@ -110,12 +110,12 @@ class Render : CliktCommand(
         .default(false)
     private val raysForSide by option("-s", "--raysForSide", help = "Antialiasing number of rays for side (Int)").int()
         .default(2)
-    val variables : Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
+    val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 
     override fun run() {
-        val map : MutableMap<String, Float> = mutableMapOf<String,Float>()
+        val map: MutableMap<String, Float> = mutableMapOf<String, Float>()
         for (i in variables.keys) {
-            map[i]= variables[i]!!.toFloat()
+            map[i] = variables[i]!!.toFloat()
         }
         val stream = InStream(stream = FileReader(inputFile), fileName = inputFile)
         val scene = Scene(overriddenVariables = map)
@@ -126,7 +126,7 @@ class Render : CliktCommand(
 
         val renderer = PathTracer(
             world = scene.world,
-            maxdepth = maxDepth,
+            maxDepth = maxDepth,
             russianRouletteLimit = russianRouletteLimit,
             numberOfRays = numberOfRays
         )

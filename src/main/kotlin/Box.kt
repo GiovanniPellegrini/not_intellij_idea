@@ -11,7 +11,7 @@ import java.security.cert.PolicyNode
  * @Default Constructor: Pmin=Point(-1f,1f,-1f), Pmax=Point(1f,1f,1f),
  */
 class Box(
-    val transformation: Transformation = Transformation(),
+    override val transformation: Transformation = Transformation(),
     val Pmin: Point = Point(-1f, -1f, -1f),
     val Pmax: Point = Point(1f, 1f, 1f), override val material: Material = Material()
 ) : Shape {

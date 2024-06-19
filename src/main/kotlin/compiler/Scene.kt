@@ -44,7 +44,7 @@ import Shape
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
-    var camera: Camera? =null,
+    var camera: Camera? = null,
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
     private var overriddenVariables: MutableMap<String, Float> = mutableMapOf(),
     var shapes: MutableMap<String, Shape> = mutableMapOf()
@@ -665,7 +665,7 @@ class Scene(
                 }
 
                 KeyWordEnum.TRIANGLE -> {
-                    val triangles=parseTriangle(inputStream)
+                    val triangles = parseTriangle(inputStream)
                     this.shapes.putAll(triangles)
                 }
 
