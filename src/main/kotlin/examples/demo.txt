@@ -18,6 +18,8 @@ sphere sfera8(translation([1, -1, -1]) * scaling([0.1,0.1,0.1]), sphere_material
 sphere sfera9(translation([1, 1, 0]) * scaling([0.1,0.1,0.1]), sphere_material)
 sphere sfera10(translation([0, -1, -1]) * scaling([0.1,0.1,0.1]), sphere_material)
 
+camera (perspective,identity, 1,1)
+
 
 
 

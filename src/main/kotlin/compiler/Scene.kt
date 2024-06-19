@@ -44,7 +44,7 @@ import Shape
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
-    var camera: Camera =PerspectiveCamera(1f, 1f, Translation(Vector(-2f,0f,0f))),
+    var camera: Camera? =null,
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
     private var overriddenVariables: MutableMap<String, Float> = mutableMapOf(),
     var shapes: MutableMap<String, Shape> = mutableMapOf()
