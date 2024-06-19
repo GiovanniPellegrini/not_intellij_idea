@@ -54,7 +54,7 @@ class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<Mu
                 //if the line starts with "v " it means that the line contains the coordinates of a vertex
                 if(line.startsWith("v ")){
                     // split the line in words and take the 2nd, 3rd and 4th word as the coordinates of the vertex
-                    val vertex = line.split(" ")
+                    val vertex = line.split("\\s+".toRegex())
                     val x = vertex[1].toFloat()
                     val y = vertex[2].toFloat()
                     val z = vertex[3].toFloat()
@@ -62,7 +62,7 @@ class TriangleMesh(var vertices: MutableList<Point>, var indices: MutableList<Mu
                 //if the line starts with "f " it means that the line contains the indices of the vertices of a triangle
                 }else if(line.startsWith("f ")){
                     //val modifiedLine = line.substring(6) // start reading from the 6th character
-                    val index = line.split(" ")
+                    val index = line.split("\\s+".toRegex())
                     val i0 = index[1].toInt()
                     val i1 = index[2].toInt()
                     val i2 = index[3].toInt()
