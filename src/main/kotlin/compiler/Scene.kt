@@ -199,7 +199,7 @@ class Scene(
             } else if (nextToken is SymbolToken && nextToken.char == ',') {
                 continue // Next point
             } else {
-                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of integers")
             }
         }
 
@@ -220,7 +220,7 @@ class Scene(
             } else if (nextToken is SymbolToken && nextToken.char == ',') {
                 continue // Next point
             } else {
-                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of list")
             }
         }
         return listOfList
@@ -524,7 +524,7 @@ class Scene(
                 PerspectiveCamera(distance, aspectRatio, transformation)
             }
 
-            else -> throw GrammarError(inputStream.location, "no clear definition of BRDF")
+            else -> throw GrammarError(inputStream.location, "no clear definition of Camera")
         }
     }
 
@@ -665,7 +665,7 @@ class Scene(
                 }
 
                 KeyWordEnum.TRIANGLE -> {
-                    val triangles = parseTriangle(inputStream)
+                    val triangles=parseTriangle(inputStream)
                     this.shapes.putAll(triangles)
                 }
 
