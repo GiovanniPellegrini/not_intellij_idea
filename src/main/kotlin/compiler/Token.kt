@@ -1,59 +1,61 @@
 package compiler
 
 /**
- * Tokens used to encode the file “scene.txt” , each token characterizes a different char that you can find in the file
- * “Location” is used to address the location in the text file in case of error
+ * Token Interface: Represents a token
  *
+ * @param location: location of the token
  */
-
-interface Token{
-    var location:SourceLocation
+interface Token {
+    var location: SourceLocation
 }
 
 /**
- * Used to identify any KeyWord, as 'Float,Sphere,Plane...'
+ * KeyWordEnum: Derived from Token, represents keywords
  */
-class KeyWordToken(var keywordEnum: KeyWordEnum,override var location: SourceLocation): Token{
+class KeyWordToken(var keywordEnum: KeyWordEnum, override var location: SourceLocation) : Token {
     override fun toString(): String {
-        return "KeyWordToken($keywordEnum)"
+        return "KeyWordToken('$keywordEnum')"
     }
 }
 
 /**
- * Used to identify any name which is not a KeyWord
+ * IdentifierToken: Derived from Token, represents identifiers
  */
-class IdentifierToken(var identifier: String, override var location: SourceLocation):Token{
+class IdentifierToken(var identifier: String, override var location: SourceLocation) : Token {
     override fun toString(): String {
         return "IdentifierToken('$identifier')"
     }
 }
 
 /**
- * Used to identify any String between "  "
+ * LiteralStringToken: Derived from Token, represents strings between double quotes
  */
-class LiteralStringToken(var string: String, override var location: SourceLocation):Token{
+class LiteralStringToken(var string: String, override var location: SourceLocation) : Token {
     override fun toString(): String {
         return "LiteralStringToken('$string')"
     }
 }
 
 /**
- * Used to identify any number
+ * LiteralNumberToken: Derived from Token, represents numbers
  */
-class LiteralNumberToken(var number:Float, override var location: SourceLocation):Token {
+class LiteralNumberToken(var number: Float, override var location: SourceLocation) : Token {
     override fun toString(): String {
-        return "LiteralNumberToken($number)"
+        return "LiteralNumberToken('$number')"
     }
 }
 
 /**
- * Used to identify symbols like '(),[],+...'
+ * SymbolToken: Derived from Token, represents symbols
  */
-class SymbolToken(var char:Char, override var location:SourceLocation):Token{
+class SymbolToken(var char: Char, override var location: SourceLocation) : Token {
     override fun toString(): String {
-        return "SymbolToken($char)"
+        return "SymbolToken('$char')"
     }
 }
 
-class StopToken(override var location: SourceLocation):Token{
+/**
+ * StopToken: Derived from Token, represents the end of the file
+ */
+class StopToken(override var location: SourceLocation) : Token {
 }

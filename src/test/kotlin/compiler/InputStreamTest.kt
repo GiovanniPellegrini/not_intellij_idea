@@ -91,11 +91,15 @@ class InputStreamTest {
     fun readTokenTest() {
         val byteArrayStream = ByteArrayInputStream(
             """
+        
         % This is a comment
         % This is another comment
-        new material skyMaterial(
+        ^ This is a long comment 
+           curious to see if the function is correct^
+        
+        material skyMaterial(
             diffuse(image("my file.pfm")),
-            <5.0, 500.0, 300.0 >
+            <5.0, +500.0, 300.0 > ^another long comment^
         ) % Comment at the end of the line
         """.toByteArray()
         )
@@ -103,10 +107,6 @@ class InputStreamTest {
         val stream = InStream(streamReader)
 
         var token = stream.readToken()
-        assert(token is KeyWordToken)
-        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.NEW)
-
-        token = stream.readToken()
         assert(token is KeyWordToken)
         if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.MATERIAL)
 
@@ -170,7 +170,7 @@ class InputStreamTest {
             """
         float clock(150)
     
-        material sky_material(
+        material _sky_material(
             diffuse(uniform(<0, 0, 0>)),
             uniform(<0.7, 0.5, 1>)
         )
@@ -188,7 +188,7 @@ class InputStreamTest {
             uniform(<0, 0, 0>)
         )
     
-        plane plane1 (translation(<0, 0, 100>) * rotation_y(clock),sky_material)
+        plane plane1 (translation(<0, 0, 100>) * rotation_y(clock),_sky_material)
         plane plane2 (identity,ground_material)
     
         sphere sphere1 ( translation(<0, 0, 1>),sphere_material)
@@ -205,12 +205,12 @@ class InputStreamTest {
         assert(scene.floatVariables["clock"] == 150f)
 
         assertEquals(scene.materials.size, 3)
-        assert("sky_material" in scene.materials.keys)
+        assert("_sky_material" in scene.materials.keys)
         assert("ground_material" in scene.materials.keys)
         assert("sphere_material" in scene.materials.keys)
 
         val sphereMaterial = scene.materials["sphere_material"]
-        val skyMaterial = scene.materials["sky_material"]
+        val skyMaterial = scene.materials["_sky_material"]
         val groundMaterial = scene.materials["ground_material"]
 
         assert(skyMaterial?.brdf is DiffusionBRDF)
@@ -253,7 +253,7 @@ class InputStreamTest {
         val scene = Scene()
         val byteArrayStream = ByteArrayInputStream(
             """
-        plane(this_material_does_not_exist, identity)
+        plane myplane(this_material_does_not_exist, identity)
         """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -263,7 +263,7 @@ class InputStreamTest {
     }
 
     @Test
-    fun parseShape(){
+    fun parseShape() {
         val stream = ByteArrayInputStream(
             """
       material sky_material(
@@ -277,11 +277,11 @@ class InputStreamTest {
         sphere sphere2(translation(<0, 0, 100>),sky_material)
         """.toByteArray()
         )
-        val scene=Scene()
-        val streamReader=InputStreamReader(stream)
+        val scene = Scene()
+        val streamReader = InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
 
-        assert(scene.shapes.size==3)
+        assert(scene.shapes.size == 3)
         assert(scene.world.shapes[0] is Sphere)
         assert(scene.world.shapes[0].material.brdf is DiffusionBRDF)
     }
@@ -334,9 +334,9 @@ class InputStreamTest {
     }
 
     @Test
-    fun parseCSGUnionTest(){
-        val scene=Scene()
-        val stream=ByteArrayInputStream(
+    fun parseCSGUnionTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
             """
         material ciao_material(
             specular(uniform(<0.5, 0.5, 0.5>)),
@@ -355,21 +355,22 @@ class InputStreamTest {
             
             """.toByteArray()
         )
-        val streamReader=InputStreamReader(stream)
+        val streamReader = InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
 
-        assert(scene.world.shapes.size==1)
+        assert(scene.world.shapes.size == 1)
         assert(scene.world.shapes[0] is CSGUnion)
-        val rotation=Rotation(Vector(0f,1f,0f), theta = 30f)
-        assert(scene.world.shapes[0].transformation==rotation)
+        val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation == rotation)
         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
 
     }
-     @Test
+
+    @Test
     fun parseCSGIntersectionTest() {
-         val scene = Scene()
-         val stream = ByteArrayInputStream(
-             """
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
         material ciao_material(
             specular(uniform(<0.5, 0.5, 0.5>)),
             uniform(<0, 0, 0>)
@@ -386,15 +387,15 @@ class InputStreamTest {
         CSGIntersection csg1(sphere1,plane1,rotation_y(30),ciao_material)
             
             """.toByteArray()
-         )
-         val streamReader = InputStreamReader(stream)
-         scene.parseScene(InStream(streamReader))
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
 
-         assert(scene.world.shapes.size == 1)
-         assert(scene.world.shapes[0] is CSGIntersection)
-         val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
-         assert(scene.world.shapes[0].transformation == rotation)
-         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+        assert(scene.world.shapes.size == 1)
+        assert(scene.world.shapes[0] is CSGIntersection)
+        val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
+        assert(scene.world.shapes[0].transformation == rotation)
+        assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
     }
 
     @Test
