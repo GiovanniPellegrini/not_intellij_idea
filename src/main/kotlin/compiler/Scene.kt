@@ -30,35 +30,40 @@ import java.io.FileInputStream
 import Sphere
 import Plane
 import Shape
+
 /**
- * Scene class, contains all variables included in a scene file
- * @param materials: Dict of "materialName" -> `Material`
+ * Scene class: contains all variables included in a scene file
+ *
+ * @param materials: Dictionary of "materialName" -> `Material`
  * @param world: Container of all shapes
  * @param camera: Observer camera
  * @param floatVariables: floating point variable declared in the file
  * @param overriddenVariables: overridden floating point variable declared in the file
+ * @param shapes: Dictionary of "shapeName" -> `Shape`
  */
 class Scene(
     val materials: MutableMap<String, Material> = mutableMapOf(),
     val world: World = World(),
-    var camera: Camera? = null,
+    var camera: Camera =PerspectiveCamera(1f, 1f, Translation(Vector(-2f,0f,0f))),
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
-    private var overriddenVariables: MutableSet<String> = mutableSetOf(),
+    private var overriddenVariables: MutableMap<String, Float> = mutableMapOf(),
     var shapes: MutableMap<String, Shape> = mutableMapOf()
 ) {
     /**
      * Reads a token and checks if it is a symbol
      */
-    private fun expectSymbol(inputFile: InStream, symbol: String) {
+    private fun expectSymbol(inputFile: InStream, symbol: Char) {
         val token = inputFile.readToken()
         if (token !is SymbolToken) {
             throw GrammarError(token.location, "Expected symbol $symbol, but got $token")
         }
+        if (token.char != symbol) {
+            throw GrammarError(token.location, "Expected symbol $symbol, but got ${token.char}")
+        }
     }
 
     /**
-     * Reads a token and checks if it is a keyword,
-     * @return the keyword that was read as a KeyWordEnum
+     * Reads a token and checks if it is a keyword
      */
     private fun expectKeyWords(inputFile: InStream, keywords: List<KeyWordEnum>): KeyWordEnum {
         val token = inputFile.readToken()
@@ -73,7 +78,6 @@ class Scene(
 
     /**
      * Reads a token and checks if it is a literal number or a variable
-     * @return the number that was read
      */
     private fun expectNumber(inputFile: InStream): Float {
         val token = inputFile.readToken()
@@ -92,7 +96,6 @@ class Scene(
 
     /**
      * Reads a token and checks if it is a literal string
-     * @return the string that was read
      */
     private fun expectString(inputFile: InStream): String {
         val token = inputFile.readToken()
@@ -104,7 +107,6 @@ class Scene(
 
     /**
      * Reads a token and checks if it is an identifier
-     * @return the identifier that was read
      */
     private fun expectIdentifier(inputFile: InStream): String {
         val token = inputFile.readToken()
@@ -114,50 +116,55 @@ class Scene(
         throw GrammarError(token.location, "Expected an identifier, but got $token")
     }
 
+
     /**
-     * Reads a token and check if it is the identifier of a shape
-     * @return the shape that was read
+     * Parses a vector from the input stream
      */
-
-
-    // Parsing Functions for all the possible objects in the scene
-
     private fun parseVector(inStream: InStream): Vector {
-        expectSymbol(inStream, "[")
+        expectSymbol(inStream, '[')
         val x = expectNumber(inStream)
-        expectSymbol(inStream, ",")
+        expectSymbol(inStream, ',')
         val y = expectNumber(inStream)
-        expectSymbol(inStream, ",")
+        expectSymbol(inStream, ',')
         val z = expectNumber(inStream)
-        expectSymbol(inStream, "]")
+        expectSymbol(inStream, ']')
 
         return Vector(x, y, z)
     }
 
+    /**
+     * Parses a color from the input stream
+     */
     private fun parseColor(inStream: InStream): Color {
-        expectSymbol(inStream, "<")
+        expectSymbol(inStream, '<')
         val r = expectNumber(inStream)
-        expectSymbol(inStream, ",")
+        expectSymbol(inStream, ',')
         val g = expectNumber(inStream)
-        expectSymbol(inStream, ",")
+        expectSymbol(inStream, ',')
         val b = expectNumber(inStream)
-        expectSymbol(inStream, ">")
+        expectSymbol(inStream, '>')
 
         return Color(r, g, b)
     }
 
+    /**
+     * Parses a point from the input stream
+     */
     private fun parsePoint(inputStream: InStream): Point {
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         val x = expectNumber(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val y = expectNumber(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val z = expectNumber(inputStream)
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
 
         return Point(x, y, z)
     }
 
+    /**
+     * Parses a list of points from the input stream
+     */
     private fun parseListOfPoints(inputStream: InStream): MutableList<Point> {
         val points = mutableListOf<Point>()
         while (true) {
@@ -176,10 +183,13 @@ class Scene(
         return points
     }
 
+    /**
+     * Parses a list of integers from the input stream
+     */
     private fun parseListOfInt(inputStream: InStream): MutableList<Int> {
         val numbers = mutableListOf<Int>()
 
-        expectSymbol(inputStream, "(") // Lists starts with "["
+        expectSymbol(inputStream, '(') // Lists starts with "["
 
         while (true) {
             numbers.add(expectNumber(inputStream).toInt())
@@ -196,9 +206,12 @@ class Scene(
         return numbers
     }
 
+    /**
+     * Parses a list of list of integers from the input stream
+     */
     private fun parseListOfList(inputStream: InStream): MutableList<MutableList<Int>> {
         val listOfList: MutableList<MutableList<Int>> = mutableListOf(mutableListOf())
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         while (true) {
             listOfList.add(parseListOfInt(inputStream))
             val nextToken = inputStream.readToken()
@@ -213,10 +226,13 @@ class Scene(
         return listOfList
     }
 
+    /**
+     * Parses a pigment from the input stream
+     */
     private fun parsePigment(inputStream: InStream): Pigment {
         val keyWord =
             expectKeyWords(inputStream, listOf(KeyWordEnum.UNIFORM, KeyWordEnum.CHECKERED, KeyWordEnum.IMAGE))
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
 
         val result: Pigment = when (keyWord) {
             KeyWordEnum.UNIFORM -> {
@@ -226,9 +242,9 @@ class Scene(
 
             KeyWordEnum.CHECKERED -> {
                 val color1 = parseColor(inputStream)
-                expectSymbol(inputStream, ",")
+                expectSymbol(inputStream, ',')
                 val color2 = parseColor(inputStream)
-                expectSymbol(inputStream, ",")
+                expectSymbol(inputStream, ',')
                 val numberOfSteps = expectNumber(inputStream)
                 CheckeredPigment(color1, color2, numberOfSteps.toInt())
             }
@@ -243,15 +259,18 @@ class Scene(
             else -> throw Error("no clear definition of Pigment")
         }
 
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
         return result
     }
 
+    /**
+     * Parses a BRDF from the input stream
+     */
     private fun parseBrdf(inputStream: InStream): BRDF {
         val kw = expectKeyWords(inputStream, listOf(KeyWordEnum.DIFFUSE, KeyWordEnum.SPECULAR))
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         val pigment = parsePigment(inputStream)
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
         return when (kw) {
             KeyWordEnum.DIFFUSE -> DiffusionBRDF(pigment)
             KeyWordEnum.SPECULAR -> SpecularBRDF(pigment)
@@ -259,88 +278,112 @@ class Scene(
         }
     }
 
+    /**
+     * Parses a material from the input stream
+     */
     private fun parseMaterial(inputStream: InStream): Map<String, Material> {
         val materialName = expectIdentifier(inputStream)
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         val brdf = parseBrdf(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val emittedRad = parsePigment(inputStream)
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
 
         return mapOf(materialName to Material(brdf, emittedRad))
     }
 
+    /**
+     * Parses a sphere from the input stream
+     */
     private fun parseSphere(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
-        expectSymbol(inStream, "(")
+        expectSymbol(inStream, '(')
         val transformation = parseTransformation(inStream)
-        expectSymbol(inStream,",")
+        expectSymbol(inStream, ',')
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials.keys) {
             throw GrammarError(inStream.location, "unknown material $materialName")
         }
-        expectSymbol(inStream, ")")
+        expectSymbol(inStream, ')')
 
         return mapOf(shapeName to Sphere(transformation = transformation, material = materials[materialName]!!))
     }
 
+    /**
+     * Parses a plane from the input stream
+     */
     private fun parsePlane(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
-        expectSymbol(inStream, "(")
+        expectSymbol(inStream, '(')
         val transformation = parseTransformation(inStream)
-        expectSymbol(inStream,",")
+        expectSymbol(inStream, ',')
         val materialName = expectIdentifier(inStream)
         if (materialName !in materials) {
             throw GrammarError(inStream.location, "unknown material $materialName")
         }
-        expectSymbol(inStream, ")")
+        expectSymbol(inStream, ')')
 
         return mapOf(shapeName to Plane(transformation = transformation, material = materials[materialName]!!))
     }
 
+    /**
+     * Parses a box from the input stream
+     */
     private fun parseBox(inputStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inputStream)
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         val pMin = parsePoint(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val pMax = parsePoint(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val transformation = parseTransformation(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ',')
 
-        return mapOf(shapeName to Box(Pmax = pMax, Pmin = pMin, transformation = transformation, material = materials[materialName]!!))
+        return mapOf(
+            shapeName to Box(
+                Pmax = pMax,
+                Pmin = pMin,
+                transformation = transformation,
+                material = materials[materialName]!!
+            )
+        )
 
     }
 
-    // triangle is declared as "Triangle(a,b,c,transformation, material)
-    private fun parseTriangle(inputStream: InStream): Map<String,Triangle> {
-        val triangleName=expectIdentifier(inputStream)
-        expectSymbol(inputStream, "(")
+    /**
+     * Parses a triangle from the input stream
+     */
+    private fun parseTriangle(inputStream: InStream): Map<String, Triangle> {
+        val triangleName = expectIdentifier(inputStream)
+        expectSymbol(inputStream, '(')
         val a = parsePoint(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val b = parsePoint(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val c = parsePoint(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val transformation = parseTransformation(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
 
         return mapOf(triangleName to Triangle(transformation, a, b, c, materials[materialName]!!))
     }
 
-    private fun parseTriangleMesh(inputStream: InStream): Map<String,TriangleMesh> {
-        val triangleMeshName=expectIdentifier(inputStream)
-        expectSymbol(inputStream, "(")
+    /**
+     * Parse a triangle mesh from the input stream
+     */
+    private fun parseTriangleMesh(inputStream: InStream): Map<String, TriangleMesh> {
+        val triangleMeshName = expectIdentifier(inputStream)
+        expectSymbol(inputStream, '(')
         val token = inputStream.readToken()
         var filename: String? = null
         val points: MutableList<Point>?
@@ -353,7 +396,7 @@ class Scene(
 
             is SymbolToken -> {
                 points = parseListOfPoints(inputStream)
-                expectSymbol(inputStream, ",")
+                expectSymbol(inputStream, ',')
                 indices = parseListOfList(inputStream)
             }
 
@@ -361,27 +404,38 @@ class Scene(
                 throw GrammarError(token.location, "Unexpected token $token for TriangleMesh")
             }
         }
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val transformation = parseTransformation(inputStream)
-        expectSymbol(inputStream, ",")
+        expectSymbol(inputStream, ',')
         val materialName = expectIdentifier(inputStream)
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ')')
         return if (points == null) {
-            mapOf(triangleMeshName to TriangleMesh(filename = filename!!, transformation = transformation, material = materials[materialName]!!))
+            mapOf(
+                triangleMeshName to TriangleMesh(
+                    filename = filename!!,
+                    transformation = transformation,
+                    material = materials[materialName]!!
+                )
+            )
         } else {
-            mapOf(triangleMeshName to  TriangleMesh(
-                vertices = points,
-                indices = indices,
-                transformation = transformation,
-                material = materials[materialName]!!
-            ))
+            mapOf(
+                triangleMeshName to TriangleMesh(
+                    vertices = points,
+                    indices = indices,
+                    transformation = transformation,
+                    material = materials[materialName]!!
+                )
+            )
         }
 
     }
 
+    /**
+     * Parses a transformation from the input stream
+     */
     private fun parseTransformation(inputStream: InStream): Transformation {
         var result = Transformation()
         while (true) {
@@ -402,37 +456,37 @@ class Scene(
                 }
 
                 KeyWordEnum.TRANSLATION -> {
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     result *= Translation(parseVector(inputStream))
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                 }
 
                 KeyWordEnum.ROTATION_X -> {
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     val angle = expectNumber(inputStream)
                     result *= Rotation((Vector(1f, 0f, 0f)), angle)
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                 }
 
                 KeyWordEnum.ROTATION_Y -> {
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     val angle = expectNumber(inputStream)
                     result *= Rotation((Vector(0f, 1f, 0f)), angle)
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                 }
 
                 KeyWordEnum.ROTATION_Z -> {
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     val angle = expectNumber(inputStream)
                     result *= Rotation((Vector(0f, 0f, 1f)), angle)
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                 }
 
                 KeyWordEnum.SCALING -> {
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     val scaling = parseVector(inputStream)
                     result *= scalingTransformation(scaling)
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                 }
 
                 else -> throw RuntimeException("no clear definition of Transformation")
@@ -447,37 +501,19 @@ class Scene(
         return result
     }
 
+    /**
+     * Parses a camera from the input stream
+     */
     private fun parseCamera(inputStream: InStream): Camera {
-        expectSymbol(inputStream, "(")
+        expectSymbol(inputStream, '(')
         val typeKw = expectKeyWords(inputStream, listOf(KeyWordEnum.ORTHOGONAL, KeyWordEnum.PERSPECTIVE))
-        expectSymbol(inputStream, ",")
-
-
-        //if not defined, other arguments are assigned to default values
-
-        val transformation = try {
-            parseTransformation(inputStream)
-        } catch (e: GrammarError) {
-            Transformation()
-        }
-
-        expectSymbol(inputStream, ",")
-
-        val aspectRatio = try {
-            expectNumber(inputStream)
-        } catch (e: GrammarError) {
-            1f
-        }
-
-        expectSymbol(inputStream, ",")
-
-        val distance = try {
-            expectNumber(inputStream)
-        } catch (e: GrammarError) {
-            1f
-        }
-
-        expectSymbol(inputStream, ")")
+        expectSymbol(inputStream, ',')
+        val transformation = parseTransformation(inputStream)
+        expectSymbol(inputStream, ',')
+        val aspectRatio = expectNumber(inputStream)
+        expectSymbol(inputStream, ',')
+        val distance = expectNumber(inputStream)
+        expectSymbol(inputStream, ')')
 
         return when (typeKw) {
             KeyWordEnum.ORTHOGONAL -> {
@@ -492,24 +528,27 @@ class Scene(
         }
     }
 
+    /**
+     * Parses a CSGUnion from the input stream
+     */
     private fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
-        expectSymbol(inputFile, "(")
+        expectSymbol(inputFile, '(')
         val shape1 = expectIdentifier(inputFile)
         if (shape1 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape1")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val shape2 = expectIdentifier(inputFile)
         if (shape2 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape2")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val transformation = parseTransformation(inputFile)
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val materialName = expectIdentifier(inputFile)
         if (materialName !in materials)
             throw GrammarError(inputFile.location, "unknown material $materialName")
 
-        expectSymbol(inputFile, ")")
+        expectSymbol(inputFile, ')')
 
         val csgUnion = CSGUnion(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
         this.shapes.remove(shape1)
@@ -518,26 +557,30 @@ class Scene(
         return mapOf(shapeCSGName to csgUnion)
     }
 
+    /**
+     * Parses a CSGIntersection from the input stream
+     */
     private fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
-        expectSymbol(inputFile, "(")
+        expectSymbol(inputFile, '(')
         val shape1 = expectIdentifier(inputFile)
         if (shape1 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape1")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val shape2 = expectIdentifier(inputFile)
         if (shape2 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape2")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val transformation = parseTransformation(inputFile)
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val materialName = expectIdentifier(inputFile)
         if (materialName !in materials)
             throw GrammarError(inputFile.location, "unknown material $materialName")
 
-        expectSymbol(inputFile, ")")
+        expectSymbol(inputFile, ')')
 
-        val csgIntersection = CSGIntersection(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
+        val csgIntersection =
+            CSGIntersection(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
         this.shapes.remove(shape1)
         this.shapes.remove(shape2)
 
@@ -547,24 +590,27 @@ class Scene(
         )
     }
 
+    /**
+     * Parses a CSGDifference from the input stream
+     */
     private fun parseCSGDifference(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
-        expectSymbol(inputFile, "(")
+        expectSymbol(inputFile, '(')
         val shape1 = expectIdentifier(inputFile)
         if (shape1 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape1")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val shape2 = expectIdentifier(inputFile)
         if (shape2 !in shapes)
             throw GrammarError(inputFile.location, "unknown shape $shape2")
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val transformation = parseTransformation(inputFile)
-        expectSymbol(inputFile, ",")
+        expectSymbol(inputFile, ',')
         val materialName = expectIdentifier(inputFile)
         if (materialName !in materials)
             throw GrammarError(inputFile.location, "unknown material $materialName")
 
-        expectSymbol(inputFile, ")")
+        expectSymbol(inputFile, ')')
 
         val csgDifference = CSGDifference(shapes[shape1]!!, shapes[shape2]!!, transformation, materials[materialName]!!)
         this.shapes.remove(shape1)
@@ -593,9 +639,9 @@ class Scene(
                     val variableName = expectIdentifier(inputStream)
                     val variableLocation = inputStream.location
 
-                    expectSymbol(inputStream, "(")
+                    expectSymbol(inputStream, '(')
                     val varValue = expectNumber(inputStream)
-                    expectSymbol(inputStream, ")")
+                    expectSymbol(inputStream, ')')
                     // Error if VariableName already defined
                     if (variableName in this.floatVariables && variableName !in this.overriddenVariables) {
                         throw GrammarError(variableLocation, "Variable '$variableName' cannot be redefined")
@@ -603,9 +649,9 @@ class Scene(
                     // Define variable if not already defined before
                     if (variableName !in this.overriddenVariables) {
                         this.floatVariables[variableName] = varValue
+                    } else {
+                        this.floatVariables[variableName] = overriddenVariables[variableName]!!
                     }
-
-
                 }
 
                 KeyWordEnum.SPHERE -> {
@@ -619,17 +665,17 @@ class Scene(
                 }
 
                 KeyWordEnum.TRIANGLE -> {
-                    val triangles=parseTriangle(inputStream)
+                    val triangles = parseTriangle(inputStream)
                     this.shapes.putAll(triangles)
                 }
 
                 KeyWordEnum.TRIANGLEMESH -> {
-                    val triangleMeshes=parseTriangleMesh(inputStream)
+                    val triangleMeshes = parseTriangleMesh(inputStream)
                     this.shapes.putAll(triangleMeshes)
                 }
 
                 KeyWordEnum.BOX -> {
-                    val boxes=parseBox(inputStream)
+                    val boxes = parseBox(inputStream)
                     this.shapes.putAll(boxes)
                 }
 
@@ -665,7 +711,7 @@ class Scene(
                 }
             }
         }
-        for(shape in shapes.values){
+        for (shape in shapes.values) {
             this.world.add(shape)
         }
     }

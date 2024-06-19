@@ -21,6 +21,7 @@ import Rotation
 import TriangleMesh
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestTemplate
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
@@ -193,7 +194,8 @@ class InputStreamTest {
     
         sphere sphere1 ( translation([0, 0, 1]),sphere_material)
     
-        camera(perspective, rotation_z(30) * translation([-4, 0, 1]), 1.0, 2.0)
+        
+        camera(perspective,identity, 1.0, 1.87)
         """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -428,6 +430,34 @@ class InputStreamTest {
         val rotation = Rotation(Vector(0f, 1f, 0f), theta = 30f)
         assert(scene.world.shapes[0].transformation == rotation)
         assert(scene.world.shapes[0].material.brdf is SpecularBRDF)
+    }
+
+    @Test
+    fun overriddenVariables() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        float a(1)
+        float a(2)
+        """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        assertFailsWith<GrammarError> {
+            scene.parseScene(InStream(streamReader))
+        }
+    }
+
+    @Test
+    fun overriddenVariables2() {
+        val scene = Scene(overriddenVariables = mutableMapOf("a" to 13f))
+        val stream = ByteArrayInputStream(
+            """
+        float a(1)
+        """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.floatVariables["a"] == 13f)
     }
 
 
