@@ -120,6 +120,20 @@ class HdrImageTest {
         assert(img.getPixel(1, 0).areClose(Color(0.5e4F, 1.0e4F, 1.5e4F)))
     }
 
+    @Test
+    fun clampImage() {
+        val img = HdrImage(2, 1)
+        img.setPixel(0, 0, Color(0.5e1f, 1.0e1f, 1.5e1f))
+        img.setPixel(1, 0, Color(0.5e3f, 1.0e3f, 1.5e3f))
+        img.clampImage()
+
+        for (pixel in img.pixels){
+            assert(pixel.r in 0.0..1.0)
+            assert(pixel.g in 0.0..1.0)
+            assert(pixel.b in 0.0..1.0)
+        }
+    }
+
 }
 
 

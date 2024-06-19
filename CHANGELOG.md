@@ -1,6 +1,8 @@
 ## Head
-#### - fixed normal bug in Sphere and Triangle related to issue #20
-
+#### - added parser and lexer for the scene file, render function in main
+#### - fixed bug "Normal transformation" related to issue #9
+#### - fixed bug "image upside down" related to issue #3
+#### - added new Geometric Object: with Triangle mesh you can create a 3d object with a list of triangles and a .obj file
 
 ## V 0.3.0
 #### -triangle class and triangle mesh PR #7

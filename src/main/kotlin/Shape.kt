@@ -11,5 +11,6 @@ interface Shape {
     val material: Material
     fun rayIntersection(ray: Ray): HitRecord?
     fun rayIntersectionList(ray: Ray): List<HitRecord>?
+    val transformation: Transformation
     fun pointInternal(point: Point): Boolean
 }
