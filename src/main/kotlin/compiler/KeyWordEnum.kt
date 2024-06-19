@@ -1,7 +1,9 @@
 package compiler
 
+/**
+ * KeyWordEnum: List of all the keywords of the language
 
-// The numeration starts with 0 (NEW=0)
+ */
 enum class KeyWordEnum {
     MATERIAL,
     SHAPE,

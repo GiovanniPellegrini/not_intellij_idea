@@ -3,7 +3,7 @@ package compiler
 import java.io.InputStreamReader
 import kotlin.Char as Char
 
-private const val symbols = "()<>,*="
+private const val symbols = "()<>,*=[]"
 private const val WHITESPACE = " \t\n\r"
 
 /**

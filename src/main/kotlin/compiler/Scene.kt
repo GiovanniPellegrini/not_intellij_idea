@@ -123,13 +123,13 @@ class Scene(
     // Parsing Functions for all the possible objects in the scene
 
     private fun parseVector(inStream: InStream): Vector {
-        expectSymbol(inStream, "<")
+        expectSymbol(inStream, "[")
         val x = expectNumber(inStream)
         expectSymbol(inStream, ",")
         val y = expectNumber(inStream)
         expectSymbol(inStream, ",")
         val z = expectNumber(inStream)
-        expectSymbol(inStream, ">")
+        expectSymbol(inStream, "]")
 
         return Vector(x, y, z)
     }
