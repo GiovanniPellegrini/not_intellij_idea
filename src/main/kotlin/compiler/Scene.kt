@@ -179,7 +179,7 @@ class Scene(
     private fun parseListOfInt(inputStream: InStream): MutableList<Int> {
         val numbers = mutableListOf<Int>()
 
-        expectSymbol(inputStream, "(") // Lists starts with "["
+        expectSymbol(inputStream, "(")
 
         while (true) {
             numbers.add(expectNumber(inputStream).toInt())
@@ -189,7 +189,7 @@ class Scene(
             } else if (nextToken is SymbolToken && nextToken.char == ',') {
                 continue // Next point
             } else {
-                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of integers")
             }
         }
 
@@ -207,7 +207,7 @@ class Scene(
             } else if (nextToken is SymbolToken && nextToken.char == ',') {
                 continue // Next point
             } else {
-                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of points")
+                throw GrammarError(nextToken.location, "Unexpected token $nextToken in list of list")
             }
         }
         return listOfList
@@ -488,7 +488,7 @@ class Scene(
                 PerspectiveCamera(distance, aspectRatio, transformation)
             }
 
-            else -> throw GrammarError(inputStream.location, "no clear definition of BRDF")
+            else -> throw GrammarError(inputStream.location, "no clear definition of Camera")
         }
     }
 

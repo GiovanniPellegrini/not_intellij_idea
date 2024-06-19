@@ -253,7 +253,7 @@ class InputStreamTest {
         val scene = Scene()
         val byteArrayStream = ByteArrayInputStream(
             """
-        plane myplane(this_material_does_not_exist, identity)
+        plane myPlane(this_material_does_not_exist, identity)
         """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
