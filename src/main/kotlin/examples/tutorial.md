@@ -77,8 +77,8 @@ Where:
 
 - ```typeOfCamera``` can be Perspective or Orthogonal
 - ```transformation``` is a transformation that defines the position of the camera,
-- ```aspectRatio``` is a floating point number (if not defined default is 1.0)
-- ```distance``` is the distance between the observer and the screen (if not defined default is 1.0)
+- ```aspectRatio``` is a floating point number
+- ```distance``` is the distance between the observer and the screen
 
 ## Materials
 
