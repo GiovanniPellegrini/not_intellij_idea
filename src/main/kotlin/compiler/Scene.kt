@@ -31,6 +31,7 @@ import Sphere
 import Plane
 import PointLight
 import Shape
+import Cone
 
 /**
  * Scene class: contains all variables included in a scene file
@@ -647,6 +648,20 @@ class Scene(
         )
     }
 
+    private fun parseCone(inStream: InStream):Map<String, Shape>{
+        val shapeName = expectIdentifier(inStream)
+        expectSymbol(inStream, '(')
+        val transformation = parseTransformation(inStream)
+        expectSymbol(inStream, ',')
+        val materialName = expectIdentifier(inStream)
+        if (materialName !in materials.keys) {
+            throw GrammarError(inStream.location, "unknown material $materialName")
+        }
+        expectSymbol(inStream, ')')
+
+        return mapOf(shapeName to Cone(transformation = transformation, material = materials[materialName]!!))
+    }
+
     /**
      * Parses a point light object from the input stream
      */
@@ -749,6 +764,11 @@ class Scene(
                 KeyWordEnum.POINTLIGHT -> {
                     val pointLight = parsePointLight(inputStream)
                     this.world.addPointLight(pointLight)
+                }
+
+                KeyWordEnum.CONE -> {
+                    val cones = parseCone(inputStream)
+                    this.shapes.putAll(cones)
                 }
 
                 else -> {
