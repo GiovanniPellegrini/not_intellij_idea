@@ -4,6 +4,12 @@ material earthMat(diffuse(image("src/main/kotlin/examples/world.pfm")),uniform(<
 material aaaMat(diffuse(uniform(<0.1,0.1,0.1>)), uniform(<0,0,0>))
 
 sphere ggit(translation([6,0,2]) * scaling([1.8,1.8,1.8]), earthMat)
+
+material earthMat(diffuse(uniform(<0.1,0.1,0.1>)), uniform(<0,0,0>))
+
+
+
+sphere earth(translation([6,0,2]) * scaling([1.8,1.8,1.8]), earthMat)
 sphere space(scaling([50,50,50]), spaceMat)
 
 pointlight((-2, 0, 40), <1, 0.178, 0.963>, 1)
