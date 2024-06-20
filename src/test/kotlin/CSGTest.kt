@@ -49,6 +49,20 @@ class CSGUnionTest(){
         assertNotNull(intersection)
 
     }
+
+    @Test
+    fun quickRayIntersectionTest(){
+        val sphere1=Sphere()
+        val sphere2=Sphere(Translation(Vector(0f,1.7f,0f)))
+        val union=CSGUnion(sphere1,sphere2)
+
+        val ray1=Ray(Point(3f,0f,0f),Vector(-1f,0f,0f))
+        assert(union.quickRayIntersection(ray1))
+
+        val ray2 = Ray(Point(6f, 1.7f, 0f), Vector(-1f,0f,0f));
+        assert(union.quickRayIntersection(ray2))
+        assert(!union.quickRayIntersection(Ray(Point(0f, 10f, 2f), Vector(0f,0f,-1f))))
+    }
 }
 
 class CSGIntersectionTest(){
@@ -94,6 +108,22 @@ class CSGIntersectionTest(){
         val ray=Ray(Point(4f,0f,1f),Vector(-1f,0f,0f))
         val intersection=union.rayIntersection(ray)
         assertNotNull(intersection)
+    }
+
+    @Test
+    fun quickRayIntersectionTest(){
+        val s1 = Sphere(Translation(Vector(0.5f, 0.0f, 0.0f)))
+        val s2 = Sphere(Translation(Vector(-0.5f, 0.0f, 0.0f)))
+        val u1 = CSGIntersection(s1, s2)
+
+        val r1 = Ray(origin=Point(1.0f, 0.0f, 0.0f), dir=Vector(-1.0f, 0.0f, 0.0f))
+        assert(u1.quickRayIntersection(r1))
+
+        val r2 = Ray(origin=Point(12.0f, 12.0f, 10.0f), dir=Vector(0.0f, 0.0f, 1.0f))
+        assert(!u1.quickRayIntersection(r2))
+
+        val r3 = Ray(origin=Point(1.0f, 0.0f, 1.0f), dir=Vector(0.0f, 0.0f, -1.0f));
+        assert(!u1.quickRayIntersection(r3))
     }
 }
 
@@ -142,6 +172,22 @@ class CSGDifferenceTest(){
 
         val intersection=difference.rayIntersection(ray)
         assertNotNull(intersection)
+    }
+
+    @Test
+    fun quickRayIntersectionTest(){
+        val s1 = Sphere(transformation=Translation(Vector(0.5f, 0.0f, 0.0f)))
+        val s2 = Sphere()
+        val u1 = CSGDifference(s1, s2);
+
+        val r1 = Ray(origin = Point(0.0f, 0.0f, 0.0f), dir = Vector(1.0f, 0.0f, 0.0f))
+        assert(u1.quickRayIntersection(r1)){"failed first int"}
+
+        val r2 = Ray(origin = Point(12.0f, 12.0f, 10.0f), dir = Vector(0.0f, 0.0f, 1.0f))
+        assert(!u1.quickRayIntersection(r2)){"failed second int"}
+
+        val r3 = Ray(origin = Point(0.0f, 0.0f, 1.0f), dir = Vector(0.0f, 0.0f, -1.0f));
+        assert(!u1.quickRayIntersection(r3)){ "failed third int" }
     }
 }
 

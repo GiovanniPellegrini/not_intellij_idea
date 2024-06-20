@@ -120,16 +120,20 @@ class Render : CliktCommand(
         val stream = InStream(stream = FileReader(inputFile), fileName = inputFile)
         val scene = Scene(overriddenVariables = map)
         scene.parseScene(stream)
-        println(scene.floatVariables)
         val image = HdrImage(imageWidth, imageHeight)
         val tracer = ImageTracer(image, scene.camera!!)
 
-        val renderer = PathTracer(
-            world = scene.world,
-            maxDepth = maxDepth,
-            russianRouletteLimit = russianRouletteLimit,
-            numberOfRays = numberOfRays
-        )
+        val renderer = when (algorithm) {
+            "pathtracer" -> PathTracer(
+                world = scene.world,
+                maxDepth = maxDepth,
+                russianRouletteLimit = russianRouletteLimit,
+                numberOfRays = numberOfRays
+            )
+
+            "pointlighttracer" -> PointLightRenderer(scene.world)
+            else -> throw IllegalArgumentException("Unknown algorithm")
+        }
 
         if (!antialiasing) tracer.fireAllRays(renderer::render)
         else tracer.fireAllRays(renderer::render, raysForSide = raysForSide)
