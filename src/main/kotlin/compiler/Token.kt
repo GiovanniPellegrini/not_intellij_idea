@@ -57,5 +57,4 @@ class SymbolToken(var char: Char, override var location: SourceLocation) : Token
 /**
  * StopToken: Derived from Token, represents the end of the file
  */
-class StopToken(override var location: SourceLocation) : Token {
-}
+class StopToken(override var location: SourceLocation) : Token

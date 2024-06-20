@@ -80,33 +80,36 @@ class PathTracer(
     }
 }
 
-class PointLightRenderer(world: World, backgroundColor: Color = Color(), private val ambientColor: Color = Color(0f, 0f, 0f)):
-                        Renderer(world = world, backgroundColor = backgroundColor){
+class PointLightRenderer(
+    world: World,
+    backgroundColor: Color = Color(),
+    private val ambientColor: Color = Color(0f, 0f, 0f)
+) :
+    Renderer(world = world, backgroundColor = backgroundColor) {
 
     override fun render(ray: Ray): Color {
         val hit = world.rayIntersection(ray) ?: return backgroundColor
         val hitMaterial = hit.shape.material
-        var hitColor = this.ambientColor
+        var resultColor = this.ambientColor
 
-        for(light in world.pointLights){
-            if(world.isPointVisible(light.position, hit.worldPoint)){
+        for (light in world.pointLights) {
+            if (world.isPointVisible(light.position, hit.worldPoint)) {
                 val distVec = hit.worldPoint - light.position
                 val distVecNorm = distVec.norm()
                 val inDir = distVec * (1f / distVecNorm)
                 val cosTheta = max(0f, -ray.dir.normalizedDot(hit.normal))
-                var distFactor = 1f
-                if (light.linearRadius > 0f) {
-                    distFactor = (light.linearRadius / distVecNorm)
-                }
+                val distFactor =
+                    if (light.linearRadius > 0f) (light.linearRadius / distVecNorm) * (light.linearRadius / distVecNorm)
+                    else 1f
 
                 val emittedColor = hitMaterial.emittedRad.getColor(hit.surfacePoint)
                 val brdfColor = hitMaterial.brdf.eval(hit.normal, inDir, -ray.dir, hit.surfacePoint)
 
-                hitColor += (emittedColor + brdfColor) * light.color * cosTheta * distFactor
+                resultColor += (emittedColor + brdfColor) * light.color * cosTheta * distFactor
             }
 
         }
-        return hitColor
+        return resultColor
     }
 
 }

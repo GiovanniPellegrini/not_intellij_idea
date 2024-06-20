@@ -23,7 +23,6 @@ import TriangleMesh
 import areClose
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestTemplate
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
@@ -317,7 +316,7 @@ class InputStreamTest {
             uniform(<0.4, 0, 1>)
         )
         
-        box laMiaBox((1,2,3),(-2,-3,-4), translation(<-4, 0, 1>), box_material)      
+        box laMiaBox((1,2,3),(-2,-3,-4), translation([-4, 0, 1]), box_material)      
             """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -509,8 +508,8 @@ class InputStreamTest {
         assert(areClose(scene.world.pointLights[0].linearRadius, 1f))
 
 
-
     }
+}
 
 
 

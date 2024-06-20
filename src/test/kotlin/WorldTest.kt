@@ -153,7 +153,6 @@ class WorldTest {
         assert(world.isPointVisible(point = Point(0f, 0f, 2f),
             obsPos = Point(-2.2f, 0f, 0f)))
 
-        //this assertion fails
         assert(world.isPointVisible(point = Point(0f, -0.7f, 1f),
                                     obsPos = Point(0f, -0.7f, -1f)))
     }

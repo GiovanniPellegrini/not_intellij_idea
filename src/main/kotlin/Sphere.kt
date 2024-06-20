@@ -20,8 +20,7 @@ class Sphere(
      */
     override fun pointInternal(point: Point): Boolean {
         val point1 = transformation.inverse() * point
-        if (point1.toVec().sqNorm() <= 1f) return true
-        else return false
+        return point1.toVec().sqNorm() <= 1f
     }
 
     /**
@@ -126,9 +125,9 @@ class Sphere(
     /**
      * Returns the normal of the sphere at a given point with respect to the direction of the incident ray
      */
-    private fun sphereNormal(point: Point, rayDir:Vector): Normal{
-        val result = Normal(point.x,point.y,point.z)
-        return if (point.toVec()*rayDir<0f){
+    private fun sphereNormal(point: Point, rayDir: Vector): Normal {
+        val result = Normal(point.x, point.y, point.z)
+        return if (point.toVec() * rayDir < 0f) {
             result
         } else {
             -result

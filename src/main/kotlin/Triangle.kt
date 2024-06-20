@@ -127,7 +127,7 @@ class Triangle(
     }
 
     /**
-     * Returns all the the intersection of a ray with the triangle
+     * Returns all the intersection of a ray with the triangle
      */
     override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
         val hits = ArrayList<HitRecord>()
@@ -147,26 +147,6 @@ class Triangle(
         val beta = solution[0]
         val gamma = solution[1]
         val t = solution[2]
-        if(t in (invRay.tMin..invRay.tMax) && isInside(beta,gamma)){
-            return true
-        }
-        return false
+        return t in (invRay.tMin..invRay.tMax) && isInside(beta,gamma)
     }
-
-
-    /**
-     * evaluates the determinant of a 3x3 matrix
-     */
-
-    /*maybe we should move this function to a helper file the same as are_close and determinant3x3
-    in TriangleTest.kt*/
-    fun determinant3x3(matrix: Array<FloatArray>): Float {
-        return matrix[0][0]*matrix[1][1]*matrix[2][2]+
-               matrix[0][1]*matrix[1][2]*matrix[2][0]+
-               matrix[0][2]*matrix[1][0]*matrix[2][1]-
-               matrix[0][2]*matrix[1][1]*matrix[2][0]-
-               matrix[0][1]*matrix[1][0]*matrix[2][2]-
-               matrix[0][0]*matrix[1][2]*matrix[2][1]
-    }
-
 }

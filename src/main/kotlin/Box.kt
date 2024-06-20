@@ -1,5 +1,3 @@
-import java.security.cert.PolicyNode
-
 /**
  * Box Class: Derived from Shape, represent a box axis aligned
  *
@@ -29,11 +27,9 @@ class Box(
     override fun pointInternal(point: Point): Boolean {
         if (!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
         val point1 = transformation.inverse() * point
-        if (point1.x in Pmin.x..Pmax.x &&
-            point1.y in Pmin.y..Pmax.y &&
-            point1.z in Pmin.z..Pmax.z
-        ) return true
-        else return false
+        return point1.x in Pmin.x..Pmax.x &&
+                point1.y in Pmin.y..Pmax.y &&
+                point1.z in Pmin.z..Pmax.z
     }
 
 
@@ -219,16 +215,16 @@ class Box(
      * quickRayIntersection evaluates if a ray intersects the box
      */
     override fun quickRayIntersection(ray: Ray): Boolean {
-        val invRay=ray.transformation(transformation.inverse())
-        var t0=invRay.tMin
-        var t1=invRay.tMax
+        val invRay = ray.transformation(transformation.inverse())
+        var t0 = invRay.tMin
+        var t1 = invRay.tMax
 
         /*
         iterate over x, y and z to evaluate t-values
         at the end if t0 < t1 means that the intervals [t_i(0),t_i(1)]are not disjointed and thus
         the ray intersects the box
         */
-        for(i in 0 until 3) {
+        for (i in 0 until 3) {
             //evaluate t values where the ray intersects the plane of the box for each coordinate xyz
             var tmin = (Pmin[i] - (invRay.origin)[i]) / invRay.dir[i]
             var tmax = (Pmax[i] - (invRay.origin)[i]) / invRay.dir[i]

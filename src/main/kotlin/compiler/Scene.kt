@@ -36,7 +36,7 @@ import Shape
  * Scene class: contains all variables included in a scene file
  *
  * @param materials: Dictionary of "materialName" -> `Material`
- * @param world: Container of all shapes
+ * @param world: Container of all shapes and Point-lights in the scene
  * @param camera: Observer camera
  * @param floatVariables: floating point variable declared in the file
  * @param overriddenVariables: overridden floating point variable declared in the file
@@ -343,7 +343,7 @@ class Scene(
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ',')
+        expectSymbol(inputStream, ')')
 
         return mapOf(
             shapeName to Box(
@@ -623,7 +623,9 @@ class Scene(
         )
     }
 
-    // PointLight is defined as PointLight(Point, Color, radius: Float)
+    /**
+     * Parses a point light object from the input stream
+     */
     private fun parsePointLight(inputStream: InStream): PointLight {
         expectSymbol(inputStream, '(')
         val position = parsePoint(inputStream)

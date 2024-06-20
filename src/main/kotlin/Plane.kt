@@ -15,8 +15,8 @@ class Plane(
      */
     override fun pointInternal(point: Point): Boolean {
         val point1 = transformation.inverse() * point
-        if (point1.z < 1e-5f) return true
-        else return false
+        return point1.z < 1e-5f
+
     }
 
     /**
@@ -57,7 +57,7 @@ class Plane(
 
     override fun quickRayIntersection(ray: Ray): Boolean {
         val invRay = ray.transformation(transformation.inverse())
-        if(abs(invRay.dir.z) <1e-5f) return false
+        if (abs(invRay.dir.z) < 1e-5f) return false
 
         val t = -invRay.origin.z / invRay.dir.z
         return invRay.tMin < t && t < invRay.tMax

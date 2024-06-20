@@ -25,7 +25,7 @@ abstract class BRDF(open val p: Pigment) {
  * @param p: Pigment, the pigment of object depending on the BRDF
  * @param reflectance: Float, the reflectance of the object
  */
-class DiffusionBRDF(override val p: Pigment, val reflectance: Float = 1f) : BRDF(p) {
+class DiffusionBRDF(override val p: Pigment, private val reflectance: Float = 1f) : BRDF(p) {
     override fun eval(normal: Normal, inDir: Vector, outDir: Vector, uv: Vec2d): Color {
         return p.getColor(uv) * (reflectance / PI.toFloat())
     }
@@ -57,7 +57,7 @@ class DiffusionBRDF(override val p: Pigment, val reflectance: Float = 1f) : BRDF
  * @param p: Pigment, the pigment of object depending on the BRDF
  * @param thresholdAngleRad: Float, the threshold angle in radians
  */
-class SpecularBRDF(override val p: Pigment, val thresholdAngleRad: Float = PI.toFloat() / 1800f) : BRDF(p) {
+class SpecularBRDF(override val p: Pigment, private val thresholdAngleRad: Float = PI.toFloat() / 1800f) : BRDF(p) {
     override fun eval(normal: Normal, inDir: Vector, outDir: Vector, uv: Vec2d): Color {
         val thetaIn = acos(normal.normalizedDot(inDir))
         val thetaOut = acos(normal.normalizedDot(outDir))

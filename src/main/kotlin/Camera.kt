@@ -4,5 +4,5 @@
  * @property fireRay: Abstract function that generates a ray for a given pixel coordinates
  */
 interface Camera {
-    abstract fun fireRay(u: Float, v: Float): Ray
+    fun fireRay(u: Float, v: Float): Ray
 }

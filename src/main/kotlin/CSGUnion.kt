@@ -1,26 +1,37 @@
-/**
- * CSG= CONSTRUCTIVE SOLID GEOMETRY
+/*
+ * CSG = CONSTRUCTIVE SOLID GEOMETRY
  *
  * This class is the implementation of the operation Union between shapes
+ * Shape2 is combined with shape1
  *
- * It's useful to understand the code to consult  the slides #3 (for @rayIntersection) and #15 (for @rayListIntersection)
- * at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
+ * It's useful to understand the code to consult the slides at the link https://web.cse.ohio-state.edu/~parent.1/classes/681/Lectures/19.RayTracingCSG.pdf
  */
 
+
+/**
+ * CSGUnion class : derived from Shape, it represents the boolean union composition between two shapes
+ *
+ * @property shape1: the first shape
+ * @property shape2: the second shape that will be combined with the first shape
+ * @property transformation: the transformation that will be applied to the shape
+ * @property material: the material of the shape
+ */
 class CSGUnion(
-    val shape1: Shape,
-    val shape2: Shape,
+    private val shape1: Shape,
+    private val shape2: Shape,
     override val transformation: Transformation = Transformation(),
     override val material: Material = Material()
 ) : Shape {
 
+    /**
+     * Returns Boolean if a point is internal to the CSG
+     */
     override fun pointInternal(point: Point): Boolean {
-        if (shape1.pointInternal(transformation.inverse() * point) || shape2.pointInternal(transformation.inverse() * point)) return true
-        else return false
+        return shape1.pointInternal(transformation.inverse() * point) || shape2.pointInternal(transformation.inverse() * point)
     }
 
     /**
-     * function to calculate the HitRecord given a ray
+     * Returns the closest ray intersection with CSG
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val hitsTot = mutableListOf<HitRecord>()
@@ -41,7 +52,7 @@ class CSGUnion(
 
 
     /**
-     * return all the intersection that can be:
+     * Returns all the intersection that can be:
      * - on the surface of the first shape and not inside the second shape
      * - on the surface of the second shape and not inside the first shape
      */
@@ -60,17 +71,20 @@ class CSGUnion(
                 if (!shape1.pointInternal(h.worldPoint)) hits.add(transformation * h)
         }
 
-         if(hits.isEmpty()) return null
-         else{
-             hits.sortBy { it.t }
-             return hits
-         }
-     }
+        if (hits.isEmpty()) return null
+        else {
+            hits.sortBy { it.t }
+            return hits
+        }
+    }
 
+    /**
+     * Returns Boolean if a ray intersects the CSG
+     */
     override fun quickRayIntersection(ray: Ray): Boolean {
-        val invRay=ray.transformation(transformation.inverse())
-        if(shape1.rayIntersectionList(invRay)!=null) return true
-        if(shape2.rayIntersectionList(invRay)!=null) return true
+        val invRay = ray.transformation(transformation.inverse())
+        if (shape1.rayIntersectionList(invRay) != null) return true
+        if (shape2.rayIntersectionList(invRay) != null) return true
         return false
     }
 }
