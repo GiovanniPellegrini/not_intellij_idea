@@ -1,11 +1,18 @@
 import kotlin.math.*
 
 /**
- * Cone shape with a circumference with radius 1 base centered at (0,0,0) and vertex at (0,0,0) is developed
+ * Cone class: Derived from Shape, represents a cone centered at the origin with a height of 1 and a radius of 1
  */
 
-class Cone(override val transformation: Transformation=Transformation(), override val material: Material = Material()) :
+class Cone(
+    override val transformation: Transformation = Transformation(),
+    override val material: Material = Material()
+) :
     Shape {
+
+    /**
+     * Returns ture if a point is inside the cone
+     */
     override fun pointInternal(point: Point): Boolean {
         val invPoint = transformation.inverse() * point
         return if (invPoint.z in 0f..1f && invPoint.x.pow(2) + invPoint.y.pow(2) - (invPoint.z - 1f).pow(2) <= 0) true
@@ -13,7 +20,7 @@ class Cone(override val transformation: Transformation=Transformation(), overrid
     }
 
     /**
-     * evaluates if a ray intersect a cone and return the closest intersection.
+     * Returns all the intersections of a ray with the cone
      * To understand the math of the code visit  https://lousodrome.net/blog/light/2017/01/03/intersection-of-a-ray-and-a-cone/
      */
     override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
@@ -87,6 +94,10 @@ class Cone(override val transformation: Transformation=Transformation(), overrid
     }
 
 
+    /**
+     * Returns the closest intersection of a ray with the cone
+     * To understand the math of the code visit  https://lousodrome.net/blog/light/2017/01/03/intersection-of-a-ray-and-a-cone/
+     */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay = ray.transformation(transformation.inverse())
         val origin = invRay.origin.toVec()
@@ -128,6 +139,9 @@ class Cone(override val transformation: Transformation=Transformation(), overrid
         }
     }
 
+    /**
+     * Returns the normal of the cone at a given point and a ray direction
+     */
     private fun coneNormal(point: Point, rayDir: Vector): Normal {
         val result = Normal(point.x, point.y, point.z)
         return if (point.toVec() * rayDir < 0f) {
@@ -137,6 +151,9 @@ class Cone(override val transformation: Transformation=Transformation(), overrid
         }
     }
 
+    /**
+     * Returns the UV coordinates of a point on the cone
+     */
     fun conePointToUV(point: Point): Vec2d {
         if (abs(point.z) < 1e-4) {
             val u: Float = point.x
@@ -154,47 +171,3 @@ class Cone(override val transformation: Transformation=Transformation(), overrid
     }
 }
 
-
-/**
- * val invRay = ray.transformation(transformation.inverse())
- *
- *         val origin = invRay.origin.toVec()
- *         val direction = invRay.dir
- *         direction.normalize()
- *         val V = Vector(0f, 0f, -1f)
- *         val C = Vector(0f, 0f, 1f)
- *         val theta = cos(PI / 4)
- *         val co = origin - C
- *
- *         //compute the delta
- *         val a = (direction * V).pow(2) - theta * theta
- *         val b = 2 * ((direction * V) * (co * V) - (direction * co) * theta * theta)
- *         val c = (co * V) * (co * V) - (co * co) * theta * theta
- *
- *
- *         val delta = b.pow(2) - 4 * a * c
- *
- *         if (delta <= 0) return null
- *
- *         val t1: Float = (-b - sqrt(delta) / (2 * a)).toFloat()
- *         val t2 = (-b + sqrt(delta) / (2 * a)).toFloat()
- *
- *         val firstHitT: Float = if (invRay.tMin < t1 && t1 < invRay.tMax) {
- *             t1
- *         } else if (invRay.tMin < t2 && t2 < invRay.tMax) {
- *             t2
- *         } else {
- *             return null
- *         }
- *
- *         val hitPoint = invRay.at(firstHitT)
- *         return HitRecord(
- *             worldPoint = this.transformation * hitPoint,
- *             normal = this.transformation * coneNormal(hitPoint, invRay.dir),
- *             surfacePoint = conePointToUV(hitPoint),
- *             t = firstHitT,
- *             ray = ray,
- *             shape = this
- *         )
- *
- */
