@@ -1,4 +1,5 @@
 ## Head
+ - added Cone shape (PR #21)
  - added redeclaration error (PR #22)
  - added `point-Light` tracing algorithm
  - added parser and lexer for the scene file, render function in main
