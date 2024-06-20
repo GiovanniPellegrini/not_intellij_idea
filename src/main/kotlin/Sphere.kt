@@ -11,7 +11,7 @@ import kotlin.math.sqrt
  */
 
 class Sphere(
-    val transformation: Transformation = Transformation(),
+    override val transformation: Transformation = Transformation(),
     override val material: Material = Material()
 ) : Shape {
 

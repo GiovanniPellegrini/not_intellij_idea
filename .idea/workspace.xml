@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Color.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HdrImage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HitRecord.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HitRecord.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/HomMatrix.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ImageTracer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ImageTracer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Math.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Math.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Normal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Normal.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Point.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Point.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Triangle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Triangle.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Vector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/vec2d.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/vec2d.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ColorTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/HdrImageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/MathTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/MathTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/NormalTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/NormalTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/OrthogonalCameraTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/OrthogonalCameraTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/RendererTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/RendererTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/TriangleTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/TriangleTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/VectorTest.kt" afterDir="false" />
-    </list>
+    <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -161,9 +139,6 @@
     &quot;Kotlin.MainKt.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -190,11 +165,12 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="compiler" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TriangleMeshTest.testRotation">
-    <configuration name="TriangleMeshTest.testRayIntersection" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.InputStreamTest">
+    <configuration name="InputStreamTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -207,7 +183,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testRayIntersection&quot;" />
+            <option value="&quot;compiler.InputStreamTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -218,7 +194,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleMeshTest.testRotation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseBoxTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -231,7 +207,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testRotation&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseBoxTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -242,7 +218,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleMeshTest.testTransformation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseDoubleCam" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -255,7 +231,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleMeshTest.testTransformation&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseDoubleCam&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -266,7 +242,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.kramerRuleTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.parseTrianglesTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -279,7 +255,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleTest.kramerRuleTest&quot;" />
+            <option value="&quot;compiler.InputStreamTest.parseTrianglesTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -290,7 +266,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="TriangleTest.testDeterminant3x3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="InputStreamTest.testInputFile" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -303,7 +279,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;TriangleTest.testDeterminant3x3&quot;" />
+            <option value="&quot;compiler.InputStreamTest.testInputFile&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -316,19 +292,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.TriangleMeshTest.testRotation" />
-        <item itemvalue="Gradle.TriangleMeshTest.testTransformation" />
-        <item itemvalue="Gradle.TriangleMeshTest.testRayIntersection" />
-        <item itemvalue="Gradle.TriangleTest.kramerRuleTest" />
-        <item itemvalue="Gradle.TriangleTest.testDeterminant3x3" />
+        <item itemvalue="Gradle.InputStreamTest" />
+        <item itemvalue="Gradle.InputStreamTest.parseBoxTest" />
+        <item itemvalue="Gradle.InputStreamTest.parseTrianglesTest" />
+        <item itemvalue="Gradle.InputStreamTest.testInputFile" />
+        <item itemvalue="Gradle.InputStreamTest.parseDoubleCam" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17890.1" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17890.1" />
       </set>
     </attachedChunks>
   </component>
@@ -367,6 +343,10 @@
       <workItem from="1716284974731" duration="1646000" />
       <workItem from="1716294212465" duration="8599000" />
       <workItem from="1716539453538" duration="610000" />
+      <workItem from="1717063730406" duration="306000" />
+      <workItem from="1718203942634" duration="9163000" />
+      <workItem from="1718262587778" duration="30237000" />
+      <workItem from="1718371379911" duration="446000" />
     </task>
     <servers />
   </component>

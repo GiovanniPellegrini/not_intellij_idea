@@ -1,36 +1,51 @@
 import kotlin.math.floor
 
 /**
- * Interface for Pigment, represent the function that returns the color of a point
- * parametrized by a 2D vector of a surface
+ * Pigment interface: used to define the color of a point
+ *
+ * @property getColor: Return the color of a point on a surface
+
  */
 interface Pigment {
+    /**
+     * Return the color of a point on a surface
+     */
     fun getColor(vec2d: Vec2d): Color
 }
 
 /**
- * uniform pigment, return the same color for all points
+ * Uniform pigment class: derived from Pigment return the same color for all points
+ *
+ * @property color: Color of the pigment
  */
-class UniformPigment(private val color: Color) : Pigment {
-
-    constructor(): this(Color())
-
+class UniformPigment(val color: Color = Color()) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
         return color
     }
 }
+
 /**
- * checkered pigment, return one of two colors depending on the position of the point
+ * Checkered pigment class: derived from Pigment return a checkered pattern of two colors
+ *
+ * @property color1: First color of the checkered pattern
+ * @property color2: Second color of the checkered pattern
+ * @property steps: Number of steps of the checkered pattern
+ *
+ * @constructor default: color1 = Color(), color2 = Color(1f,1f,1f), steps = 3
  */
-class CheckeredPigment(private val color1: Color, private val color2: Color, private val steps: Int) : Pigment {
+class CheckeredPigment(val color1: Color = Color(), val color2: Color = Color(1f, 1f, 1f), val steps: Int = 3) :
+    Pigment {
     override fun getColor(vec2d: Vec2d): Color {
         val u = floor(vec2d.u * steps).toInt()
         val v = floor(vec2d.v * steps).toInt()
         return if ((u % 2) == (v % 2)) color1 else color2
     }
 }
+
 /**
- * Image pigment, return the color of a pixel of an image
+ * Image pigment class: derived from Pigment return the color of a point from an HDRimage
+ *
+ * @property image: HDRimage used to get the color of a point
  */
 class ImagePigment(private val image: HdrImage) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {

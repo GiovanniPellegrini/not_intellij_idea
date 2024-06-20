@@ -9,7 +9,7 @@
  */
 
 class Triangle(
-    val transformation: Transformation = Transformation(),
+    override val transformation: Transformation = Transformation(),
     val a: Point = Point(0f, 0f, 0f),
     val b: Point = Point(0f, 0f, 0f),
     val c: Point = Point(0f, 0f, 0f), override val material: Material = Material()
@@ -137,6 +137,5 @@ class Triangle(
             return hits
         }
     }
-
 
 }

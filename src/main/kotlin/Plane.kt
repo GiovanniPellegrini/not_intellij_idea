@@ -5,7 +5,7 @@ import kotlin.math.floor
  * Plane class: Derived from Shape, represents a plane in the XY plane
  */
 class Plane(
-    val transformation: Transformation = Transformation(),
+    override val transformation: Transformation = Transformation(),
     override val material: Material = Material()
 ) : Shape {
 
