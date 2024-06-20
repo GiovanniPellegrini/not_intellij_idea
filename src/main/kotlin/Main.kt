@@ -9,31 +9,35 @@ import compiler.*
 import java.io.*
 
 class NIJ : CliktCommand(
-    help = "NIJ tracer"
+    help = "------------------------------------------------------------ \n" +
+           "------------------------------------------------------------ \n" +
+           "NOT INTELLIJ IDEA                        \n" +
+           "------------------------------------------------------------ \n" +
+           "------------------------------------------------------------ \n" +
+           "------------------------------------------------------------ \n" +
+           " By Giovanni Pellegrini and Lorenzo Esposito"
+
 ) {
     override fun run() = Unit
 }
 
 class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM file to a PNG image") {
     private val inputFile by option("-i", "--input", help = ".pfm filename Input").required()
-    private val aValue by option("-a", "--aValue", help = "parameter 'a' (default=1)").float().default(1f)
-    private val gammaValue by option("-g", "--gamma", help = "parameter 'gamma' (default=1)").float().default(1f)
-    private val outputFile by option("-o", "--output", help = ".png filename Output").required()
+    private val aValue by option("-a", "--aValue", help = "parameter 'a' (default=1)")
+        .float()
+        .default(1f)
+        .validate { require(it > 0f) { "Parameter 'a' must be strictly positive" } }
+    private val gammaValue by option("-g", "--gamma", help = "parameter 'gamma' (default=1)")
+        .float()
+        .default(1f)
+        .validate { require(it > 0f) { "Parameter 'gamma' must be strictly positive" } }
+    private val outputFile by option(
+        "-o",
+        "--output",
+        help = ".png filename Output (default output.png)"
+    ).default("output.png")
 
     override fun run() {
-
-        if (aValue <= 0f || gammaValue <= 0f) {
-            throw IllegalArgumentException("parameters 'a' and 'gamma' must be strictly positive")
-        }
-
-        if (!inputFile.endsWith(".pfm")) {
-            throw IllegalArgumentException("First argument must have .pfm extension")
-        }
-
-        if (!outputFile.endsWith(".png")) {
-            throw IllegalArgumentException("Last argument must have .png extension")
-        }
-
         val sampleStream = FileInputStream(inputFile)
         val sampleImage = readPfmImage(sampleStream)
         sampleImage.normalizeImage(aValue)
@@ -46,12 +50,16 @@ class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM 
 }
 
 class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo txt") {
-    private val rotationAngle by option("-r", "--rotation", help = "rotation angle of the camera (default=0)").float()
+    private val rotationAngle by option(
+        "-r",
+        "--rotation",
+        help = "rotation angle of the camera (default=0)"
+    ).float()
         .default(0f)
-    private val pfmOutput by option("-p", "--pfm", help = ".pfm filename Output").required()
-    private val pngOutput by option("-o", "--output", help = "Output .png filename").required()
+    private val pfmOutput by option("-p", "--pfm", help = ".pfm filename Output").default("image.pfm")
+    private val pngOutput by option("-o", "--output", help = "Output .png filename").default("image.png")
     private val savePfmOutput by option("-s", "--save", help = "save .pfm Output").convert { it.toBoolean() }
-        .default(false)
+        .default(true)
 
     override fun run() {
         val stream = InStream(stream = FileReader("src/main/kotlin/examples/demo.txt"), fileName = "demo.txt")
@@ -98,8 +106,10 @@ class Render : CliktCommand(
     ).int().default(2)
     private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (Int), default 15").int()
         .default(15)
-    private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (Int), default 480").int().default(480)
-    private val imageHeight by option("-h", "--imageHeight", help = "imageHeight (Int), default 480").int().default(480)
+    private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (Int), default 480").int()
+        .default(480)
+    private val imageHeight by option("-h", "--imageHeight", help = "imageHeight (Int), default 480").int()
+        .default(480)
     private val pngOutput by option("-p", "--pngOutput", help = ".png filename Output").default("image.png")
     private val pfmOutput by option("-f", "--pfmOutput", help = ".pfm filename Output").default("image.pfm")
     private val antialiasing by option(
@@ -108,7 +118,11 @@ class Render : CliktCommand(
         help = "Antialiasing (Boolean)"
     ).convert { it.toBoolean() }
         .default(false)
-    private val raysForSide by option("-s", "--raysForSide", help = "Antialiasing number of rays for side (Int)").int()
+    private val raysForSide by option(
+        "-s",
+        "--raysForSide",
+        help = "Antialiasing number of rays for side (Int)"
+    ).int()
         .default(2)
     val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 

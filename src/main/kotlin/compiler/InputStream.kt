@@ -18,7 +18,7 @@ private const val WHITESPACE = " \t\n\r"
  *  @param saveToken: token saved
  */
 class InStream(
-    val stream: InputStreamReader, private val fileName: String = "", private val tabulation: Int = 4,
+    val stream: InputStreamReader, val fileName: String = "", private val tabulation: Int = 4,
     var location: SourceLocation = SourceLocation(fileName = fileName, lineNumber = 1, columnNumber = 1),
     private var savedChar: Char = '\u0000', private var savedLocation: SourceLocation = location,
     private var saveToken: Token? = null

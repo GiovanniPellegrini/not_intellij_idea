@@ -194,6 +194,8 @@ For example:
         
     CSGUnion csg1(sphere1,plane1,rotation_y(30), new_material)
 
+If you use CSG the shapes used in the operation will be ignored, only the result of the operation will be rendered.
+
 ## Pigments
 
 Pigments are used to define the color of the object, you can define a pigment using the following syntax:
@@ -233,13 +235,25 @@ Remember that if you define a point light you must use the Point-light ray traci
 
 ## Other features
 
-Between definitions, you can add whitespaces and new lines as you like, the compiler will ignore them.
+- Between definitions, you can add whitespaces and new lines as you like, the compiler will ignore them.
 
-    plane      myplane  
+      plane      myplane  
     
               (identity, material)
 
-    % this line will not throw an error
+      % this line will not throw an error
+
+- You cant redeclare a shape a material or a float variable with the same identifier
+
+      material material_name(
+                typeOfBRDF(Uniform),
+                Uniform(Color)
+            )
+
+      material material_name(
+                typeOfBRDF(Uniform),
+                Uniform(Color)
+            ) % this will throw an error
 
 
 

@@ -759,6 +759,10 @@ class Scene(
         for (shape in shapes.values) {
             this.world.addShape(shape)
         }
+        if (this.camera == null) {
+            print("In file ${inputStream.fileName} Camera not defined, Using default camera\n")
+            this.camera = PerspectiveCamera(1f, 1f, Transformation())
+        }
     }
 }
 
