@@ -5,7 +5,6 @@ import java.nio.ByteOrder
 import javax.imageio.ImageIO
 import kotlin.math.*
 
-
 /**
  * HDR image Class
  *
@@ -149,10 +148,4 @@ data class HdrImage(
 
 }
 
-/**
- * Returns x/(1+x)
- */
-fun clamp(x: Float): Float {
-    return x / (x + 1)
-}
 

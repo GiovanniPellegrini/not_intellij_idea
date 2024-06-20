@@ -13,7 +13,7 @@ class ImageTracer(
     private val image: HdrImage,
     private val camera: Camera,
     private val pcg: PCG = PCG(),
-    val raysForSide: Int = 0
+    private val raysForSide: Int = 0
 ) {
 
     /**

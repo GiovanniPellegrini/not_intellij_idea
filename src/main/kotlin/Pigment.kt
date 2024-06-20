@@ -43,9 +43,9 @@ class CheckeredPigment(val color1: Color = Color(), val color2: Color = Color(1f
 }
 
 /**
- * Image pigment class: derived from Pigment return the color of a point from an HDRimage
+ * Image pigment class: derived from Pigment return the color of a point from an HDRImage
  *
- * @property image: HDRimage used to get the color of a point
+ * @property image: HDRImage used to get the color of a point
  */
 class ImagePigment(private val image: HdrImage) : Pigment {
     override fun getColor(vec2d: Vec2d): Color {
@@ -53,11 +53,11 @@ class ImagePigment(private val image: HdrImage) : Pigment {
         var row = (vec2d.v * image.height).toInt()
 
         if (col >= this.image.width) {
-            col = this.image.width - 1;
+            col = this.image.width - 1
         }
 
         if (row >= this.image.height) {
-            row = this.image.height - 1;
+            row = this.image.height - 1
         }
         return image.getPixel(col, row)
     }

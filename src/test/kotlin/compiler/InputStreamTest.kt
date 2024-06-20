@@ -1,5 +1,6 @@
 package compiler
 
+import Box
 import CheckeredPigment
 import DiffusionBRDF
 import SpecularBRDF
@@ -10,18 +11,18 @@ import PerspectiveCamera
 import Transformation
 import Sphere
 import Translation
-import Box
 import CSGDifference
 import CSGIntersection
 import CSGUnion
 import Vector
 import Vec2d
 import Color
+import Point
 import Rotation
 import TriangleMesh
+import areClose
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestTemplate
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
@@ -305,6 +306,35 @@ class InputStreamTest {
     }
 
     @Test
+    fun parseBoxTest() {
+        val scene = Scene()
+        val byteArrayStream = ByteArrayInputStream(
+            """
+        
+        material box_material(
+            diffuse(uniform(<0.7, 0.2, 0.2>)),
+            uniform(<0.4, 0, 1>)
+        )
+        
+        box laMiaBox((1,2,3),(-2,-3,-4), translation([-4, 0, 1]), box_material)      
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(byteArrayStream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.world.shapes[0] is Box)
+        assert(
+            scene.world.shapes[0].transformation.isClose(
+                Translation(Vector(-4f, 0f, 1f))
+            )
+        )
+        assertEquals(
+            scene.world.shapes[0].material.brdf.p.getColor(Vec2d(0.0f, 0.0f)),
+            Color(0.7f, 0.2f, 0.2f)
+        )
+        assert(scene.shapes.keys.contains("laMiaBox"))
+    }
+
+    @Test
     fun parseTrianglesTest() {
         val scene = Scene()
         val byteArrayStream = ByteArrayInputStream(
@@ -460,7 +490,25 @@ class InputStreamTest {
         assert(scene.floatVariables["a"] == 13f)
     }
 
+    @Test
+    fun parsePointLightTest() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+            PointLight((1,2,3), <0.3,0.6,2>, 1)
+            
+            """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
 
+        assert(scene.world.pointLights.size == 1)
+        assert(scene.world.pointLights[0].position == Point(1f, 2f, 3f))
+        assert(scene.world.pointLights[0].color == Color(0.3f, 0.6f, 2f))
+        assert(areClose(scene.world.pointLights[0].linearRadius, 1f))
+
+
+    }
 }
 
 

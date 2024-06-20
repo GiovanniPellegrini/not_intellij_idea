@@ -29,13 +29,14 @@ import readPfmImage
 import java.io.FileInputStream
 import Sphere
 import Plane
+import PointLight
 import Shape
 
 /**
  * Scene class: contains all variables included in a scene file
  *
  * @param materials: Dictionary of "materialName" -> `Material`
- * @param world: Container of all shapes
+ * @param world: Container of all shapes and Point-lights in the scene
  * @param camera: Observer camera
  * @param floatVariables: floating point variable declared in the file
  * @param overriddenVariables: overridden floating point variable declared in the file
@@ -342,7 +343,7 @@ class Scene(
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ',')
+        expectSymbol(inputStream, ')')
 
         return mapOf(
             shapeName to Box(
@@ -623,6 +624,21 @@ class Scene(
     }
 
     /**
+     * Parses a point light object from the input stream
+     */
+    private fun parsePointLight(inputStream: InStream): PointLight {
+        expectSymbol(inputStream, '(')
+        val position = parsePoint(inputStream)
+        expectSymbol(inputStream, ',')
+        val color = parseColor(inputStream)
+        expectSymbol(inputStream, ',')
+        val radius = expectNumber(inputStream)
+        expectSymbol(inputStream, ')')
+
+        return PointLight(position, color, radius)
+    }
+
+    /**
      * Reads a scene description from the input stream and returns a Scene object
      */
     fun parseScene(inputStream: InStream) {
@@ -706,13 +722,18 @@ class Scene(
                     this.shapes.putAll(csgDifferences)
                 }
 
+                KeyWordEnum.POINTLIGHT -> {
+                    val pointLight = parsePointLight(inputStream)
+                    this.world.addPointLight(pointLight)
+                }
+
                 else -> {
                     throw GrammarError(what.location, "Unexpected token $what")
                 }
             }
         }
         for (shape in shapes.values) {
-            this.world.add(shape)
+            this.world.addShape(shape)
         }
     }
 }

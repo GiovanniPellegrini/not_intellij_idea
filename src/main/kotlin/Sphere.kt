@@ -20,8 +20,7 @@ class Sphere(
      */
     override fun pointInternal(point: Point): Boolean {
         val point1 = transformation.inverse() * point
-        if (point1.toVec().sqNorm() <= 1f) return true
-        else return false
+        return point1.toVec().sqNorm() <= 1f
     }
 
     /**
@@ -106,6 +105,22 @@ class Sphere(
         else hits
     }
 
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        val invRay = ray.transformation(transformation.inverse())
+        val origin = invRay.origin.toVec()
+        val a = invRay.dir.sqNorm()
+        val b = 2f * (origin * invRay.dir)
+        val c = origin.sqNorm() - 1f
+
+        val delta = b * b - 4f * a * c
+        if (delta < 0f) return false
+
+        val sqrtDelta = sqrt(delta)
+        val t1 = (-b - sqrtDelta) / (2f * a)
+        val t2 = (-b + sqrtDelta) / (2f * a)
+
+        return (invRay.tMin < t1 && t1 < invRay.tMax) or (invRay.tMin < t2 && t2 < invRay.tMax)
+    }
 
     /**
      * Returns the normal of the sphere at a given point with respect to the direction of the incident ray

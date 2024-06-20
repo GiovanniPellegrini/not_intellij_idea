@@ -8,6 +8,12 @@ fun areClose(x: Float, y: Float, epsilon: Float = 1.0E-5F): Boolean {
     return (abs(x - y) < epsilon)
 }
 
+/**
+ * Returns x/(1+x)
+ */
+fun clamp(x: Float): Float {
+    return x / (x + 1)
+}
 
 /**
  * Returns an Orthonormal base from a normal. The normal is the z axis of the new base

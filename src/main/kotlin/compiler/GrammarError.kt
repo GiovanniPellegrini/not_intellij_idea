@@ -8,7 +8,7 @@ import java.io.File
  * @param location: location of the error
  * @param message:  error message
  */
-class GrammarError(val location: SourceLocation, message: String) : RuntimeException(message) {
+class GrammarError(private val location: SourceLocation, message: String) : RuntimeException(message) {
     override fun toString(): String {
         val fileLines = File(location.fileName).readLines()
         val errorLine = fileLines[location.lineNumber - 1]
