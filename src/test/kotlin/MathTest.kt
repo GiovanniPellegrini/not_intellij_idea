@@ -8,12 +8,9 @@ class MathTest {
 
         for (i in 0 until 10000) {
             val normal = Vector(pcg.randomFloat(), pcg.randomFloat(), pcg.randomFloat())
-
             normal.normalize()
-
             val onb = onbFromZ(normal)
             val delta = 1e-4f
-
 
             assertEquals(onb.third, normal)
             assert(onb.first.xTimes(onb.second).isClose(onb.third))
@@ -30,8 +27,6 @@ class MathTest {
             assert(onb.second.xTimes(onb.third).isClose(onb.first))
             assert(onb.third.xTimes(onb.first).isClose(onb.second))
         }
-
-
     }
 }
 
