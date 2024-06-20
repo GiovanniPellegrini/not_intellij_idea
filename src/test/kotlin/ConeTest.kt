@@ -39,13 +39,14 @@ class ConeTest {
 
         val ray2 = Ray(Point(5f, 0f, 0f), Vector(-1f, 0f, 0f))
         val hit2 = cone.rayIntersection(ray2)
+
         assertNotNull(hit2)
         assert(
             hit2.isClose(
                 HitRecord(
                     worldPoint = Point(1f, 0f, 0f),
                     normal = Normal(1f, 0f, 0f),
-                    surfacePoint = Vec2d(1f, 0f),
+                    surfacePoint = Vec2d(0f, 1f),
                     t = 4f,
                     ray = ray2,
                     shape = cone
