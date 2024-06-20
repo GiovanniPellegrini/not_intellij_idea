@@ -284,6 +284,9 @@ class Scene(
      */
     private fun parseMaterial(inputStream: InStream): Map<String, Material> {
         val materialName = expectIdentifier(inputStream)
+        if(materialName in materials || materialName in shapes || materialName in floatVariables){
+            throw GrammarError(inputStream.location, "variable $materialName already defined")
+        }
         expectSymbol(inputStream, '(')
         val brdf = parseBrdf(inputStream)
         expectSymbol(inputStream, ',')
@@ -298,6 +301,9 @@ class Scene(
      */
     private fun parseSphere(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
+        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+            throw GrammarError(inStream.location, "variable $shapeName already defined")
+        }
         expectSymbol(inStream, '(')
         val transformation = parseTransformation(inStream)
         expectSymbol(inStream, ',')
@@ -315,6 +321,9 @@ class Scene(
      */
     private fun parsePlane(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
+        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+            throw GrammarError(inStream.location, "variable $shapeName already defined")
+        }
         expectSymbol(inStream, '(')
         val transformation = parseTransformation(inStream)
         expectSymbol(inStream, ',')
@@ -332,6 +341,9 @@ class Scene(
      */
     private fun parseBox(inputStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inputStream)
+        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+            throw GrammarError(inputStream.location, "variable $shapeName already defined")
+        }
         expectSymbol(inputStream, '(')
         val pMin = parsePoint(inputStream)
         expectSymbol(inputStream, ',')
@@ -361,6 +373,9 @@ class Scene(
      */
     private fun parseTriangle(inputStream: InStream): Map<String, Triangle> {
         val triangleName = expectIdentifier(inputStream)
+        if(triangleName in materials || triangleName in shapes || triangleName in floatVariables){
+            throw GrammarError(inputStream.location, "variable $triangleName already defined")
+        }
         expectSymbol(inputStream, '(')
         val a = parsePoint(inputStream)
         expectSymbol(inputStream, ',')
@@ -384,6 +399,9 @@ class Scene(
      */
     private fun parseTriangleMesh(inputStream: InStream): Map<String, TriangleMesh> {
         val triangleMeshName = expectIdentifier(inputStream)
+        if(triangleMeshName in materials || triangleMeshName in shapes || triangleMeshName in floatVariables){
+            throw GrammarError(inputStream.location, "variable $triangleMeshName already defined")
+        }
         expectSymbol(inputStream, '(')
         val token = inputStream.readToken()
         var filename: String? = null
@@ -534,6 +552,9 @@ class Scene(
      */
     private fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
+        if(shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables){
+            throw GrammarError(inputFile.location, "variable $shapeCSGName already defined")
+        }
         expectSymbol(inputFile, '(')
         val shape1 = expectIdentifier(inputFile)
         if (shape1 !in shapes)
@@ -563,6 +584,9 @@ class Scene(
      */
     private fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
+        if(shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables){
+            throw GrammarError(inputFile.location, "variable $shapeCSGName already defined")
+        }
         expectSymbol(inputFile, '(')
         val shape1 = expectIdentifier(inputFile)
         if (shape1 !in shapes)
