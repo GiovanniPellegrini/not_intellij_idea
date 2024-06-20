@@ -342,7 +342,7 @@ class Scene(
         if (materialName !in materials) {
             throw GrammarError(inputStream.location, "unknown material $materialName")
         }
-        expectSymbol(inputStream, ',')
+        expectSymbol(inputStream, ')')
 
         return mapOf(
             shapeName to Box(
