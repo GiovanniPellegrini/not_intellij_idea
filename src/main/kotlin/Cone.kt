@@ -119,14 +119,14 @@ class Cone(
 
         val deltasqr = sqrt(delta)
         val t1 = ((-b - deltasqr) / (2 * a)).toFloat()
-        println(t1)
         val t2 = ((-b + deltasqr) / (2 * a)).toFloat()
-        println(t2)
+
 
         val firstHitT = min(t1, t2)
         if (firstHitT < invRay.tMin || firstHitT > invRay.tMax) return null
         else {
             val hitPoint = invRay.at(firstHitT)
+            if((hitPoint.toVec()-C) * V < 0f) return null
             return HitRecord(
                 worldPoint = this.transformation * hitPoint,
                 normal = this.transformation * coneNormal(hitPoint, invRay.dir),
@@ -155,19 +155,13 @@ class Cone(
      * Returns the UV coordinates of a point on the cone
      */
     fun conePointToUV(point: Point): Vec2d {
-        if (abs(point.z) < 1e-4) {
-            val u: Float = point.x
-            val v: Float = point.y
-            return Vec2d(u, v)
-        } else {
             val u: Float = atan2(point.y, point.x) / (2f * PI.toFloat())
-            val v: Float = point.z
+            val v: Float = 1-point.z
             if (u >= 0) {
                 return Vec2d(u, v)
             } else {
                 return Vec2d(u + 1, v)
             }
-        }
     }
 
     /**

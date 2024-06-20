@@ -87,7 +87,7 @@ class Render : CliktCommand(
     private val algorithm by option(
         "-a",
         "--algorithm",
-        help = "write the algorithm name (pathtracer, pointlighttracer), default pathtracer"
+        help = "write the algorithm name (pathtracer, pointlighttracer,onOff,flatrender), default pathtracer"
     ).default("pathtracer")
     private val inputFile by option("-i", "--input", help = ".txt filename Input").required()
     private val maxDepth by option("-m", "--maxDepth", help = "maxDepth (Int), default 3").int().default(3)
@@ -132,6 +132,11 @@ class Render : CliktCommand(
             )
 
             "pointlighttracer" -> PointLightRenderer(scene.world)
+
+            "onoffrender" -> OnOffRenderer(scene.world)
+
+            "flatrender" -> FlatRenderer(scene.world)
+
             else -> throw IllegalArgumentException("Unknown algorithm")
         }
 
