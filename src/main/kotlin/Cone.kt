@@ -38,7 +38,7 @@ class Cone(val transformation: Transformation = Transformation(), override val m
         if (delta <= 0) return null
 
         delta = sqrt(delta)
-        val t1 = ((-b + delta) / (2 * a)).toFloat()
+        val t1 = ((-b - delta) / (2 * a)).toFloat()
         val t2 = ((-b + delta) / (2 * a)).toFloat()
 
         if (t1 in invRay.tMin..invRay.tMax) {
@@ -102,31 +102,30 @@ class Cone(val transformation: Transformation = Transformation(), override val m
         val b = 2 * ((direction * V) * (OC * V) - (direction * OC * theta * theta))
         val c = (OC * V).pow(2) - (OC * OC * theta * theta)
 
-        var delta = b * b - 4 * a * c
+        var delta = b * b - (4 * a * c)
 
         if (delta <= 0) return null
 
-        delta = sqrt(delta)
-        val t1 = ((-b + delta) / (2 * a)).toFloat()
-        val t2 = ((-b + delta) / (2 * a)).toFloat()
+        val deltasqr = sqrt(delta)
+        val t1 = ((-b - deltasqr) / (2 * a)).toFloat()
+        println(t1)
+        val t2 = ((-b + deltasqr) / (2 * a)).toFloat()
+        println(t2)
 
-        val firstHitT: Float = if (invRay.tMin < t1 && t1 < invRay.tMax) {
-            t1
-        } else if (invRay.tMin < t2 && t2 < invRay.tMax) {
-            t2
-        } else {
-            return null
+        val firstHitT = min(t1, t2)
+        if (firstHitT < invRay.tMin || firstHitT > invRay.tMax) return null
+        else {
+            val hitPoint = invRay.at(firstHitT)
+            return HitRecord(
+                worldPoint = this.transformation * hitPoint,
+                normal = this.transformation * coneNormal(hitPoint, invRay.dir),
+                surfacePoint = conePointToUV(hitPoint),
+                t = firstHitT,
+                ray = ray,
+                shape = this
+            )
+
         }
-        val hitPoint = invRay.at(firstHitT)
-        return HitRecord(
-            worldPoint = this.transformation * hitPoint,
-            normal = this.transformation * coneNormal(hitPoint, invRay.dir),
-            surfacePoint = conePointToUV(hitPoint),
-            t = firstHitT,
-            ray = ray,
-            shape = this
-        )
-
     }
 
     private fun coneNormal(point: Point, rayDir: Vector): Normal {
@@ -138,10 +137,10 @@ class Cone(val transformation: Transformation = Transformation(), override val m
         }
     }
 
-    private fun conePointToUV(point: Point): Vec2d {
+    fun conePointToUV(point: Point): Vec2d {
         if (abs(point.z) < 1e-4) {
-            val u: Float = (point.x + 1) / 2
-            val v: Float = (point.y + 1) / 2
+            val u: Float = point.x
+            val v: Float = point.y
             return Vec2d(u, v)
         } else {
             val u: Float = atan2(point.y, point.x) / (2f * PI.toFloat())

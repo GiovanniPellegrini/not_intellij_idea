@@ -70,7 +70,7 @@ class PathTracer(
         if (hitColorLum > 0f) {
             for (i in 0 until numberOfRays) {
                 val newray =
-                    hitMaterial.brdf.scatterRay(pcg, hit.ray.dir, hit.worldPoint, hit.normal, depth = ray.depth + 1)
+                    hitMaterial.brdf.scatterRay(pcg, hit.ray.dir, hit.worldPoint, hit.normal.normalize(), depth = ray.depth + 1)
                 //recursive call to render
                 val newRadiance = render(newray)
                 cum += newRadiance * hitColor
