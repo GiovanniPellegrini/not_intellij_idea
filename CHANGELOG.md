@@ -1,4 +1,5 @@
 ## Head
+#### - added point-Light tracing algorithm
 #### - added parser and lexer for the scene file, render function in main
 #### - fixed bug "Normal transformation" related to issue #9
 #### - fixed bug "image upside down" related to issue #3

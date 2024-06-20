@@ -220,6 +220,16 @@ Where pigmentKeyword can be:
             image("path/to/image.png")
 
 
+## Point Lights
+
+In NIJ Tracer you can use a simpler ray tracing algorithm that uses point lights to illuminate the scene
+Every point light has its position (point) and color
+
+    pointlight (position, color)
+
+Remember that if you define a point light you must use the Point-light ray tracing algorithm
+
+
 
 ## Other features
 
@@ -230,6 +240,7 @@ Between definitions, you can add whitespaces and new lines as you like, the comp
               (identity, material)
 
     % this line will not throw an error
+
 
 
 
