@@ -4,7 +4,7 @@ import kotlin.math.*
  * Cone shape with a circumference with radius 1 base centered at (0,0,0) and vertex at (0,0,0) is developed
  */
 
-class Cone(val transformation: Transformation = Transformation(), override val material: Material = Material()) :
+class Cone(override val transformation: Transformation=Transformation(), override val material: Material = Material()) :
     Shape {
     override fun pointInternal(point: Point): Boolean {
         val invPoint = transformation.inverse() * point
