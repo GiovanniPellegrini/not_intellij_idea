@@ -31,6 +31,7 @@ enum class KeyWordEnum {
     FLOAT,
     TRIANGLE,
     TRIANGLEMESH,
+    POINTLIGHT
 }
 
 val KEYWORDS: Map<String, KeyWordEnum> = mapOf(
@@ -59,5 +60,6 @@ val KEYWORDS: Map<String, KeyWordEnum> = mapOf(
     "perspective" to KeyWordEnum.PERSPECTIVE, "Perspective" to KeyWordEnum.PERSPECTIVE,
     "float" to KeyWordEnum.FLOAT, "Float" to KeyWordEnum.FLOAT,
     "triangle" to KeyWordEnum.TRIANGLE, "Triangle" to KeyWordEnum.TRIANGLE,
-    "trianglemesh" to KeyWordEnum.TRIANGLEMESH, "TriangleMesh" to KeyWordEnum.TRIANGLEMESH
+    "trianglemesh" to KeyWordEnum.TRIANGLEMESH, "TriangleMesh" to KeyWordEnum.TRIANGLEMESH,
+    "pointlight" to KeyWordEnum.POINTLIGHT, "PointLight" to KeyWordEnum.POINTLIGHT
 )

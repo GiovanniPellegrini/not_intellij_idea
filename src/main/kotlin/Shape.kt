@@ -7,9 +7,10 @@
  * @property pointInternal: function to check if a point is internal to the shape
  */
 interface Shape {
-    val transformation: Transformation
     val material: Material
-    fun rayIntersection(ray: Ray): HitRecord?
-    fun rayIntersectionList(ray: Ray): List<HitRecord>?
+    val transformation: Transformation
+    fun rayIntersection(ray:Ray): HitRecord?
+    fun rayIntersectionList(ray: Ray):List<HitRecord>?
     fun pointInternal(point: Point): Boolean
+    fun quickRayIntersection(ray: Ray): Boolean
 }

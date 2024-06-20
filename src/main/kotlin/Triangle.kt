@@ -127,7 +127,7 @@ class Triangle(
     }
 
     /**
-     * Returns all the the intersection of a ray with the triangle
+     * Returns all the intersection of a ray with the triangle
      */
     override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
         val hits = ArrayList<HitRecord>()
@@ -138,4 +138,15 @@ class Triangle(
         }
     }
 
+    /**
+     * evaluates if a ray intersect the triangle and returns a boolean
+     */
+    override fun quickRayIntersection(ray: Ray): Boolean {
+        val invRay = ray.transformation(transformation.inverse())
+        val solution = kramerRule(invRay) ?: return false
+        val beta = solution[0]
+        val gamma = solution[1]
+        val t = solution[2]
+        return t in (invRay.tMin..invRay.tMax) && isInside(beta,gamma)
+    }
 }

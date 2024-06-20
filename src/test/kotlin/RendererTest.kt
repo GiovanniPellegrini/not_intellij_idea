@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Test
 
-class RendererTest {
+class RendererTest{
     @Test
     fun testOnOffRenderer() {
         val sphere = Sphere(
@@ -12,7 +12,7 @@ class RendererTest {
         val camera = OrthogonalCamera()
         val tracer = ImageTracer(image = image, camera = camera)
         val world = World()
-        world.add(sphere)
+        world.addShape(sphere)
         val renderer = OnOffRenderer(world = world)
         tracer.fireAllRays(renderer::render)
 
@@ -41,8 +41,8 @@ class RendererTest {
         val camera = OrthogonalCamera()
         val tracer = ImageTracer(image = image, camera = camera)
         val world = World()
-        world.add(sphere)
-        val renderer = FlatRenderer(world = world)
+        world.addShape(sphere)
+        val renderer = FlatRenderer(world=world)
         tracer.fireAllRays(renderer::render)
 
         assert(image.getPixel(0, 0) == Color())
@@ -62,19 +62,16 @@ class RendererTest {
     fun furnaceTest() {
         val pcg = PCG()
 
-        for (i in 0 until 1) {
-            val world = World()
-            val emittedRad = pcg.randomFloat()
-            val rad = pcg.randomFloat() * 0.9f
-            val material = Material(
-                DiffusionBRDF(UniformPigment(Color(1f, 1f, 1f) * rad)),
-                emittedRad = UniformPigment(Color(1f, 1f, 1f) * emittedRad)
-            )
-
-            val pathTracer = PathTracer(world, maxDepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
-            val ray = Ray(Point(0f, 0f, 0f), Vector(1f, 0f, 0f))
-            world.add(Sphere(material = material))
-            val color = pathTracer.render(ray)
+        for(i in 0 until 1){
+            val world=World()
+            val emittedRad=pcg.randomFloat()
+            val rad=pcg.randomFloat()*0.9f
+            val material=Material(DiffusionBRDF(UniformPigment(Color(1f,1f,1f)*rad)), emittedRad = UniformPigment(Color(1f,1f,1f)*emittedRad))
+            
+            val pathTracer=PathTracer(world, maxDepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
+            val ray=Ray(Point(0f,0f,0f),Vector(1f,0f,0f))
+            world.addShape(Sphere(material = material))
+            val color=pathTracer.render(ray)
 
             val expected = emittedRad / (1 - rad)
             assert(areClose(expected, color.r))
