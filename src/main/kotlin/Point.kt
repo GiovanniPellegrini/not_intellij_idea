@@ -1,24 +1,34 @@
 import kotlin.math.abs
 
-data class Point (var x:Float, var y:Float, var z:Float) {
+/**
+ *  Point Class: Represents a 3D point with float components
+ * @param x: x component
+ * @param y: y component
+ * @param z: z component
+ *
+ * @Default Constructor: x=0, y=0, z=0
+ */
+
+data class Point(var x: Float = 0f, var y: Float = 0f, var z: Float = 0f) {
+
     /**
-     * Null constructor
+     * Returns vector components as a string
      */
-    constructor() : this(0.0F,0.0F,0.0F)
-    /**
-     * Converting the object to String
-     */
-    override fun toString():String{
-        return "<x:$x, y=$y, z=$z>"
+    override fun toString(): String {
+        return "Point:<x:$x, y=$y, z=$z>"
     }
 
-    fun isClose(p: Point): Boolean{
-        return(areClose(x,p.x) &&
-                areClose(y,p.y) &&
-                areClose(z,p.z))
-    }
     /**
-     * Overloading == operator for Points. It uses the are_close function
+     * Returns Boolean if two points are close
+     */
+    fun isClose(p: Point): Boolean {
+        return (areClose(x, p.x) &&
+                areClose(y, p.y) &&
+                areClose(z, p.z))
+    }
+
+    /**
+     * Overloading == operator for Points. It uses `are_close` function
      */
     override fun equals(other: Any?): Boolean {
         if (other is Point) {
@@ -28,55 +38,57 @@ data class Point (var x:Float, var y:Float, var z:Float) {
     }
 
     /**
-     * sum operator overloading between a Point and a Vector (returns a Point)
+     * Overloading + operator between a point and a vector
      */
     operator fun plus(vec: Vector): Point {
-        return Point(x+vec.x,y+vec.y,z+vec.z)
+        return Point(x + vec.x, y + vec.y, z + vec.z)
     }
 
     /**
-     * minus operator overloading between two Points (returns a Vector)
+     * Overloading - operator
      */
     operator fun minus(p: Point): Vector {
-        return Vector(abs(x-p.x),abs(y-p.y),abs(z-p.z))
+        return Vector(abs(x - p.x), abs(y - p.y), abs(z - p.z))
     }
 
     /**
-     * minus operator overloading between a Point and a Vector (returns a Point)
+     * Overloading - operator between a point and a vector
      */
     operator fun minus(v: Vector): Point {
-        return Point(x-v.x,y-v.y,z-v.z)
+        return Point(x - v.x, y - v.y, z - v.z)
     }
 
     /**
-     * Product operator overloading between a scalar and a point
+     * Overloading * operator between a scalar and a point
      */
     operator fun times(a: Float): Point {
-        return Point(x*a,y*a,z*a)
+        return Point(x * a, y * a, z * a)
     }
 
     /**
      * Returns a copy of the Point but with components multiplied by -1
      */
     operator fun unaryMinus(): Point {
-        return Point(-x,-y,-z)
+        return Point(-x, -y, -z)
     }
 
     /**
-     * converts a Point to a Vector with same components
+     * Converts a point to a vector
      */
     fun toVec(): Vector {
-        return Vector(x,y,z)
+        return Vector(x, y, z)
     }
 
+    /**
+     * Overloading of the `get` operator
+     */
     operator fun get(i: Int): Float {
-        return when(i){
+        return when (i) {
             0 -> x
             1 -> y
             2 -> z
             else -> throw IllegalArgumentException("i must be 0, 1 or 2")
         }
-
     }
 
 }

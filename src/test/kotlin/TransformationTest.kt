@@ -1,13 +1,14 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class TransformationTest{
+class TransformationTest {
 
-    private val m=HomMatrix(floatArrayOf(
-        1.0f, 2.0f, 3.0f, 4.0f,
-        5.0f, 6.0f, 7.0f, 8.0f,
-        9.0f, 9.0f, 8.0f, 7.0f,
-        6.0f, 5.0f, 4.0f, 1.0f
+    private val m = HomMatrix(
+        floatArrayOf(
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f, 8.0f,
+            9.0f, 9.0f, 8.0f, 7.0f,
+            6.0f, 5.0f, 4.0f, 1.0f
         )
     )
     private val invm = HomMatrix(
@@ -20,37 +21,43 @@ class TransformationTest{
     )
     private val transf1 = Transformation(m.copy(), invm.copy())
     private val transf2 = Transformation(invm.copy(), m.copy())
-
-    private val transf3 = Transformation(HomMatrix(floatArrayOf(
-        3.0f, 5.0f, 2.0f, 4.0f,
-        4.0f, 1.0f, 0.0f, 5.0f,
-        6.0f, 3.0f, 2.0f, 0.0f,
-        1.0f, 4.0f, 2.0f, 1.0f
-    )),HomMatrix(floatArrayOf(
-        0.4f, -0.2f, 0.2f, -0.6f,
-        2.9f, -1.7f, 0.2f, -3.1f,
-        -5.55f, 3.15f, -0.4f, 6.45f,
-        -0.9f, 0.7f, -0.2f, 1.1f
-    )))
+    private val transf3 = Transformation(
+        HomMatrix(
+            floatArrayOf(
+                3.0f, 5.0f, 2.0f, 4.0f,
+                4.0f, 1.0f, 0.0f, 5.0f,
+                6.0f, 3.0f, 2.0f, 0.0f,
+                1.0f, 4.0f, 2.0f, 1.0f
+            )
+        ), HomMatrix(
+            floatArrayOf(
+                0.4f, -0.2f, 0.2f, -0.6f,
+                2.9f, -1.7f, 0.2f, -3.1f,
+                -5.55f, 3.15f, -0.4f, 6.45f,
+                -0.9f, 0.7f, -0.2f, 1.1f
+            )
+        )
+    )
 
     @Test
-    fun isConsistent(){
+    fun isConsistent() {
         assert(transf1.isConsistent())
     }
+
     @Test
-    fun inverse(){
-        assert(transf1.inverse()==transf2)
+    fun inverse() {
+        assert(transf1.inverse() == transf2)
     }
 
     @Test
-    fun isClose(){
+    fun isClose() {
         assertFalse(transf1.isClose(transf2))
-        assert(transf1.isClose(Transformation(m,invm)))
-        assert(transf1==Transformation(m,invm))
+        assert(transf1.isClose(Transformation(m, invm)))
+        assert(transf1 == Transformation(m, invm))
     }
 
     @Test
-    fun matrixTimes(){
+    fun matrixTimes() {
         val mArray = HomMatrix(
             floatArrayOf(
                 33.0f, 32.0f, 16.0f, 18.0f,
@@ -67,14 +74,15 @@ class TransformationTest{
                 4.825f, -4.325f, 2.5f, -1.1f
             )
         )
-        val expected=Transformation(mArray,invmArray)
+        val expected = Transformation(mArray, invmArray)
+
         assert(transf3.isConsistent())
         assert(expected.isConsistent(10e-4f))
     }
 
     @Test
-    fun times(){
-        val mArray= HomMatrix(
+    fun times() {
+        val mArray = HomMatrix(
             floatArrayOf(
                 1.0f, 2.0f, 3.0f, 4.0f,
                 5.0f, 6.0f, 7.0f, 8.0f,
@@ -82,7 +90,7 @@ class TransformationTest{
                 0.0f, 0.0f, 0.0f, 1.0f
             )
         )
-        val invmArray=HomMatrix(
+        val invmArray = HomMatrix(
             floatArrayOf(
                 -3.75f, 2.75f, -1.0f, 0.0f,
                 5.75f, -4.75f, 2.0f, 1.0f,
@@ -90,22 +98,22 @@ class TransformationTest{
                 0.0f, 0.0f, 0.0f, 1.0f
             )
         )
-        val transf4=Transformation(mArray,invmArray)
+        val transf4 = Transformation(mArray, invmArray)
         assert(transf4.isConsistent())
 
-        val expectedV=Vector(14f,38f,51f)
-        assert(expectedV.isClose(transf4*Vector(1f,2f,3f)))
+        val expectedV = Vector(14f, 38f, 51f)
+        assert(expectedV.isClose(transf4 * Vector(1f, 2f, 3f)))
 
-        val expectedP=Point(18f,46f,58f)
-        assert(expectedP.isClose(transf4*Point(1f,2f,3f)))
+        val expectedP = Point(18f, 46f, 58f)
+        assert(expectedP.isClose(transf4 * Point(1f, 2f, 3f)))
 
-        val expectedN2=Normal(-8.75f, 7.75f,-3f)
-        assert(expectedN2.isClose(transf4*Normal(3f,2f,4f)))
+        val expectedN2 = Normal(-8.75f, 7.75f, -3f)
+        assert(expectedN2.isClose(transf4 * Normal(3f, 2f, 4f)))
 
     }
 
     @Test
-    fun translationTest(){
+    fun translationTest() {
 
         val tr1 = Translation(Vector(1.0f, 2.0f, 3.0f))
         assert(tr1.isConsistent())
@@ -126,7 +134,6 @@ class TransformationTest{
         val rotx = Rotation(Vector(1f, 0f, 0f), 180f)
         val roty = Rotation(Vector(0f, 1f, 0f), 180f)
         val rotz = Rotation(Vector(0f, 0f, 1f), 180f)
-
         val rotIDz = Rotation(Vector(0f, 0f, 1f), theta = 2f * 180f)
 
         //rotation x PI * null vector
@@ -134,8 +141,6 @@ class TransformationTest{
 
         //rotation x PI * (4,9,11) == (4-9,-11)
         assertTrue((rotx * Vector(4f, 9f, 11f)).isClose(Vector(4f, -9f, -11f)))
-        println("rotx(PI)*${Vector(4f, 9f, 11f)}")
-        println(rotx * Vector(4f, 9f, 11f))
 
         //rotation y PI * null vector
         assertTrue((roty * Vector()).isClose(Vector()))
@@ -153,9 +158,9 @@ class TransformationTest{
 
     @Test
     fun scalingTransformationTest() {
-        val sc:Transformation = scalingTransformation(Vector(2f,3f,4f))
-        assertTrue((sc*Vector(5f, 7f, 11f)).isClose(Vector(10f, 21f, 44f)))
+        val sc: Transformation = scalingTransformation(Vector(2f, 3f, 4f))
+        assertTrue((sc * Vector(5f, 7f, 11f)).isClose(Vector(10f, 21f, 44f)))
     }
-    
+
 
 }

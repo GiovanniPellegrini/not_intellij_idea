@@ -13,8 +13,8 @@ class ReadHdrFunctionsTest{
     @Test
     fun readLine(){
         val byteArray=ByteArrayInputStream("Hello\nworld".toByteArray())
-        assert(readline(byteArray)=="Hello")
-        assert(readline(byteArray)=="world")
+        assert(readLine(byteArray)=="Hello")
+        assert(readLine(byteArray)=="world")
     }
     @Test
     fun parseImageSize(){

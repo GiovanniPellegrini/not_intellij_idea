@@ -9,7 +9,8 @@ import compiler.*
 import java.io.*
 
 class NIJ : CliktCommand(
-    help = "NIJ tracer") {
+    help = "NIJ tracer"
+) {
     override fun run() = Unit
 }
 
@@ -95,41 +96,40 @@ class Render : CliktCommand(
         "--russianRouletteLimit",
         help = "russianRouletteLimit (Int) default 2"
     ).int().default(2)
-    private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (Int), default 15").int().default(15)
+    private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (Int), default 15").int()
+        .default(15)
     private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (Int), default 480").int().default(480)
     private val imageHeight by option("-h", "--imageHeight", help = "imageHeight (Int), default 480").int().default(480)
-    private val pngOutput by option("-p", "--pngOutput", help = ".png filename Output").required()
-    private val pfmOutput by option("-f", "--pfmOutput", help = ".pfm filename Output").required()
-    private val antialiasing by option("-an", "--antialiasing", help = "Antialiasing (Boolean)").convert { it.toBoolean() }
+    private val pngOutput by option("-p", "--pngOutput", help = ".png filename Output").default("image.png")
+    private val pfmOutput by option("-f", "--pfmOutput", help = ".pfm filename Output").default("image.pfm")
+    private val antialiasing by option(
+        "-an",
+        "--antialiasing",
+        help = "Antialiasing (Boolean)"
+    ).convert { it.toBoolean() }
         .default(false)
     private val raysForSide by option("-s", "--raysForSide", help = "Antialiasing number of rays for side (Int)").int()
         .default(2)
+    val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 
     override fun run() {
+        val map: MutableMap<String, Float> = mutableMapOf<String, Float>()
+        for (i in variables.keys) {
+            map[i] = variables[i]!!.toFloat()
+        }
         val stream = InStream(stream = FileReader(inputFile), fileName = inputFile)
-        val scene = Scene()
+        val scene = Scene(overriddenVariables = map)
         scene.parseScene(stream)
+        println(scene.floatVariables)
         val image = HdrImage(imageWidth, imageHeight)
         val tracer = ImageTracer(image, scene.camera!!)
 
-        val renderer = when (algorithm) {
-            "pathtracer" -> {
-                PathTracer(
-                    world = scene.world,
-                    maxDepth = maxDepth,
-                    russianRouletteLimit = russianRouletteLimit,
-                    numberOfRays = numberOfRays
-                )
-            }
-
-            "pointlighttracer" -> {
-                PointLightRenderer(world = scene.world)
-            }
-
-            else -> {
-                throw IllegalArgumentException("Invalid algorithm name")
-            }
-        }
+        val renderer = PathTracer(
+            world = scene.world,
+            maxDepth = maxDepth,
+            russianRouletteLimit = russianRouletteLimit,
+            numberOfRays = numberOfRays
+        )
 
         if (!antialiasing) tracer.fireAllRays(renderer::render)
         else tracer.fireAllRays(renderer::render, raysForSide = raysForSide)
@@ -144,6 +144,3 @@ class Render : CliktCommand(
 }
 
 fun main(args: Array<String>) = NIJ().subcommands(Pfm2Png(), Demo(), Render()).main(args)
-
-
-

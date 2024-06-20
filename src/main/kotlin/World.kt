@@ -1,10 +1,12 @@
 /**
- * class that contains all the shapes in the scene
+ * World class: contains an array of shapes
+ *
+ * @default shapes: empty array of shapes
  */
 class World(var shapes: Array<Shape> = emptyArray<Shape>(),
             var pointLights: Array<PointLight> = emptyArray<PointLight>()) {
     /**
-     * add a shape to the shape array of World type
+     * Adds a shape to the world
      */
     fun addShape(shape: Shape){
         shapes += shape
@@ -18,17 +20,17 @@ class World(var shapes: Array<Shape> = emptyArray<Shape>(),
     }
 
     /**
-     * iterates on every shape of the scene and returns the one closest to the origin of the ray
+     * Evaluates the closest ray intersection with the world
      */
     fun rayIntersection(ray: Ray): HitRecord? {
         var closest: HitRecord? = null
         var intersection: HitRecord?
-        for(shape in shapes){
+        for (shape in shapes) {
             intersection = shape.rayIntersection(ray)
-            if(intersection == null){
+            if (intersection == null) {
                 continue
             }
-            if(closest == null || intersection.t < closest.t){
+            if (closest == null || intersection.t < closest.t) {
                 closest = intersection
             }
         }

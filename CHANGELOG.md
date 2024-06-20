@@ -1,4 +1,5 @@
 ## Head
+#### - added parser and lexer for the scene file, render function in main
 #### - fixed bug "Normal transformation" related to issue #9
 #### - fixed bug "image upside down" related to issue #3
 #### - added new Geometric Object: with Triangle mesh you can create a 3d object with a list of triangles and a .obj file

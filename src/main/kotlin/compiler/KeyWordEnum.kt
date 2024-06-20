@@ -1,9 +1,10 @@
 package compiler
 
+/**
+ * KeyWordEnum: List of all the keywords of the language
 
-// The numeration starts with 0 (NEW=0)
+ */
 enum class KeyWordEnum {
-    NEW,
     MATERIAL,
     SHAPE,
     PLANE,
@@ -34,7 +35,6 @@ enum class KeyWordEnum {
 }
 
 val KEYWORDS: Map<String, KeyWordEnum> = mapOf(
-    "new" to KeyWordEnum.NEW, "New" to KeyWordEnum.NEW,
     "material" to KeyWordEnum.MATERIAL, "Material" to KeyWordEnum.MATERIAL,
     "shape" to KeyWordEnum.SHAPE, "Shape" to KeyWordEnum.SHAPE,
     "plane" to KeyWordEnum.PLANE, "Plane" to KeyWordEnum.PLANE,

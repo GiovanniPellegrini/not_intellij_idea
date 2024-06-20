@@ -1,37 +1,49 @@
 import java.security.cert.PolicyNode
 
 /**
- * Box class, inherited from shape, represents a box in 3D space identified by two vertex points Pmin and Pmax
+ * Box Class: Derived from Shape, represent a box axis aligned
+ *
+ * @param transformation: transformation applied to the box
+ * @param Pmin: minimum point of the box
+ * @param Pmax: maximum point of the box
+ * @param material: material of the box
+ *
+ * @Default Constructor: Pmin=Point(-1f,1f,-1f), Pmax=Point(1f,1f,1f),
  */
-class Box(override val transformation: Transformation = Transformation(),
-          val Pmin: Point = Point(0f,0f,0f),
-          val Pmax: Point = Point(0f,0f,0f), override val material: Material=Material()): Shape{
+class Box(
+    override val transformation: Transformation = Transformation(),
+    val Pmin: Point = Point(-1f, -1f, -1f),
+    val Pmax: Point = Point(1f, 1f, 1f), override val material: Material = Material()
+) : Shape {
 
     /**
-     * checkVertex evaluates if the vertex of the box are correct (i.e. Pmin < Pmax)
+     * Returns Boolean if Pmin is smaller than Pmax
      */
-    private fun checkVertex(): Boolean{
+    private fun checkVertex(): Boolean {
         return Pmin.x < Pmax.x && Pmin.y < Pmax.y && Pmin.z < Pmax.z
     }
 
     /**
-     * check if a point is internal to the box
+     * Returns Boolean if a point is internal to the box
      */
     override fun pointInternal(point: Point): Boolean {
-        if(!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
-        val point1=transformation.inverse()*point
-        if( point1.x in Pmin.x..Pmax.x &&
+        if (!checkVertex()) throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
+        val point1 = transformation.inverse() * point
+        if (point1.x in Pmin.x..Pmax.x &&
             point1.y in Pmin.y..Pmax.y &&
-            point1.z in Pmin.z..Pmax.z) return true
+            point1.z in Pmin.z..Pmax.z
+        ) return true
         else return false
     }
 
 
+    /**
+     * Returns the closest ray intersection with box
+     */
     override fun rayIntersection(ray: Ray): HitRecord? {
-        if(!checkVertex()){
+        if (!checkVertex()) {
             throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
         }
-        //transform the ray to the box system of coordinates
         val invRay = ray.transformation(transformation.inverse())
         var t0 = invRay.tMin
         var t1 = invRay.tMax
@@ -49,7 +61,7 @@ class Box(override val transformation: Transformation = Transformation(),
         at the end if t0 < t1 means that the intervals [t_i(0),t_i(1)]are not disjointed and thus
         the ray intersects the box
         */
-        for (i in 0..2){
+        for (i in 0..2) {
             //evaluate t values where the ray intersects the plane of the box for each coordinate xyz
             var tmin = (Pmin[i] - (invRay.origin)[i]) / invRay.dir[i]
             var tmax = (Pmax[i] - (invRay.origin)[i]) / invRay.dir[i]
@@ -77,22 +89,20 @@ class Box(override val transformation: Transformation = Transformation(),
         }
 
         //if minDir is -1, the ray intersects the box only at t1
-        if(minDir==-1) {
-            val hit=invRay.at(t1)
-            val normal=getNormal(invRay,maxDir)
+        if (minDir == -1) {
+            val hit = invRay.at(t1)
+            val normal = getNormal(invRay, maxDir)
             return HitRecord(
-                worldPoint = transformation*hit,
-                normal= transformation*normal,
-                surfacePoint=surfacePoint(hit,normal),
-                t=t1,
-                ray=ray,
+                worldPoint = transformation * hit,
+                normal = transformation * normal,
+                surfacePoint = surfacePoint(hit, normal),
+                t = t1,
+                ray = ray,
                 shape = this
             )
-        }else {
-            val t = t0
-            val dir = minDir
-            val hit = invRay.at(t)
-            val normal = getNormal(invRay, dir)
+        } else {
+            val hit = invRay.at(t0)
+            val normal = getNormal(invRay, minDir)
             return HitRecord(
                 worldPoint = transformation * hit,
                 normal = transformation * normal,
@@ -105,18 +115,18 @@ class Box(override val transformation: Transformation = Transformation(),
     }
 
     /**
-     * evaluates if a ray intersect the Box and returns all the intersection from the point of view
+     * Returns all the ray intersections with box
      */
-    override fun rayIntersectionList(ray: Ray):List<HitRecord>? {
-        if(!checkVertex()){
+    override fun rayIntersectionList(ray: Ray): List<HitRecord>? {
+        if (!checkVertex()) {
             throw IllegalArgumentException("in Box, Pmin must be smaller than Pmax")
         }
 
-        val hits=ArrayList<HitRecord>()
+        val hits = ArrayList<HitRecord>()
         //transform the system in the coordinates box
-        val invRay=ray.transformation(transformation.inverse())
-        var t0=invRay.tMin
-        var t1=invRay.tMax
+        val invRay = ray.transformation(transformation.inverse())
+        var t0 = invRay.tMin
+        var t1 = invRay.tMax
 
         /* minDir and maxDir are the direction of the intersection
         - 0 for x
@@ -131,7 +141,7 @@ class Box(override val transformation: Transformation = Transformation(),
         at the end if t0 < t1 means that the intervals [t_i(0),t_i(1)]are not disjointed and thus
         the ray intersects the box
         */
-        for(i in 0 until 3) {
+        for (i in 0 until 3) {
             //evaluate t values where the ray intersects the plane of the box for each coordinate xyz
             var tmin = (Pmin[i] - (invRay.origin)[i]) / invRay.dir[i]
             var tmax = (Pmax[i] - (invRay.origin)[i]) / invRay.dir[i]
@@ -159,41 +169,47 @@ class Box(override val transformation: Transformation = Transformation(),
         }
 
         //If minDir==-1 means that the intersection occurs only at t1
-        if(minDir==-1) {
-            val hit1=invRay.at(t1)
-            val normal=getNormal(invRay,maxDir)
-            hits.add(HitRecord(
-                worldPoint = transformation*hit1,
-                normal= transformation*normal,
-                surfacePoint=surfacePoint(hit1,normal),
-                t=t1,
-                ray=ray,
-                shape = this)
+        if (minDir == -1) {
+            val hit1 = invRay.at(t1)
+            val normal = getNormal(invRay, maxDir)
+            hits.add(
+                HitRecord(
+                    worldPoint = transformation * hit1,
+                    normal = transformation * normal,
+                    surfacePoint = surfacePoint(hit1, normal),
+                    t = t1,
+                    ray = ray,
+                    shape = this
+                )
             )
             return hits
         }
         //else there are two interactions, and they are both added to intersectionLists
-        else{
-            val hit0=invRay.at(t0)
-            val normal0=getNormal(invRay,minDir)
-            hits.add(HitRecord(
-                worldPoint = transformation*hit0,
-                normal= transformation*normal0,
-                surfacePoint=surfacePoint(hit0,normal0),
-                t=t0,
-                ray=ray,
-                shape = this)
+        else {
+            val hit0 = invRay.at(t0)
+            val normal0 = getNormal(invRay, minDir)
+            hits.add(
+                HitRecord(
+                    worldPoint = transformation * hit0,
+                    normal = transformation * normal0,
+                    surfacePoint = surfacePoint(hit0, normal0),
+                    t = t0,
+                    ray = ray,
+                    shape = this
+                )
             )
 
-            val hit1=invRay.at((t1))
-            val normal1=getNormal(invRay,maxDir)
-            hits.add(HitRecord(
-                worldPoint = transformation*hit1,
-                normal= transformation*normal1,
-                surfacePoint=surfacePoint(hit1,normal1),
-                t=t1,
-                ray=ray,
-                shape = this)
+            val hit1 = invRay.at((t1))
+            val normal1 = getNormal(invRay, maxDir)
+            hits.add(
+                HitRecord(
+                    worldPoint = transformation * hit1,
+                    normal = transformation * normal1,
+                    surfacePoint = surfacePoint(hit1, normal1),
+                    t = t1,
+                    ray = ray,
+                    shape = this
+                )
             )
             return hits
         }
@@ -240,54 +256,33 @@ class Box(override val transformation: Transformation = Transformation(),
     }
 
     /**
-     * evaluates the normal of the box, for a given t,
-     * if t is relative to x, y or z, the normal will be the respective axis
+     * Returns the normal of the box for a given ray and direction
      */
-    private fun getNormal(ray : Ray, dir : Int): Normal {
-        val normal = when(dir){
-            0 -> Normal(1f,0f,0f)  //parallel to x
-            1 -> Normal(0f,1f,0f)  //parallel to y
-            2 -> Normal(0f,0f,1f)  //parallel to z
+    private fun getNormal(ray: Ray, dir: Int): Normal {
+        val normal = when (dir) {
+            0 -> Normal(1f, 0f, 0f)  //parallel to x
+            1 -> Normal(0f, 1f, 0f)  //parallel to y
+            2 -> Normal(0f, 0f, 1f)  //parallel to z
             else -> throw IllegalArgumentException("tDir must be 0, 1 or 2")
         }
-        return if(normal * ray.dir < 0) normal else -normal
+        return if (normal * ray.dir < 0) normal else -normal
     }
 
     /**
-     * evaluates the point on a surface of the box, for a given t,
-     * if t is relative to x, y or z, the normal will be the respective axis
+     * Return the UV coordinates of the surface point
      */
-    private fun surfacePoint(hitPoint: Point, normal: Normal): Vec2d{
+    private fun surfacePoint(hitPoint: Point, normal: Normal): Vec2d {
         //evaluate which face of the box is hit
-        val whichFace = when{
-            normal.isClose(Normal(1f,0f,0f)) -> 0
-            normal.isClose(Normal(-1f,0f,0f)) -> 1
-            normal.isClose(Normal(0f,1f,0f)) -> 2
-            normal.isClose(Normal(0f,-1f,0f)) -> 3
-            normal.isClose(Normal(0f,0f,1f)) -> 4
-            normal.isClose(Normal(0f,0f,-1f)) -> 5
+        val whichFace = when {
+            normal.isClose(Normal(1f, 0f, 0f)) -> 0
+            normal.isClose(Normal(-1f, 0f, 0f)) -> 1
+            normal.isClose(Normal(0f, 1f, 0f)) -> 2
+            normal.isClose(Normal(0f, -1f, 0f)) -> 3
+            normal.isClose(Normal(0f, 0f, 1f)) -> 4
+            normal.isClose(Normal(0f, 0f, -1f)) -> 5
             else -> throw IllegalArgumentException("normal must be orthogonal to a face of the box")
         }
 
-        /*
-        Here we are using cube mapping (https://en.wikipedia.org/wiki/Cube_mapping)
-        We decompose a cube in 6 faces, each identified by its normal.
-        depending on the face of the box we evaluate the coordinates u and v by rescaling the
-        hit point coordinates to the size of the rectangle
-        */
-
-        /*
-        return when (whichFace) {
-            0 -> Vec2d(u = 0.5f + (Pmax.z - hitPoint.z)/(Pmax.z-Pmin.z) * 0.25f, v = 0.75f - (hitPoint.y - Pmin.y)/(Pmax.y-Pmin.y) * 0.25f)
-            1 -> Vec2d(u = (hitPoint.z - Pmin.z)/(Pmax.z-Pmin.z) * 0.25f, v = 0.75f - (hitPoint.y - Pmin.y)/(Pmax.y-Pmin.y) * 0.25f)
-            2 -> Vec2d(u = 0.25f + (hitPoint.x - Pmin.x)/(Pmax.x-Pmin.x) * 0.25f, v = 0.5f - (Pmax.z - hitPoint.z)/(Pmax.z-Pmin.z) * 0.25f)
-            3 -> Vec2d(u = 0.25f + (hitPoint.x - Pmin.x)/(Pmax.x-Pmin.x) * 0.25f, v = 1.00f - (hitPoint.z - Pmin.z)/(Pmax.z-Pmin.z) * 0.25f)
-            4 -> Vec2d(u = 0.25f + (hitPoint.x - Pmin.x)/(Pmax.x-Pmin.x) * 0.25f, v = 0.75f - (hitPoint.y - Pmin.y)/(Pmax.y-Pmin.y) * 0.25f)
-            5 -> Vec2d(u = 0.75f + (Pmax.x - hitPoint.x)/(Pmax.x-Pmin.x) * 0.25f, v = 0.75f - (hitPoint.y - Pmin.y)/(Pmax.y-Pmin.y) * 0.25f)
-            else -> throw RuntimeException()
-        }
-
-         */
         return when (whichFace) {
             0 -> Vec2d(u = -hitPoint.z, v = hitPoint.y)
             1 -> Vec2d(u = hitPoint.z, v = hitPoint.y)
@@ -297,8 +292,5 @@ class Box(override val transformation: Transformation = Transformation(),
             5 -> Vec2d(u = -hitPoint.x, v = hitPoint.y)
             else -> throw RuntimeException()
         }
-
-
-
     }
 }

@@ -23,6 +23,7 @@ import TriangleMesh
 import areClose
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestTemplate
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
@@ -93,11 +94,15 @@ class InputStreamTest {
     fun readTokenTest() {
         val byteArrayStream = ByteArrayInputStream(
             """
+        
         % This is a comment
         % This is another comment
-        new material skyMaterial(
+        ^ This is a long comment 
+           curious to see if the function is correct^
+        
+        material skyMaterial(
             diffuse(image("my file.pfm")),
-            <5.0, 500.0, 300.0 >
+            <5.0, +500.0, 300.0 > ^another long comment^
         ) % Comment at the end of the line
         """.toByteArray()
         )
@@ -105,10 +110,6 @@ class InputStreamTest {
         val stream = InStream(streamReader)
 
         var token = stream.readToken()
-        assert(token is KeyWordToken)
-        if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.NEW)
-
-        token = stream.readToken()
         assert(token is KeyWordToken)
         if (token is KeyWordToken) assert(token.keywordEnum == KeyWordEnum.MATERIAL)
 
@@ -172,7 +173,7 @@ class InputStreamTest {
             """
         float clock(150)
     
-        material sky_material(
+        material _sky_material(
             diffuse(uniform(<0, 0, 0>)),
             uniform(<0.7, 0.5, 1>)
         )
@@ -190,12 +191,13 @@ class InputStreamTest {
             uniform(<0, 0, 0>)
         )
     
-        plane plane1 (translation(<0, 0, 100>) * rotation_y(clock),sky_material)
+        plane plane1 (translation([0, 0, 100]) * rotation_y(clock),_sky_material)
         plane plane2 (identity,ground_material)
     
-        sphere sphere1 ( translation(<0, 0, 1>),sphere_material)
+        sphere sphere1 ( translation([0, 0, 1]),sphere_material)
     
-        camera(perspective, rotation_z(30) * translation(<-4, 0, 1>), 1.0, 2.0)
+        
+        camera(perspective,identity, 1.0, 1.87)
         """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -207,12 +209,12 @@ class InputStreamTest {
         assert(scene.floatVariables["clock"] == 150f)
 
         assertEquals(scene.materials.size, 3)
-        assert("sky_material" in scene.materials.keys)
+        assert("_sky_material" in scene.materials.keys)
         assert("ground_material" in scene.materials.keys)
         assert("sphere_material" in scene.materials.keys)
 
         val sphereMaterial = scene.materials["sphere_material"]
-        val skyMaterial = scene.materials["sky_material"]
+        val skyMaterial = scene.materials["_sky_material"]
         val groundMaterial = scene.materials["ground_material"]
 
         assert(skyMaterial?.brdf is DiffusionBRDF)
@@ -255,7 +257,7 @@ class InputStreamTest {
         val scene = Scene()
         val byteArrayStream = ByteArrayInputStream(
             """
-        plane(this_material_does_not_exist, identity)
+        plane myPlane(this_material_does_not_exist, identity)
         """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -276,7 +278,7 @@ class InputStreamTest {
         
         sphere sphere1 (identity,sky_material)  
         plane plane1 (identity,sky_material)  
-        sphere sphere2(translation(<0, 0, 100>),sky_material)
+        sphere sphere2(translation([0, 0, 100]),sky_material)
         """.toByteArray()
         )
         val scene = Scene()
@@ -349,7 +351,7 @@ class InputStreamTest {
         )
                 Triangle triangle1 ((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0), rotation_x(23), triangle_material)
                 TriangleMesh trianglemesh1 (((1.0,1.0,1.0), (2.0,2.0,2.0), (3.0,3.0,3.0),(4.0,1.0,1.0), (5.0,2.0,2.0), (6.0,3.0,3.0)),
-                  ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation(<-4, 0, 1>), triangle_mesh_material)
+                  ((1,2,3), (4,5,6), (2,3,6), (1,3,5)), translation([-4, 0, 1]), triangle_mesh_material)
             """.toByteArray()
         )
         val streamReader = InputStreamReader(byteArrayStream)
@@ -462,6 +464,34 @@ class InputStreamTest {
     }
 
     @Test
+    fun overriddenVariables() {
+        val scene = Scene()
+        val stream = ByteArrayInputStream(
+            """
+        float a(1)
+        float a(2)
+        """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        assertFailsWith<GrammarError> {
+            scene.parseScene(InStream(streamReader))
+        }
+    }
+
+    @Test
+    fun overriddenVariables2() {
+        val scene = Scene(overriddenVariables = mutableMapOf("a" to 13f))
+        val stream = ByteArrayInputStream(
+            """
+        float a(1)
+        """.toByteArray()
+        )
+        val streamReader = InputStreamReader(stream)
+        scene.parseScene(InStream(streamReader))
+        assert(scene.floatVariables["a"] == 13f)
+    }
+
+    @Test
     fun parsePointLightTest() {
         val scene = Scene()
         val stream = ByteArrayInputStream(
@@ -478,10 +508,9 @@ class InputStreamTest {
         assert(scene.world.pointLights[0].color == Color(0.3f, 0.6f, 2f))
         assert(areClose(scene.world.pointLights[0].linearRadius, 1f))
 
+
+
     }
-
-
-}
 
 
 

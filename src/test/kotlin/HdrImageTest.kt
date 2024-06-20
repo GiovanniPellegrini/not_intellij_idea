@@ -13,11 +13,13 @@ fun byteArrayOfInts(vararg ints: Int) =
 class HdrImageTest {
 
     @Test
-    fun getSetPixelTest(){
-        val img = HdrImage(7,4)
-        val referenceCol = Color(1f,2f,3f)
-        img.setPixel(3,2,referenceCol)
-        assert(referenceCol.areClose(img.getPixel(3,2)))
+    fun getSetPixelTest() {
+        val img = HdrImage(7, 4)
+        val referenceCol = Color(1f, 2f, 3f)
+        assert(img.validCoordinates(6, 3))
+        assert(!img.validCoordinates(-1, 0))
+        img.setPixel(3, 2, referenceCol)
+        assert(referenceCol.areClose(img.getPixel(3, 2)))
     }
 
     @Test
@@ -68,11 +70,23 @@ class HdrImageTest {
             0x00, 0x00, 0x8c, 0x42, 0x00, 0x00, 0xa0, 0x42, 0x00, 0x00, 0xb4, 0x42
         )
 
-        assertEquals(referenceBe.size, streamBe.toByteArray().size){"Error: Bytearrays (Big Endian) have different size"}
-        assertArrayEquals(streamBe.toByteArray(), referenceBe){"Error: Bytearrays (Big Endian) have different elements"}
+        assertEquals(
+            referenceBe.size,
+            streamBe.toByteArray().size
+        ) { "Error: Bytearrays (Big Endian) have different size" }
+        assertArrayEquals(
+            streamBe.toByteArray(),
+            referenceBe
+        ) { "Error: Bytearrays (Big Endian) have different elements" }
 
-        assertEquals(referenceLe.size, streamLe.toByteArray().size){"Error: Bytearrays (Little Endian) have different size"}
-        assertArrayEquals(streamLe.toByteArray(), referenceLe){"Error: Bytearrays (Little Endian) have different elements"}
+        assertEquals(
+            referenceLe.size,
+            streamLe.toByteArray().size
+        ) { "Error: Bytearrays (Little Endian) have different size" }
+        assertArrayEquals(
+            streamLe.toByteArray(),
+            referenceLe
+        ) { "Error: Bytearrays (Little Endian) have different elements" }
 
     }
 
@@ -119,6 +133,7 @@ class HdrImageTest {
             assert(pixel.b in 0.0..1.0)
         }
     }
+
 }
 
 
