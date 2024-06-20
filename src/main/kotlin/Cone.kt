@@ -88,8 +88,45 @@ class Cone(val transformation: Transformation = Transformation(), override val m
 
 
     override fun rayIntersection(ray: Ray): HitRecord? {
-        val hits = this.rayIntersectionList(ray)
-        return hits?.get(0)
+        val invRay = ray.transformation(transformation.inverse())
+        val origin = invRay.origin.toVec()
+        val direction = invRay.dir
+        direction.normalize()
+
+        val C = Vector(0f, 0f, 1f)
+        val V = Vector(0f, 0f, -1f)
+        val theta = cos(PI / 4)
+        val OC = origin - C
+
+        val a = (direction * V).pow(2) - theta * theta
+        val b = 2 * ((direction * V) * (OC * V) - (direction * OC * theta * theta))
+        val c = (OC * V).pow(2) - (OC * OC * theta * theta)
+
+        var delta = b * b - 4 * a * c
+
+        if (delta <= 0) return null
+
+        delta = sqrt(delta)
+        val t1 = ((-b + delta) / (2 * a)).toFloat()
+        val t2 = ((-b + delta) / (2 * a)).toFloat()
+
+        val firstHitT: Float = if (invRay.tMin < t1 && t1 < invRay.tMax) {
+            t1
+        } else if (invRay.tMin < t2 && t2 < invRay.tMax) {
+            t2
+        } else {
+            return null
+        }
+        val hitPoint = invRay.at(firstHitT)
+        return HitRecord(
+            worldPoint = this.transformation * hitPoint,
+            normal = this.transformation * coneNormal(hitPoint, invRay.dir),
+            surfacePoint = conePointToUV(hitPoint),
+            t = firstHitT,
+            ray = ray,
+            shape = this
+        )
+
     }
 
     private fun coneNormal(point: Point, rayDir: Vector): Normal {
