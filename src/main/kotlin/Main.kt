@@ -10,12 +10,12 @@ import java.io.*
 
 class NIJ : CliktCommand(
     help = "------------------------------------------------------------ \n" +
-           "------------------------------------------------------------ \n" +
-           "NOT INTELLIJ IDEA                        \n" +
-           "------------------------------------------------------------ \n" +
-           "------------------------------------------------------------ \n" +
-           "------------------------------------------------------------ \n" +
-           " By Giovanni Pellegrini and Lorenzo Esposito"
+            "------------------------------------------------------------ \n" +
+            "NOT INTELLIJ IDEA                        \n" +
+            "------------------------------------------------------------ \n" +
+            "------------------------------------------------------------ \n" +
+            "------------------------------------------------------------ \n" +
+            " By Giovanni Pellegrini and Lorenzo Esposito"
 
 ) {
     override fun run() = Unit
@@ -56,10 +56,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
         help = "rotation angle of the camera (default=0)"
     ).float()
         .default(0f)
-    private val pfmOutput by option("-p", "--pfm", help = ".pfm filename Output").default("image.pfm")
-    private val pngOutput by option("-o", "--output", help = "Output .png filename").default("image.png")
-    private val savePfmOutput by option("-s", "--save", help = "save .pfm Output").convert { it.toBoolean() }
-        .default(true)
+    private val Output by option("-o", "--output", help = "Output filename (default=image)").default("image")
 
     override fun run() {
         val stream = InStream(stream = FileReader("src/main/kotlin/examples/demo.txt"), fileName = "demo.txt")
@@ -81,50 +78,44 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()
-        if (savePfmOutput) {
-            val outputStream = FileOutputStream(pfmOutput)
-            image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
-        }
-        image.writeLdrImage("png", 1f, pngOutput)
+
+
+        val outputStream = FileOutputStream(Output + ".pfm")
+        image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
+
+        image.writeLdrImage("png", 1f, Output + ".png")
     }
 }
 
 class Render : CliktCommand(
     printHelpOnEmptyArgs = true, help = "Create a demo image with two different algorithm from a txt file"
 ) {
+    private val inputFile by option("-i", "--input", help = ".txt filename Input").required()
+    private val Output by option("-p", "--pngOutput", help = "Output filename (default=image)").default("image")
+    private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (default=480)").int()
+        .default(480)
+    private val imageHeight by option("-h", "--imageHeight", help = "imageHeight, (default=480)").int()
+        .default(480)
     private val algorithm by option(
         "-a",
         "--algorithm",
-        help = "write the algorithm name (pathtracer, pointlighttracer,onOff,flatrender), default pathtracer"
+        help = "write the algorithm name <pathtracer, pointlighttracer,onOff, flatRender> (default=pathtracer)"
     ).default("pathtracer")
-    private val inputFile by option("-i", "--input", help = ".txt filename Input").required()
-    private val maxDepth by option("-m", "--maxDepth", help = "maxDepth (Int), default 3").int().default(3)
+    private val maxDepth by option("-m", "--maxDepth", help = "maxDepth (default=3)").int().default(3)
     private val russianRouletteLimit by option(
         "-r",
         "--russianRouletteLimit",
-        help = "russianRouletteLimit (Int) default 2"
+        help = "russianRouletteLimit default 2"
     ).int().default(2)
-    private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (Int), default 15").int()
+    private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (default=15)").int()
         .default(15)
-    private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (Int), default 480").int()
-        .default(480)
-    private val imageHeight by option("-h", "--imageHeight", help = "imageHeight (Int), default 480").int()
-        .default(480)
-    private val pngOutput by option("-p", "--pngOutput", help = ".png filename Output").default("image.png")
-    private val pfmOutput by option("-f", "--pfmOutput", help = ".pfm filename Output").default("image.pfm")
-    private val antialiasing by option(
-        "-an",
-        "--antialiasing",
-        help = "Antialiasing (Boolean)"
-    ).convert { it.toBoolean() }
-        .default(false)
     private val raysForSide by option(
         "-s",
         "--raysForSide",
-        help = "Antialiasing number of rays for side (Int)"
+        help = "Antialiasing number of rays for side, default no antialiasing"
     ).int()
-        .default(2)
-    val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
+        .default(1).validate { require(it >= 2) { "If you want to use antialiasing raysForSide number must be higher than 2" } }
+    private val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 
     override fun run() {
         val map: MutableMap<String, Float> = mutableMapOf<String, Float>()
@@ -154,16 +145,16 @@ class Render : CliktCommand(
             else -> throw IllegalArgumentException("Unknown algorithm")
         }
 
-        if (!antialiasing) tracer.fireAllRays(renderer::render)
+        if (raysForSide == 1) tracer.fireAllRays(renderer::render)
         else tracer.fireAllRays(renderer::render, raysForSide = raysForSide)
         image.normalizeImage(1.0f)
         image.clampImage()
-        val outputStream = FileOutputStream(pfmOutput)
+        val outputStream = FileOutputStream(Output + ".pfm")
         println("Writing PFM file")
         image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
         println("Writing PNG file")
-        image.writeLdrImage("png", 1f, pngOutput)
+        image.writeLdrImage("png", 1f, Output + ".png")
     }
 }
 
-fun main(args: Array<String>) = NIJ().subcommands(Pfm2Png(), Demo(), Render()).main(args)
+fun main(args: Array<String>) = NIJ().subcommands(Demo(), Render(), Pfm2Png()).main(args)
