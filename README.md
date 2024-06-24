@@ -12,7 +12,16 @@ Main contributors are [Giovanni Pellegrini](https://github.com/GiovanniPellegrin
 
 # Table of contents
 - [NOT INTELLIJ IDEA PROJECT](#not-intellij-idea-project)
-- [Table of contents](#demo)
+- [Requirements](#Requirements)
+- [Getting started](#Getting-started)
+- [Usage](#Usage)
+    - [Demo](#Demo)
+    - [Render](#Render)
+    - [Pfm2png](#Pfm2png)
+- [Gallery](#Gallery)
+- [Animations](#animations)
+- [License](#License)
+- [Contributing](#Contributing)
 
 # Requirements
 The software uses [Kotlin](https://kotlinlang.org/docs/home.html) version v 1.9.22, [Java JDK 21](https://www.oracle.com/it/java/technologies/downloads/#java21) or higher is required.
