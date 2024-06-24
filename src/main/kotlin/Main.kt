@@ -23,6 +23,11 @@ class NIJ : CliktCommand(
 
 class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM file to a PNG image") {
     private val inputFile by option("-i", "--input", help = ".pfm filename Input").required()
+    private val outputFile by option(
+        "-o",
+        "--output",
+        help = ".png filename Output (default output.png)"
+    ).default("output.png")
     private val aValue by option("-a", "--aValue", help = "parameter 'a' (default=1)")
         .float()
         .default(1f)
@@ -31,11 +36,7 @@ class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM 
         .float()
         .default(1f)
         .validate { require(it > 0f) { "Parameter 'gamma' must be strictly positive" } }
-    private val outputFile by option(
-        "-o",
-        "--output",
-        help = ".png filename Output (default output.png)"
-    ).default("output.png")
+
 
     override fun run() {
         val sampleStream = FileInputStream(inputFile)
