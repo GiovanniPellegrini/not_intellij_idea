@@ -117,4 +117,13 @@ class ConeTest {
             )
         )
     }
+
+    @Test
+    fun lowerBound(){
+        val cone=Cone()
+        val ray=Ray(Point(0f,-7f,-2f),Vector(0f,1f,0f))
+
+        val intersection=cone.rayIntersection(ray)
+        assertNull(intersection)
+    }
 }
