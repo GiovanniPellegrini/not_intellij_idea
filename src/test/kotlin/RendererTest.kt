@@ -5,14 +5,14 @@ class RendererTest{
     fun testOnOffRenderer() {
         val sphere = Sphere(
             transformation = Translation(Vector(2f, 0f, 0f)) *
-                             scalingTransformation(Vector(0.2f, 0.2f, 0.2f)),
+                    scalingTransformation(Vector(0.2f, 0.2f, 0.2f)),
             material = Material(brdf = DiffusionBRDF(p = UniformPigment(Color(255f, 255f, 255f))))
         )
         val image = HdrImage(width = 3, height = 3)
         val camera = OrthogonalCamera()
         val tracer = ImageTracer(image = image, camera = camera)
         val world = World()
-        world.add(sphere)
+        world.addShape(sphere)
         val renderer = OnOffRenderer(world = world)
         tracer.fireAllRays(renderer::render)
 
@@ -30,16 +30,18 @@ class RendererTest{
     }
 
     @Test
-    fun testFlatRenderer(){
+    fun testFlatRenderer() {
         val sphereColor = Color(1.0f, 2.0f, 3.0f)
-        val sphere = Sphere(transformation=Translation(Vector(2f, 0f, 0f)) *
-                            scalingTransformation(Vector(0.2f, 0.2f, 0.2f)),
-            material=Material(brdf=DiffusionBRDF(p=UniformPigment(sphereColor))))
-        val image = HdrImage(width=3, height=3)
+        val sphere = Sphere(
+            transformation = Translation(Vector(2f, 0f, 0f)) *
+                    scalingTransformation(Vector(0.2f, 0.2f, 0.2f)),
+            material = Material(brdf = DiffusionBRDF(p = UniformPigment(sphereColor)))
+        )
+        val image = HdrImage(width = 3, height = 3)
         val camera = OrthogonalCamera()
-        val tracer = ImageTracer(image=image, camera=camera)
+        val tracer = ImageTracer(image = image, camera = camera)
         val world = World()
-        world.add(sphere)
+        world.addShape(sphere)
         val renderer = FlatRenderer(world=world)
         tracer.fireAllRays(renderer::render)
 
@@ -57,8 +59,8 @@ class RendererTest{
     }
 
     @Test
-    fun furnaceTest(){
-        val pcg=PCG()
+    fun furnaceTest() {
+        val pcg = PCG()
 
         for(i in 0 until 1){
             val world=World()
@@ -66,17 +68,15 @@ class RendererTest{
             val rad=pcg.randomFloat()*0.9f
             val material=Material(DiffusionBRDF(UniformPigment(Color(1f,1f,1f)*rad)), emittedRad = UniformPigment(Color(1f,1f,1f)*emittedRad))
             
-            val pathTracer=PathTracer(world, maxdepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
+            val pathTracer=PathTracer(world, maxDepth = 100, russianRouletteLimit = 101, pcg = pcg, numberOfRays = 1)
             val ray=Ray(Point(0f,0f,0f),Vector(1f,0f,0f))
-            world.add(Sphere(material = material))
+            world.addShape(Sphere(material = material))
             val color=pathTracer.render(ray)
 
-            val expected=emittedRad/(1-rad)
-            println(color.r)
-            println(expected)
-            assert(areClose(expected,color.r))
-            assert(areClose(expected,color.g))
-            assert(areClose(expected,color.b))
+            val expected = emittedRad / (1 - rad)
+            assert(areClose(expected, color.r))
+            assert(areClose(expected, color.g))
+            assert(areClose(expected, color.b))
 
         }
     }

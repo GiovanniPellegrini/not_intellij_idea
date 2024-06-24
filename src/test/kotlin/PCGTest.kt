@@ -1,9 +1,9 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class PCGTest{
+class PCGTest {
     @Test
-    fun test(){
+    fun test() {
         val pcg = PCG()
         println(pcg.state)
         println(pcg.inc)
@@ -24,8 +24,8 @@ class PCGTest{
             3215226955u,
             3421331566u
         )
-        for(expected in expectedValues) {
-           assert(expected==pcg.random())
+        for (expected in expectedValues) {
+            assert(expected == pcg.random())
         }
     }
 }

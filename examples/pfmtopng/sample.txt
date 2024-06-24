@@ -1,0 +1,49 @@
+
+material wall_material(
+            diffuse(image("examples/pfmtopng/MarbleTile.pfm")),
+            uniform(<0, 0, 0>)
+     )
+
+material cup_material(
+            diffuse(image("examples/pfmtopng/wall.pfm")),
+            uniform(<0, 0, 0>)
+     )
+
+material cup_material2(
+            diffuse(image("examples/pfmtopng/wall.pfm")),
+            uniform(<0, 0, 0>)
+     )
+
+material floor_material(
+            diffuse(image("examples/pfmtopng/wood.pfm")),
+            uniform(<0, 0, 0>)
+     )
+
+material plane_material(
+            diffuse(uniform(<1, 1, 1>)),
+            uniform(<0, 0, 0>)
+     )
+
+material light_mat(
+    diffuse(uniform(<0.0, 0.0, 0.0>)),
+    uniform(<1.0, 1.0, 1>)
+    )
+
+sphere sphere1(scaling([0.3,0.3,0.3]), cup_material)
+
+sphere sphere2( scaling([0.27,0.27,0.27]), cup_material)
+
+plane plane1(translation([0, 0, 0]), plane_material)
+
+csgdifference csg1(sphere1, plane1, identity, cup_material2)
+
+csgdifference csg2(csg1,sphere2,translation([0.7,0,-0.575])*rotation_y(190)*scaling([2,2,2]), cup_material2)
+
+plane floor1(translation([0, 0, -1])*rotation_y(20), floor_material)
+
+plane wall1(translation([2, 0, 0]) * rotation_y(90)*scaling([10,10,10]), wall_material)
+
+sphere light(translation([0,0,10])*scaling([5,5,5]), light_mat)
+
+camera (perspective,identity, 1,0.9)
+

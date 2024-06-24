@@ -1,169 +1,158 @@
-import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
-import kotlin.math.abs
 import com.github.ajalt.clikt.core.*
-import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.multiple
+import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.types.*
+
 import java.io.FileOutputStream
 import java.nio.ByteOrder
-import kotlin.io.path.Path
+import compiler.*
+import java.io.*
 
+class NIJ : CliktCommand(
+    help = "------------------------------------------------------------ \n" +
+            "------------------------------------------------------------ \n" +
+            "NOT INTELLIJ IDEA                          \n" +
+            "------------------------------------------------------------ \n" +
+            "------------------------------------------------------------ \n" +
+            "------------------------------------------------------------ \n" +
+            " By Giovanni Pellegrini and Lorenzo Esposito"
 
-class Tracer: CliktCommand() {
+) {
     override fun run() = Unit
 }
 
-class Convert: CliktCommand(printHelpOnEmptyArgs = true, help="Convert a PFM file to a PNG image") {
-    private val args: List<String> by argument(
-        help = "Input .pfm filename,\n- parameter 'a' (Float),\n" +
-                "- parameter 'gamma' (Float),\n" +
-                "- Output .png filename"
-    ).multiple()
-    /** Main arguments:
-    1. PFM input file
-    2. parameter "a"
-    3. gamma value
-    3. png file output name
-     **/
+class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM file to a PNG image") {
+    private val inputFile by option("-i", "--input", help = ".pfm filename Input").required()
+    private val outputFile by option(
+        "-o",
+        "--output",
+        help = ".png filename Output (default output.png)"
+    ).default("output.png")
+    private val aValue by option("-a", "--aValue", help = "parameter 'a' (default=1)")
+        .float()
+        .default(1f)
+        .validate { require(it > 0f) { "Parameter 'a' must be strictly positive" } }
+    private val gammaValue by option("-g", "--gamma", help = "parameter 'gamma' (default=1)")
+        .float()
+        .default(1f)
+        .validate { require(it > 0f) { "Parameter 'gamma' must be strictly positive" } }
+
+
     override fun run() {
-        if (args.size != 4) {
-            throw IOException(
-                "Invalid input parameters, please enter the parameters in the following order : " +
-                        "\n- Input .pfm filename\n" +
-                        "- parameter 'a' (Float)\n" +
-                        "- parameter 'gamma' (Float)\n" +
-                        "- Output .png filename "
-            )
-        }
-
-        var aValue: Float
-        var gammaValue: Float
-
-        //defining main parameters values
-        try {
-            val inputFile = File(args[0])
-            if (!inputFile.name.endsWith(".pfm")) {
-                throw IllegalArgumentException("First argument must have .pfm extension")
-            }
-
-            aValue = args[1].toFloat()
-            gammaValue = args[2].toFloat()
-            if (aValue <=0f || gammaValue<=0f){
-                throw Exception("parameters 'a' and 'gamma' must be strictly positive")
-            }
-
-            val outputFile = File(args[3])
-            if (!outputFile.name.endsWith(".png")) {
-                throw IllegalArgumentException("Last argument must have .png extension")
-            }
-        } catch (e: NumberFormatException) {
-            println("Invalid Format parameters, please enter the parameters in the following order : " +
-                    "\n- Input .pfm filename\n" +
-                    "-parameter 'a' (Float)\n" +
-                    "-parameter 'gamma' (Float)\n" +
-                    "- Output .png filename ")
-
-            aValue = 1F
-            gammaValue = 1F
-        }
-
-        val sampleStream = FileInputStream(args[0])
+        val sampleStream = FileInputStream(inputFile)
         val sampleImage = readPfmImage(sampleStream)
         sampleImage.normalizeImage(aValue)
         sampleImage.clampImage()
 
-        sampleImage.writeLdrImage("png", gammaValue, "test.png")
+        sampleImage.writeLdrImage("png", gammaValue, outputFile)
     }
 }
+class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo txt") {
+    private val rotationAngle by option(
+        "-r",
+        "--rotation",
+        help = "rotation angle of the camera (default=0)"
+    ).float()
+        .default(0f)
+    private val Output by option("-o", "--output", help = "Output filename (default=image)").default("image")
 
-class Demo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image with 10 spheres") {
-    private val args: List<String> by argument(
-        help = "- rotation angle of the camera (Float), \n" +
-                "- Output .png filename, "
-    ).multiple()
     override fun run() {
-        val sphere1 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,3.0f)))
-        val sphere2 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,-3.0f)))
-        val sphere3 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,3.0f)))
-        val sphere4 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,3.0f)))
-        val sphere5 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,-3.0f,-3.0f)))
-        val sphere6 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,-3.0f,3.0f)))
-        val sphere7 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(-3.0f,3.0f,-3.0f)))
-        val sphere8 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,-3.0f,-3.0f)))
-        val sphere9 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(3.0f,3.0f,0f)))
-        val sphere10 = Sphere(scalingTransformation(Vector(0.1f,0.1f,0.1f))*Translation(Vector(0f,-3.0f,-3.0f)))
+        val stream = InStream(stream = FileReader("examples/demo.txt"), fileName = "demo.txt")
+        val scene = Scene()
+        scene.parseScene(stream)
 
+        val image = HdrImage(720, 720)
 
-        val world = World()
-        world.add(sphere1)
-        world.add(sphere2)
-        world.add(sphere3)
-        world.add(sphere4)
-        world.add(sphere5)
-        world.add(sphere6)
-        world.add(sphere7)
-        world.add(sphere8)
-        world.add(sphere9)
-        world.add(sphere10)
-        val image = HdrImage(500,500)
+        val tracer = try {
+            ImageTracer(image, scene.camera!!)
+        } catch (e: Exception) {
+            ImageTracer(
+                image,
+                camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), rotationAngle))
+            )
+        }
 
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f,0f,1f) ,args[0].toFloat()))
-        val tracer = ImageTracer(image,camera)
-        val renderer = OnOffRenderer(world)
-        tracer.fireAllRays(renderer::render)
-        image.normalizeImage(0.1f)
-        image.clampImage()
-        val stream = FileOutputStream("output.pfm")
-        image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        image.writeLdrImage("png",1f, args[1])
-    }
-}
-
-class CheckDemo: CliktCommand(printHelpOnEmptyArgs = true, help="Create a demo image using pathTracing algorithm") {
-    private val args: List<String> by argument(help = "- camera angle ," +
-            "\n- maxDepth parameter (Int),\n" +
-            "- russianRoulette limit parameter (Int),\n" +
-            "- number of rays parameter (Int),\n" +
-            "- Output .png filename").multiple()
-    override fun run() {
-
-        val sphere1 = Sphere(
-            scalingTransformation(Vector(0.6f, 0.6f, 0.6f)) * Translation(Vector(0.8f, 1.3f, -0.5f)),
-            Material(emittedRad = UniformPigment(Color(230f, 0f, 0f)))
-        )
-        val plane1 = Plane(transformation = Translation(Vector(0f, 0f, -1f)),
-            Material(emittedRad = CheckeredPigment(Color(170f, 0f, 255f), color2 = Color(0.1f,0.2f,0.5f), steps = 4))
-        )
-        val mirror=Sphere(scalingTransformation(Vector(0.4f,0.4f,0.4f))*Translation(Vector(4f,-1.5f,-2f)),
-            Material(brdf = SpecularBRDF(UniformPigment(Color(0.2f,0.4f,0.6f)))))
-        val sky=Sphere(transformation=scalingTransformation(Vector(200f, 200f, 200f)) * Translation(Vector(0f, 0f, 0.4f)),
-            material = Material(brdf =DiffusionBRDF(UniformPigment(Color(0f,0f,0f))),emittedRad = UniformPigment(Color(0f,255f,255f)))
-
-        )
-        val world = World()
-        world.add(sphere1)
-        world.add(plane1)
-        world.add(mirror)
-        world.add(sky)
-
-        val image = HdrImage(1080, 1080)
-
-        val camera = PerspectiveCamera(transformation = Rotation(Vector(0f, 0f, 1f), args[0].toFloat()))
-        val tracer = ImageTracer(image, camera)
-        val renderer = PathTracer(world=world, maxdepth = args[1].toInt(), russianRouletteLimit = args[2].toInt(), numberOfRays = args[3].toInt())
+        val renderer = OnOffRenderer(scene.world)
         tracer.fireAllRays(renderer::render)
         image.normalizeImage(1f)
         image.clampImage()
-        val stream = FileOutputStream("output.pfm")
-        println("Writing PFM file")
-        image.writePFM(stream, ByteOrder.BIG_ENDIAN)
-        println("Writing PNG file")
-        image.writeLdrImage("png", 2.2f, args[4])
+
+
+        val outputStream = FileOutputStream(Output + ".pfm")
+        image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
+
+        image.writeLdrImage("png", 1f, Output + ".png")
     }
 }
 
-fun main(args: Array<String>) = Tracer().subcommands(Convert(), Demo(), CheckDemo()).main(args)
+class Render : CliktCommand(
+    printHelpOnEmptyArgs = true, help = "Create a demo image with two different algorithm from a txt file"
+) {
+    private val inputFile by option("-i", "--input", help = ".txt filename Input").required()
+    private val Output by option("-p", "--pngOutput", help = "Output filename (default=image)").default("image")
+    private val imageWidth by option("-w", "--imageWidth", help = "imageWidth (default=480)").int()
+        .default(480)
+    private val imageHeight by option("-h", "--imageHeight", help = "imageHeight, (default=480)").int()
+        .default(480)
+    private val algorithm by option(
+        "-a",
+        "--algorithm",
+        help = "write the algorithm name <pathtracer, pointlighttracer,onOff, flatrender> (default=pathtracer)"
+    ).default("pathtracer")
+    private val maxDepth by option("-m", "--maxDepth", help = "maxDepth (default=3)").int().default(3)
+    private val russianRouletteLimit by option(
+        "-r",
+        "--russianRouletteLimit",
+        help = "russianRouletteLimit default 2"
+    ).int().default(2)
+    private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (default=15)").int()
+        .default(15)
+    private val raysForSide by option(
+        "-s",
+        "--raysForSide",
+        help = "Antialiasing number of rays for side, default no antialiasing"
+    ).int()
+        .default(1).validate { require(it >= 1) { "If you want to use antialiasing raysForSide number must be higher than 2" } }
+    private val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 
+    override fun run() {
+        val map: MutableMap<String, Float> = mutableMapOf<String, Float>()
+        for (i in variables.keys) {
+            map[i] = variables[i]!!.toFloat()
+        }
+        val stream = InStream(stream = FileReader(inputFile), fileName = inputFile)
+        val scene = Scene(overriddenVariables = map)
+        scene.parseScene(stream)
+        val image = HdrImage(imageWidth, imageHeight)
+        val tracer = ImageTracer(image, scene.camera!!)
 
+        val renderer = when (algorithm) {
+            "pathtracer" -> PathTracer(
+                world = scene.world,
+                maxDepth = maxDepth,
+                russianRouletteLimit = russianRouletteLimit,
+                numberOfRays = numberOfRays
+            )
 
+            "pointlighttracer" -> PointLightRenderer(scene.world)
+
+            "onoffrender" -> OnOffRenderer(scene.world)
+
+            "flatrender" -> FlatRenderer(scene.world)
+
+            else -> throw IllegalArgumentException("Unknown algorithm")
+        }
+
+        if (raysForSide == 1) tracer.fireAllRays(renderer::render)
+        else tracer.fireAllRays(renderer::render, raysForSide = raysForSide)
+        image.normalizeImage(1.0f)
+        image.clampImage()
+        val outputStream = FileOutputStream(Output + ".pfm")
+        println("Writing PFM file")
+        image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
+        println("Writing PNG file")
+        image.writeLdrImage("png", 1f, Output + ".png")
+    }
+}
+
+fun main(args: Array<String>) = NIJ().subcommands(Demo(), Render(), Pfm2Png()).main(args)
