@@ -1,0 +1,28 @@
+
+material floor_material(
+            diffuse(checkered(<0.7,0.3,0.0>,<0.3,0.4,0.3>,4)),
+            uniform(<0, 0, 0>)
+     )
+
+material sun_material(
+            diffuse(uniform(<1, 1, 0>)),
+            uniform(<1, 1, 0>)
+     )
+
+material ice_material(
+            diffuse(image("examples/ice_cream/icecream.pfm")),
+            uniform(<0, 0, 0>)
+     )
+
+
+material prova(
+            diffuse(uniform(<1, 1, 1>)),
+            uniform(<1, 1, 1>)
+     )
+
+
+plane floor(translation([0,0,-1]),floor_material)
+
+sphere sun(scaling([200,200,200]), sun_material)
+
+cone icecream(translation([15,0,0])*rotation_y(180),ice_material)

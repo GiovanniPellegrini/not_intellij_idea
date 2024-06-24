@@ -11,7 +11,7 @@ import java.io.*
 class NIJ : CliktCommand(
     help = "------------------------------------------------------------ \n" +
             "------------------------------------------------------------ \n" +
-            "NOT INTELLIJ IDEA                        \n" +
+            "NOT INTELLIJ IDEA                          \n" +
             "------------------------------------------------------------ \n" +
             "------------------------------------------------------------ \n" +
             "------------------------------------------------------------ \n" +
@@ -45,10 +45,7 @@ class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM 
 
         sampleImage.writeLdrImage("png", gammaValue, outputFile)
     }
-
-
 }
-
 class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo txt") {
     private val rotationAngle by option(
         "-r",
@@ -59,7 +56,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
     private val Output by option("-o", "--output", help = "Output filename (default=image)").default("image")
 
     override fun run() {
-        val stream = InStream(stream = FileReader("src/main/kotlin/examples/demo.txt"), fileName = "demo.txt")
+        val stream = InStream(stream = FileReader("examples/demo.txt"), fileName = "demo.txt")
         val scene = Scene()
         scene.parseScene(stream)
 
@@ -99,7 +96,7 @@ class Render : CliktCommand(
     private val algorithm by option(
         "-a",
         "--algorithm",
-        help = "write the algorithm name <pathtracer, pointlighttracer,onOff, flatRender> (default=pathtracer)"
+        help = "write the algorithm name <pathtracer, pointlighttracer,onOff, flatrender> (default=pathtracer)"
     ).default("pathtracer")
     private val maxDepth by option("-m", "--maxDepth", help = "maxDepth (default=3)").int().default(3)
     private val russianRouletteLimit by option(
@@ -114,7 +111,7 @@ class Render : CliktCommand(
         "--raysForSide",
         help = "Antialiasing number of rays for side, default no antialiasing"
     ).int()
-        .default(1).validate { require(it >= 2) { "If you want to use antialiasing raysForSide number must be higher than 2" } }
+        .default(1).validate { require(it >= 1) { "If you want to use antialiasing raysForSide number must be higher than 2" } }
     private val variables: Map<String, String> by option("--declare-float", "-D", help = "Declare variables").associate()
 
     override fun run() {
