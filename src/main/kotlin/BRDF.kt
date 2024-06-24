@@ -42,8 +42,7 @@ class DiffusionBRDF(override val p: Pigment, private val reflectance: Float = 1f
 
         return Ray(
             origin = interactionPoint,
-            dir = base.first * sinTheta * kotlin.math.cos(phi) + base.second * sinTheta * kotlin.math.sin(phi) +
-                    base.third * cosTheta,
+            dir = base.first * kotlin.math.cos(phi) * cosTheta + base.second * kotlin.math.sin(phi) * cosTheta + base.third * sinTheta,
             tMin = 1e-3f,
             tMax = Float.POSITIVE_INFINITY,
             depth = depth
