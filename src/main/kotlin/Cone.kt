@@ -54,6 +54,8 @@ class Cone(
             val h = cp * V
             if (h in 0f..1f) {
                 val hitPoint1 = invRay.at(t1)
+                if(hitPoint1.z<0f) return null
+                if((hitPoint1.toVec()-C) * V < 0f) return null
                 hits.add(
                     HitRecord(
                         worldPoint = transformation * hitPoint1,
@@ -73,6 +75,8 @@ class Cone(
             val h = cp * V
             if (h in 0f..1f) {
                 val hitPoint2 = invRay.at(t2)
+                if(hitPoint2.z<0f) return null
+                if((hitPoint2.toVec()-C) * V < 0f) return null
                 hits.add(
                     HitRecord(
                         worldPoint = transformation * hitPoint2,
@@ -126,6 +130,7 @@ class Cone(
         if (firstHitT < invRay.tMin || firstHitT > invRay.tMax) return null
         else {
             val hitPoint = invRay.at(firstHitT)
+            if(hitPoint.z<0f) return null
             if((hitPoint.toVec()-C) * V < 0f) return null
             return HitRecord(
                 worldPoint = this.transformation * hitPoint,
