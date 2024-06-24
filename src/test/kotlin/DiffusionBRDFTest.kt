@@ -31,15 +31,16 @@ class DiffusionBRDFTest{
         var countGreater = 0
         var countLesser = 0
         for(hitRecord in hitList) {
-            if(hitRecord.surfacePoint.v > 0.25f) {
+            if(hitRecord.worldPoint.z> 0.7071067811865476f) { // this number is cos(PI/4)
                 countGreater++
             } else {
                 countLesser++
             }
         }
 
-        assert(countGreater == 511)
-        assert(countLesser == 489)
+        assert(countGreater == 489)
+        assert(countLesser == 511)
+
 
     }
 }
