@@ -1,46 +1,44 @@
 import org.junit.jupiter.api.Test
 import kotlin.math.PI
-class DiffusionBRDFTest{
+
+class DiffusionBRDFTest {
 
 
     @Test
-    fun testDiffusionBRDF(){
+    fun testDiffusionBRDF() {
         val pcg = PCG()
         val rayList = mutableListOf<Ray>()
         val hitList = mutableListOf<HitRecord>()
         val sphere = Sphere()
-        val base = onbFromZ(normal = Normal(0f, 0f, 1f))
-        for(i in 0..999) {
-            val cosThetaSq = pcg.randomFloat()
-            val cosTheta = kotlin.math.sqrt(cosThetaSq)
-            val sinTheta = kotlin.math.sqrt(1f - cosThetaSq)
-            val rand = pcg.randomFloat()
-            val phi = 2f * PI.toFloat() * rand
+        val plane = Plane()
+        for (i in 0..999999) {
 
-            rayList.add(Ray(
-                origin = Point(0f,0f,0f),
-                dir=base.first * kotlin.math.cos(phi) * cosTheta + base.second * kotlin.math.sin(phi) * cosTheta + base.third * sinTheta,
-                tMin = 1e-3f,
-                tMax = Float.POSITIVE_INFINITY,
-                depth = 2
-            ))
+            rayList.add(
+                plane.material.brdf.scatterRay(
+                    pcg = pcg,
+                    incomingDir = Vector(0f, 0f, -1f),
+                    interactionPoint = Point(0f, 0f, 0f),
+                    normal = Normal(0f, 0f, 1f),
+                    depth = 1
+                )
+            )
 
             hitList.add(sphere.rayIntersection(rayList[i])!!)
+
         }
 
         var countGreater = 0
         var countLesser = 0
-        for(hitRecord in hitList) {
-            if(hitRecord.worldPoint.z> 0.7071067811865476f) { // this number is cos(PI/4)
+        for (hitRecord in hitList) {
+            if (hitRecord.worldPoint.z > kotlin.math.cos(PI/4f)) { // this number is cos(PI/4)
                 countGreater++
             } else {
                 countLesser++
             }
         }
 
-        assert(countGreater == 489)
-        assert(countLesser == 511)
-
+        assert(countGreater == 499783)
+        assert(countLesser == 500217)
 
     }
 }
