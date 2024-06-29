@@ -83,16 +83,24 @@ class Scene(
      */
     private fun expectNumber(inputFile: InStream): Float {
         val token = inputFile.readToken()
-        if (token is LiteralNumberToken) {
-            return token.number
-        } else if (token is IdentifierToken) {
-            val variableName = token.identifier
-            if (variableName !in this.floatVariables) {
-                throw GrammarError(token.location, "Unknown variable $variableName")
+        val variableName: String
+        when(token) {
+            is LiteralNumberToken -> {
+                return token.number
             }
-            return this.floatVariables[variableName]!!
+            is IdentifierToken -> {
+                variableName = token.identifier
+            }
+            else -> {
+                throw GrammarError(token.location, "Expected a number or a variable, but got $token")
+            }
         }
-        throw GrammarError(token.location, "Expected a number, but got $token")
+        if (variableName in floatVariables ) {
+            return floatVariables[variableName]!!
+        } else {
+            throw GrammarError(token.location, "Variable $variableName not defined")
+        }
+
     }
 
 

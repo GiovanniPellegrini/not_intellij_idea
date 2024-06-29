@@ -1,0 +1,38 @@
+^material star_material(
+    diffuse(image("stars.pfm")),
+    uniform(<0,0,0>)
+)^
+
+material sky_material(
+    diffuse(uniform(<0,0,0>)),
+    uniform(<0,0,0>)
+)
+
+material light_material(
+    diffuse(uniform(<0,0,0>)),
+    uniform(<1,1,1>)
+)
+
+material moon_material(
+    diffuse(image("moon.pfm")),
+    uniform(<0, 0, 0>)
+)
+
+material earth_material(
+    diffuse(image("examples/pointlight/world.pfm")),
+    uniform(<0, 0, 0>)
+)
+
+material ground_material(
+    diffuse(checkered(<0.3, 0.5, 0.1>,
+                      <0.1, 0.2, 0.5>, 4)),
+    uniform(<0, 0, 0>)
+)
+
+
+sphere sky(scaling([1,1,1]), sky_material)
+plane ground(identity,ground_material)
+sphere world(scaling([0.3,0.3,0.3])*rotation_z(angle), earth_material)
+sphere light(rotation_z(180)*translation([0,0.5,0.3])*scaling([0.1,0.1,0.1]), moon_material)
+
+camera(perspective, identity, 1.0, 1.0)

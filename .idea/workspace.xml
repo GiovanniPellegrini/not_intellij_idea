@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="414c4467-58ae-48ee-add9-25e79a91f777" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/demo.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spheres-perspective.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/animation.sh" beforeDir="false" afterPath="$PROJECT_DIR$/animation.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demoImage.txt" beforeDir="false" afterPath="$PROJECT_DIR$/demoImage.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/InputStream.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Scene.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,6 +146,7 @@
     &quot;Kotlin.MainKt.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -175,7 +177,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.InputStreamTest">
+  <component name="RunManager" selected="Kotlin.MainKt">
     <configuration name="InputStreamTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -214,30 +216,6 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;compiler.InputStreamTest.parseBoxTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="InputStreamTest.parseDoubleCam" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;compiler.InputStreamTest.parseDoubleCam&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -296,13 +274,28 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MainKt" />
+      <module name="NIJ.main" />
+      <option name="PROGRAM_PARAMETERS" value="--args=&quot;render -i demo.txt -p demo -a flatrender --declare-float angle=20" />
+      <shortenClasspath name="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.InputStreamTest" />
+      <item itemvalue="Gradle.InputStreamTest.parseBoxTest" />
+      <item itemvalue="Gradle.InputStreamTest.parseTrianglesTest" />
+      <item itemvalue="Gradle.InputStreamTest.testInputFile" />
+      <item itemvalue="Kotlin.MainKt" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.InputStreamTest" />
         <item itemvalue="Gradle.InputStreamTest.parseBoxTest" />
         <item itemvalue="Gradle.InputStreamTest.parseTrianglesTest" />
         <item itemvalue="Gradle.InputStreamTest.testInputFile" />
-        <item itemvalue="Gradle.InputStreamTest.parseDoubleCam" />
       </list>
     </recent_temporary>
   </component>
@@ -353,6 +346,9 @@
       <workItem from="1718203942634" duration="9163000" />
       <workItem from="1718262587778" duration="30237000" />
       <workItem from="1718371379911" duration="446000" />
+      <workItem from="1719331473747" duration="4759000" />
+      <workItem from="1719492325241" duration="34000" />
+      <workItem from="1719497441148" duration="23607000" />
     </task>
     <servers />
   </component>

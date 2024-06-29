@@ -125,7 +125,6 @@ class Render : CliktCommand(
         scene.parseScene(stream)
         val image = HdrImage(imageWidth, imageHeight)
         val tracer = ImageTracer(image, scene.camera!!)
-
         val renderer = when (algorithm) {
             "pathtracer" -> PathTracer(
                 world = scene.world,
@@ -133,6 +132,7 @@ class Render : CliktCommand(
                 russianRouletteLimit = russianRouletteLimit,
                 numberOfRays = numberOfRays
             )
+
 
             "pointlighttracer" -> PointLightRenderer(scene.world)
 
@@ -142,6 +142,7 @@ class Render : CliktCommand(
 
             else -> throw IllegalArgumentException("Unknown algorithm")
         }
+
 
         if (raysForSide == 1) tracer.fireAllRays(renderer::render)
         else tracer.fireAllRays(renderer::render, raysForSide = raysForSide)
