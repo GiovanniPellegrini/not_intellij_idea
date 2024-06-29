@@ -48,7 +48,7 @@ class Scene(
     val world: World = World(),
     var camera: Camera? = null,
     var floatVariables: MutableMap<String, Float> = mutableMapOf(),
-    private var overriddenVariables: MutableMap<String, Float> = mutableMapOf(),
+    var overriddenVariables: MutableMap<String, Float> = mutableMapOf(),
     var shapes: MutableMap<String, Shape> = mutableMapOf()
 ) {
     /**
@@ -95,7 +95,7 @@ class Scene(
                 throw GrammarError(token.location, "Expected a number or a variable, but got $token")
             }
         }
-        if (variableName in floatVariables ) {
+        if (variableName in floatVariables.keys ) {
             return floatVariables[variableName]!!
         } else {
             throw GrammarError(token.location, "Variable $variableName not defined")
