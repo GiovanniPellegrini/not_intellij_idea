@@ -1,6 +1,6 @@
 Welcome to ray tracing for dummies!
 
-This is a simple tutorial that will help you understand how to define a scene in NIJ tracer
+This is a simple tutorial that will help you understand how to define a scene in NIJ tracer.
 
 ## Define a scene
 
@@ -67,9 +67,9 @@ Remember that the order of the transformations is important.
 ## Camera
 
 The camera is a special object in the scene that defines the point of view of the observer.
-It is mandatory do define a camera in the scene.
+It is mandatory to define a camera in the scene, if you don't define it in your .txt file NIJ, tracer will assign a default camera.
 
-In NIJ tracer you can define a camera using the following syntax:
+You can define a camera using the following syntax:
 
     camera(typeOfCamera, transformation, aspectRatio, distance)
 
@@ -86,7 +86,7 @@ Every shape in the scene must have a material, you can define anywhere in the fi
 it for a shape you have defined it
 
     ^ if i defined a shape before the material
-      sphere sphere sphere sfera1(translation(<1, 1, 1>) * scaling(<0.1,0.1,0.1>), material_name)
+      sphere mysphere(translation(<1, 1, 1>) * scaling(<0.1,0.1,0.1>), material_name)
      the compiler will throw an error ^
 
     
@@ -109,7 +109,7 @@ Remember that BRDF needs a pigment to work, you can define a pigment using the f
     % pigmentKeyword can be uniform, checkered and image see at the bottom of the page for more information
 
 Did you think we were done? objects can emit light so ***another pigment*** must be added after the brdf to represent
-the radiance emitted by the object
+the radiance emitted by the object.
 
 ## Shapes
 
@@ -139,7 +139,7 @@ Box are defined by two points, the minimum and maximum points of the box
 
     triangle triangle_name(point1, point2, point3, transformation, material)
 
-``` point1```, ```point2``` and  ```point3``` are the vertices of the triangle
+``` point1```, ```point2``` and  ```point3``` are the vertices of the triangle.
 
 ### Triangle Mesh
 
@@ -224,12 +224,13 @@ Where pigmentKeyword can be:
 
 ## Point Lights
 
-In NIJ Tracer you can use a simpler ray tracing algorithm that uses point lights to illuminate the scene
+In NIJ Tracer you can use a simpler ray tracing algorithm that uses point lights to illuminate the scene.
+
 Every point light has its position (point) and color
 
     pointlight (position, color)
 
-Remember that if you define a point light you must use the Point-light ray tracing algorithm
+Remember that if you define a point light you must use the Point-light ray tracing algorithm.
 
 
 
@@ -254,6 +255,22 @@ Remember that if you define a point light you must use the Point-light ray traci
                 typeOfBRDF(Uniform),
                 Uniform(Color)
             ) % this will throw an error
+
+- Using render command with `--declare-float`, if in the input.txt file there is already a variable with the same identifier, it will be overridden with the one passed through the command line, for example if you run:
+      
+      ./NIJ render -i input.txt -a pathtracer --declare-float a=2
+
+  and you input.txt file looks like
+
+      float a(32)
+      
+      material my_material(diffusive(uniform(<0,0,1>)), uniform(<0,0,0>)
+
+      plane my_plane(translation([0,0,a])
+
+  the value passed to translation vector will be a=2, so remember that command line always win.
+
+
 
 
 
