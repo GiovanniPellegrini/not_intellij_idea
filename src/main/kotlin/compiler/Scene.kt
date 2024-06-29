@@ -84,23 +84,23 @@ class Scene(
     private fun expectNumber(inputFile: InStream): Float {
         val token = inputFile.readToken()
         val variableName: String
-        when(token) {
+        when (token) {
             is LiteralNumberToken -> {
                 return token.number
             }
+
             is IdentifierToken -> {
                 variableName = token.identifier
+                if (variableName !in floatVariables) {
+                    throw GrammarError(token.location, "Variable $variableName not defined")
+                }
+                return floatVariables[variableName]!!
             }
+
             else -> {
                 throw GrammarError(token.location, "Expected a number or a variable, but got $token")
             }
         }
-        if (variableName in floatVariables.keys ) {
-            return floatVariables[variableName]!!
-        } else {
-            throw GrammarError(token.location, "Variable $variableName not defined")
-        }
-
     }
 
 
@@ -293,7 +293,7 @@ class Scene(
      */
     private fun parseMaterial(inputStream: InStream): Map<String, Material> {
         val materialName = expectIdentifier(inputStream)
-        if(materialName in materials || materialName in shapes || materialName in floatVariables){
+        if (materialName in materials || materialName in shapes || materialName in floatVariables) {
             throw GrammarError(inputStream.location, "variable $materialName already defined")
         }
         expectSymbol(inputStream, '(')
@@ -310,7 +310,7 @@ class Scene(
      */
     private fun parseSphere(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
-        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+        if (shapeName in materials || shapeName in shapes || shapeName in floatVariables) {
             throw GrammarError(inStream.location, "variable $shapeName already defined")
         }
         expectSymbol(inStream, '(')
@@ -330,7 +330,7 @@ class Scene(
      */
     private fun parsePlane(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
-        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+        if (shapeName in materials || shapeName in shapes || shapeName in floatVariables) {
             throw GrammarError(inStream.location, "variable $shapeName already defined")
         }
         expectSymbol(inStream, '(')
@@ -350,7 +350,7 @@ class Scene(
      */
     private fun parseBox(inputStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inputStream)
-        if(shapeName in materials || shapeName in shapes || shapeName in floatVariables){
+        if (shapeName in materials || shapeName in shapes || shapeName in floatVariables) {
             throw GrammarError(inputStream.location, "variable $shapeName already defined")
         }
         expectSymbol(inputStream, '(')
@@ -382,7 +382,7 @@ class Scene(
      */
     private fun parseTriangle(inputStream: InStream): Map<String, Triangle> {
         val triangleName = expectIdentifier(inputStream)
-        if(triangleName in materials || triangleName in shapes || triangleName in floatVariables){
+        if (triangleName in materials || triangleName in shapes || triangleName in floatVariables) {
             throw GrammarError(inputStream.location, "variable $triangleName already defined")
         }
         expectSymbol(inputStream, '(')
@@ -408,7 +408,7 @@ class Scene(
      */
     private fun parseTriangleMesh(inputStream: InStream): Map<String, TriangleMesh> {
         val triangleMeshName = expectIdentifier(inputStream)
-        if(triangleMeshName in materials || triangleMeshName in shapes || triangleMeshName in floatVariables){
+        if (triangleMeshName in materials || triangleMeshName in shapes || triangleMeshName in floatVariables) {
             throw GrammarError(inputStream.location, "variable $triangleMeshName already defined")
         }
         expectSymbol(inputStream, '(')
@@ -561,7 +561,7 @@ class Scene(
      */
     private fun parseCSGUnion(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
-        if(shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables){
+        if (shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables) {
             throw GrammarError(inputFile.location, "variable $shapeCSGName already defined")
         }
         expectSymbol(inputFile, '(')
@@ -593,7 +593,7 @@ class Scene(
      */
     private fun parseCSGIntersection(inputFile: InStream): Map<String, Shape> {
         val shapeCSGName = expectIdentifier(inputFile)
-        if(shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables){
+        if (shapeCSGName in materials || shapeCSGName in shapes || shapeCSGName in floatVariables) {
             throw GrammarError(inputFile.location, "variable $shapeCSGName already defined")
         }
         expectSymbol(inputFile, '(')
@@ -656,7 +656,7 @@ class Scene(
         )
     }
 
-    private fun parseCone(inStream: InStream):Map<String, Shape>{
+    private fun parseCone(inStream: InStream): Map<String, Shape> {
         val shapeName = expectIdentifier(inStream)
         expectSymbol(inStream, '(')
         val transformation = parseTransformation(inStream)
@@ -706,14 +706,18 @@ class Scene(
                     val varValue = expectNumber(inputStream)
                     expectSymbol(inputStream, ')')
                     // Error if VariableName already defined
-                    if (variableName in this.floatVariables && variableName !in this.overriddenVariables) {
-                        throw GrammarError(variableLocation, "Variable '$variableName' cannot be redefined")
+                    if (variableName in floatVariables && variableName !in overriddenVariables) {
+                        throw GrammarError(variableLocation, "Variable '$variableName' already defined")
+                    }
+                    if (variableName in this.overriddenVariables) {
+                        println(
+                            "in file ${inputStream.fileName} variable '$variableName' already defined with command line, " +
+                                    "it will be used the value passed by command line"
+                        )
                     }
                     // Define variable if not already defined before
                     if (variableName !in this.overriddenVariables) {
                         this.floatVariables[variableName] = varValue
-                    } else {
-                        this.floatVariables[variableName] = overriddenVariables[variableName]!!
                     }
                 }
 

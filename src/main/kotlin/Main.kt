@@ -121,7 +121,7 @@ class Render : CliktCommand(
             map[i] = variables[i]!!.toFloat()
         }
         val stream = InStream(stream = FileReader(inputFile), fileName = inputFile)
-        val scene = Scene(overriddenVariables = map)
+        val scene = Scene(overriddenVariables = map, floatVariables = map)
         scene.parseScene(stream)
         val image = HdrImage(imageWidth, imageHeight)
         val tracer = ImageTracer(image, scene.camera!!)

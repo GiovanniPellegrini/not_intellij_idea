@@ -1,3 +1,5 @@
+float angle(89)
+
 ^material star_material(
     diffuse(image("stars.pfm")),
     uniform(<0,0,0>)
