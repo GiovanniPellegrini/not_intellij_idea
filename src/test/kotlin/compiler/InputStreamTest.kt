@@ -479,7 +479,7 @@ class InputStreamTest {
 
     @Test
     fun overriddenVariables2() {
-        val scene = Scene(overriddenVariables = mutableMapOf("a" to 13f))
+        val scene = Scene(overriddenVariables = mutableMapOf("a" to 13f), floatVariables = mutableMapOf("a" to 13f))
         val stream = ByteArrayInputStream(
             """
         float a(1)
@@ -487,7 +487,7 @@ class InputStreamTest {
         )
         val streamReader = InputStreamReader(stream)
         scene.parseScene(InStream(streamReader))
-        assert(scene.floatVariables["a"] == 13f)
+        assertEquals(scene.floatVariables["a"], 13f)
     }
 
     @Test
