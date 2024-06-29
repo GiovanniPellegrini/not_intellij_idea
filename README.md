@@ -142,9 +142,13 @@ The command has the following flags:
 
 working on it :construction_worker:
 
-# animations
+# Animations
 
-working on it :construction_worker:
+If you want to create an animation you can render multiple images and then merge them to create a video.
+
+There is already a demo script called `animation.sh` from which to take inspiration.
+
+After rendering all the images we use the open source software [ffmpeg](https://ffmpeg.org) to create the video.
 
 # License
 
