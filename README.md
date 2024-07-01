@@ -141,7 +141,14 @@ The command has the following flags:
 # Gallery
 
 ![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova1.png?raw=true)
-![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true)
+![Image description](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true)
+Cornell box with antialiasing
+
+
+|                                                          Cornell box with antialiasing                                                           |                                                       Cornell box without antialiasing                                                       |
+|:------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|
+| ![Image description](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true) | ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_noAntialiasing.png?raw=true) |
+
 
 # Animations
 
