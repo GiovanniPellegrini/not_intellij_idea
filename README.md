@@ -1,7 +1,7 @@
 # NOT INTELLIJ IDEA PROJECT
 This is a ray tracing project for the course named "numerical computation for photorealistic image generation", held by Prof. [Tomasi](https://github.com/ziotom78) at university of Milan.
 
-The code is written in pure Kotlin and implements some numeric methods to solve the render equation.
+The code is written in pure Kotlin and implements some numeric methods to solve the render equation in order to generate realistic images.
 
 Main contributors are [Giovanni Pellegrini](https://github.com/GiovanniPellegrini) and [Lorenzo Esposito](https://github.com/lorenzoesposito2)
 
@@ -44,7 +44,18 @@ git clone git@github.com:GiovanniPellegrini/not_intellij_idea.git
 
 This will create a folder named `not_intellij_idea` in your current directory.
 
-To build the project, navigate to the root folder of the project and run the following command:
+### Run with ./gradlew
+
+You can run the code using the script `gradlew`
+
+    ./gradlew run 
+
+This will build the project, a help message will appear with all the available commands.
+
+
+### Build with Gradle installdist
+
+If you want to create an installable distribution of the application with all the necessary scripts and dependencies navigate to the root folder of the project and run the following command:
 ```shell
 ./gradlew installdist
 ```
@@ -63,9 +74,11 @@ and run the following command:
 
 This will show the help message of the program, with the all the available commands.
 
+**Be careful** that NIJ executable is in a different folder from the one where the demo files are located.
+
 # Usage
 
-After running `./NIJ` you will see the following help message with all the available commands:
+After running `./NIJ` or `./gradlew run` you will see the following help message with all the available commands:
 ```shell
 Options:
   -h, --help  Show this message and exit
@@ -79,6 +92,12 @@ Commands:
 To use a NIJ command:
 ```shell
 ./NIJ <command>
+```
+
+or
+
+```shell
+./gradlew run --args="<command>"
 ```
 
 Some flags will appear: 
@@ -99,11 +118,17 @@ To use those flags write them after the command, for example:
 ./NIJ <command> -f <file_name> -a <algorithm>
 ```
 
+or 
+    
+```shell
+./gradlew run --args="<command> -f <file_name> -a <algorithm>"
+   ``` 
+
 
 
 
 ## Demo
-This is a demonstration command that uses FlatRender algorithm to create a demo image with 10 spheres from [demo.txt](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/src/main/kotlin/examples/demo.txt) file.
+This is a demonstration command that uses FlatRender algorithm to create a demo image from [this file](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/demo/demo.txt).
 
 If you want you can modify the file (see the [tutorial](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/src/main/kotlin/examples/tutorial.md) on how to define scenes)
 
@@ -130,13 +155,15 @@ Remember that if the variable is already declared in the file, the value passed 
 ## Pfm2png
 Every image created by the program is saved also in an HDR format, in particular in the Portable FloatMap format (PFM).
 
-The conversion from pfm to png ([S&M Tone-Mapping](https://books.google.it/books/about/Realistic_Ray_Tracing_Second_Edition.html?id=ywOtPMpCcY8C&redir_esc=y)) depends on several factors. A feature implemented allows these parameters to be changed. 
+The conversion from pfm to png ([S&M Tone-Mapping](https://books.google.it/books/about/Realistic_Ray_Tracing_Second_Edition.html?id=ywOtPMpCcY8C&redir_esc=y)) depends on several factors. This command allows these parameters to be changed. 
 
 The command has the following flags:
 - `-i, --input` .pfm input file name
 - `-o, --output` output image file name
 - `-a, --aValue` rescaling factor 
 - `-g, --gamma` gamma correction value for the monitor
+
+See examples at [this file](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/pfm2png.md).
 
 # Gallery
 
@@ -148,13 +175,21 @@ The command has the following flags:
 | ![Image description](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true) | ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_noAntialiasing.png?raw=true) |
 
 
+
+![teapotImage](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/c5162d05278cecc708990b4e7dbf9f2680d4457c/examples/tea/tea.png?raw=true)
+
+
 # Animations
+
+![Animation](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/demo/demo-animation.gif)
 
 If you want to create an animation you can render multiple images and then merge them to create a video.
 
 There is already a demo script called `animation.sh` from which to take inspiration.
 
 After rendering all the images we use the open source software [ffmpeg](https://ffmpeg.org) to create the video.
+
+
 
 # License
 
