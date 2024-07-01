@@ -140,7 +140,7 @@ The command has the following flags:
 
 # Gallery
 
-![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova1.png?raw=true)
+![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/bowl.png?raw=true)
 ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true)
 
 # Animations
