@@ -48,7 +48,7 @@ box table_leg3((-0.45,0.8,-1),(-0.3,0.94,-0.5),translation([-1,0,0]),table_mater
 box table_leg4((0.3,0.8,-1),(0.45,0.94,-0.5),translation([-1,0,0]),table_material)
 sphere mirror(scaling([0.2,0.2,0.2])*translation([-5.5,3,-1]), mirror_material)
 
-trianglemesh teapot("src/main/kotlin/objfiles/teapot.obj",
+trianglemesh teapot("examples/objfiles/teapot.obj",
 scaling([0.006,0.006,0.006])* translation([-1,0,0])*rotation_x(90)*rotation_y(90)*translation([-70,-20,-180]),
 red_material)
 
