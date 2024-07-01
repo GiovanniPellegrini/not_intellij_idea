@@ -130,6 +130,8 @@ or
 ## Demo
 This is a demonstration command that uses FlatRender algorithm to create a demo image from [this file](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/demo/demo.txt).
 
+![Demo Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/46f7ed0421effabfbb87ba82da034c4d9402e119/examples/demo/demo.png?raw=true)
+
 If you want you can modify the file (see the [tutorial](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/src/main/kotlin/examples/tutorial.md) on how to define scenes)
 
 ## Render
