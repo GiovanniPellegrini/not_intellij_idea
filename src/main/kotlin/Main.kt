@@ -47,7 +47,7 @@ class Pfm2Png : CliktCommand(printHelpOnEmptyArgs = true, help = "Convert a PFM 
         sampleImage.writeLdrImage("png", gammaValue, outputFile)
     }
 }
-class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image with 10 spheres from demo txt") {
+class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo image") {
     private val rotationAngle by option(
         "-r",
         "--rotation",
@@ -57,7 +57,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
     private val Output by option("-o", "--output", help = "Output filename (default=image)").default("image")
 
     override fun run() {
-        val stream = InStream(stream = FileReader("examples/demo.txt"), fileName = "demo.txt")
+        val stream = InStream(stream = FileReader("examples/demo/demo.txt"), fileName = "demo.txt")
         val scene = Scene()
         scene.parseScene(stream)
 
@@ -86,7 +86,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true, help = "Create a demo ima
 }
 
 class Render : CliktCommand(
-    printHelpOnEmptyArgs = true, help = "Create a demo image with two different algorithm from a txt file"
+    printHelpOnEmptyArgs = true, help = "Create a image different algorithm from a txt file"
 ) {
     private val inputFile by option("-i", "--input", help = ".txt filename Input").required()
     private val Output by option("-p", "--pngOutput", help = "Output filename (default=image)").default("image")
@@ -103,7 +103,7 @@ class Render : CliktCommand(
     private val russianRouletteLimit by option(
         "-r",
         "--russianRouletteLimit",
-        help = "russianRouletteLimit default 2"
+        help = "russianRouletteLimit (default=2)"
     ).int().default(2)
     private val numberOfRays by option("-n", "--numberOfRays", help = "numberOfRays (default=15)").int()
         .default(15)
@@ -152,7 +152,7 @@ class Render : CliktCommand(
         println("Writing PFM file")
         image.writePFM(outputStream, ByteOrder.BIG_ENDIAN)
         println("Writing PNG file")
-        image.writeLdrImage("png", 1f, Output + ".png")
+        image.writeLdrImage("png", 0.55f, Output + ".png")
     }
 }
 
