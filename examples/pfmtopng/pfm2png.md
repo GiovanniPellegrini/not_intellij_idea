@@ -7,12 +7,12 @@ It uses a tone mapping algorithm that depends on two parameters:
 Here are some examples of conversions of the same .pfm image with different parameters
 
 
-|                                                       a = 0.15, gamma = 1                                                        |                                                        a = 0.15, gamma = 22                                                        |
+|                                                       a = 0.15, gamma = 1                                                        |                                                       a = 0.15, gamma = 2,2                                                        |
 |:--------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------:|
 | ![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova_a015_g1.png?raw=true) | ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova_a015_g22.png?raw=true) |
 
 
-|                                                        a = 0.5, gamma = 1                                                        |                                                        a = 0.50, gamma = 22                                                        |
+|                                                        a = 0.5, gamma = 1                                                        |                                                       a = 0.50, gamma = 2,2                                                        |
 |:--------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------:|
 | ![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova_a050_g1.png?raw=true) | ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova_a050_g22.png?raw=true) |
 
