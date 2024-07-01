@@ -140,7 +140,8 @@ The command has the following flags:
 
 # Gallery
 
-working on it :construction_worker:
+![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/prova1.png?raw=true)
+![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true)
 
 # Animations
 
