@@ -14,7 +14,7 @@ material red_material(
 )
 
 material ground_material(
-    diffuse(image("wood.pfm")),
+    diffuse(image("Wood.pfm")),
     uniform(<0, 0, 0>)
 )
 
