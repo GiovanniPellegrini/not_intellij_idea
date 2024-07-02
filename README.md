@@ -170,17 +170,24 @@ See examples at [this file](https://github.com/GiovanniPellegrini/not_intellij_i
 
 # Gallery
 
-![First Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/bowl.png?raw=true)
+<table>
+  <tr>
+    <td><img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/pfmtopng/bowl.png?raw=true" alt="First Image" width="300"/></td>
+    <td><img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/c5162d05278cecc708990b4e7dbf9f2680d4457c/examples/tea/tea.png?raw=true" alt="teapotImage" width="300"/></td>
+    <td><img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/9c38dbb79a23900f066f410a06624f1a0c7a16b6/examples/geometry/geo.png?raw=true" alt="geo image" width="300"/></td>
+  </tr>
+</table>
 
-
-|                                                          Cornell box with antialiasing                                                           |                                                       Cornell box without antialiasing                                                       |
-|:------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![Image description](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true) | ![Second Image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_noAntialiasing.png?raw=true) |
-
-
-
-![teapotImage](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/c5162d05278cecc708990b4e7dbf9f2680d4457c/examples/tea/tea.png?raw=true)
-![geo image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/9c38dbb79a23900f066f410a06624f1a0c7a16b6/examples/geometry/geo.png?raw=true)
+<table>
+  <tr>
+    <td align="center">Cornell box with antialiasing</td>
+    <td align="center">Cornell box without antialiasing</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_antialiasing2.png?raw=true" alt="Cornell box with antialiasing" width="300"/></td>
+    <td><img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/cornellbox/cornell_noAntialiasing.png?raw=true" alt="Cornell box without antialiasing" width="300"/></td>
+  </tr>
+</table>
 
 
 # Animations
