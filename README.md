@@ -102,16 +102,17 @@ or
 
 Some flags will appear: 
 ```shell
-Usage: nij demo [<options>]
+Usage: nij pfm2png [<options>]
 
-  Create a demo image with 10 spheres from demo txt
+  Convert a PFM file to a PNG image
 
 Options:
--r, --rotation=<float>  rotation angle of the camera (default=0)
--p, --pfm=<text>        .pfm filename Output
--o, --output=<text>     Output .png filename
--s, --save=<value>      save .pfm Output
--h, --help              Show this message and exit
+  -i, --input=<text>    .pfm filename Input
+  -o, --output=<text>   .png filename Output (default output.png)
+  -a, --aValue=<float>  parameter 'a' (default=1)
+  -g, --gamma=<float>   parameter 'gamma' (default=1)
+  -h, --help            Show this message and exit
+
 ```
 To use those flags write them after the command, for example:
 ```shell
@@ -179,6 +180,7 @@ See examples at [this file](https://github.com/GiovanniPellegrini/not_intellij_i
 
 
 ![teapotImage](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/c5162d05278cecc708990b4e7dbf9f2680d4457c/examples/tea/tea.png?raw=true)
+![geo image](https://github.com/GiovanniPellegrini/not_intellij_idea/blob/9c38dbb79a23900f066f410a06624f1a0c7a16b6/examples/geometry/geo.png?raw=true)
 
 
 # Animations
