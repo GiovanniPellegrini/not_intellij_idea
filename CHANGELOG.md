@@ -1,4 +1,6 @@
-## Head
+## V 1.0.0
+first official version of the project
+
  - added `Cone` shape (PR #21)
  - added redeclaration error (PR #22)
  - added `point-Light` tracing algorithm
