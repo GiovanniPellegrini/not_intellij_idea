@@ -5,6 +5,16 @@ The code is written in pure Kotlin and implements some numeric methods to solve 
 
 Main contributors are [Giovanni Pellegrini](https://github.com/GiovanniPellegrini) and [Lorenzo Esposito](https://github.com/lorenzoesposito2)
 
+<img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/ice_cream/prova1.png" alt="Warhol Ice Cream" width="240"/>
+
+
+
+
+
+
+
+
+
 ![release](https://img.shields.io/github/v/release/GiovanniPellegrini/not_intellij_idea)
 ![Top Language](https://img.shields.io/github/languages/top/GiovanniPellegrini/not_intellij_idea)
 ![GitHub](https://img.shields.io/github/license/GiovanniPellegrini/not_intellij_idea)
