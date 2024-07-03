@@ -1,23 +1,19 @@
 # NOT INTELLIJ IDEA PROJECT
-This is a ray tracing project for the course named "numerical computation for photorealistic image generation", held by Prof. [Tomasi](https://github.com/ziotom78) at university of Milan.
-
-The code is written in pure Kotlin and implements some numeric methods to solve the render equation in order to generate realistic images.
-
-Main contributors are [Giovanni Pellegrini](https://github.com/GiovanniPellegrini) and [Lorenzo Esposito](https://github.com/lorenzoesposito2)
-
-<img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/ice_cream/prova1.png" alt="Warhol Ice Cream" width="240"/>
-
-
-
-
-
-
-
-
+<div style="display: flex; align-items: center;">
+    <div style="flex: 1;">
+        <p>This is a ray tracing project for the course named "numerical computation for photorealistic image generation", held by Prof. <a href="https://github.com/ziotom78">Tomasi</a> at university of Milan.</p>
+        <p>The code is written in pure Kotlin and implements some numeric methods to solve the rendering equation in order to generate realistic images.</p>
+        <p>Main contributors are <a href="https://github.com/GiovanniPellegrini">Giovanni Pellegrini</a> and <a href="https://github.com/lorenzoesposito2">Lorenzo Esposito</a></p>
+    </div>
+    <div style="margin-left: 20px;">
+        <img src="https://github.com/GiovanniPellegrini/not_intellij_idea/blob/master/examples/ice_cream/prova1.png" alt="Warhol Ice Cream" width="340"/>
+    </div>
+</div>
 
 ![release](https://img.shields.io/github/v/release/GiovanniPellegrini/not_intellij_idea)
 ![Top Language](https://img.shields.io/github/languages/top/GiovanniPellegrini/not_intellij_idea)
 ![GitHub](https://img.shields.io/github/license/GiovanniPellegrini/not_intellij_idea)
+
 
 
 # Table of contents
@@ -162,7 +158,7 @@ For the more intrepid, there are some further flags to use if you know the pathT
 - `-s, --raysForSide` Number of rays fired for each side of the pixel (Antialiasing)
 
 To declare floating point variables there is the flag
-- `-D, --declare-float` for example `-D a=0.5 b=1.4`
+- `-D, --declare-float` for example `-D a=0.5 -D b=1.4`
 Remember that if the variable is already declared in the file, the value passed as a flag will overwrite the previous one.
 
 ## Pfm2png

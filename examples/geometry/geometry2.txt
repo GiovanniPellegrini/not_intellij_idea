@@ -1,0 +1,31 @@
+material sky_material(
+diffuse(uniform(<0,0,0>)), uniform(<0.6,0.6, 0.9>))
+
+material ground_material(
+diffuse(checkered(<0.1, 0.1, 0.1>, <0.5, 0.5, 0.5>,4)), uniform(<0,0,0>))
+
+material mirror_material(
+specular(uniform(<0,0.5,0>)), uniform(<0,0,0>))
+
+material red_material(
+diffuse(uniform(<0.97705882352, 0.16470588235, 0.16470588235>)), uniform(<0,0,0>))
+
+material cyan_material(
+diffuse(uniform(<0.0, 0.54509803921, 0.54509803921>)), uniform(<0,0,0>))
+
+
+sphere sky_sphere(scaling([10,10,10]), sky_material)
+plane ground_plane(translation([0,0,-1])*scaling([5,5,5]), ground_material)
+sphere head(scaling([0.12,0.12,0.12])*translation([0,0,1.5]), red_material)
+cone body(scaling([0.2,0.2,0.5])*translation([0,0,-0.5]), red_material)
+csgunion body_union(body, head, scaling([0.3,0.3,0.3])*translation([-2.6,-0.34,0]), red_material)
+
+sphere head2(scaling([0.12,0.12,0.12])*translation([0,0,1.5]), cyan_material)
+cone body2(scaling([0.2,0.2,0.5])*translation([0,0,-0.5]), cyan_material)
+csgunion body_union2(body2, head2, scaling([0.25,0.25,0.25])*translation([-2.9,0.5,-0.05])*rotation_x(105), cyan_material)
+
+sphere head3(scaling([0.12,0.12,0.12])*translation([0,0,1.5]), mirror_material)
+cone body3(scaling([0.2,0.2,0.5])*translation([0,0,-0.5]), mirror_material)
+csgunion body_union3(body3, head3, scaling([0.14,0.14,0.14])*translation([-6.1,0,-0.05]), mirror_material)
+
+camera(perspective,identity,1,1)
